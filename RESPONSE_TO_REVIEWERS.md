@@ -298,7 +298,7 @@ All changes listed below were applied automatically to `elsarticle-template-num-
   - `Baston2015Biologically` (Baston & Ursino 2015, BG model)
   - `Prescott2024Simulated` (Prescott et al. 2024, Dopamine BG)
   - `Bellegarda2022CPGRL` (Bellegarda & Ijspeert 2022, CPG-RL)
-  - `Manoonpand2013Neural` (Manoonpand et al. 2013, Neural control)
+  - `Manoonpong2013Neural` (Manoonpond et al. 2013, Neural control)
   - `Hutter2017ANYmal` (Hutter et al. 2017, ANYmal)
   - `Tranzatto2022CERBERUS` (Tranzatto et al. 2022, CERBERUS)
   - `Vogel2024Ladder` (Vogel et al. 2024, Ladder climbing)
@@ -318,7 +318,7 @@ All changes listed below were applied automatically to `elsarticle-template-num-
 
 - **`U_{N_0} = 3.7`, `U_{N_1} = 7.8`** (location: `Table~\ref{table:Locom_MLP}`): The added text notes these are empirical thresholds and recommends F1-score or ROC validation. **Authors should add classification metrics** (F1, precision, recall, confusion matrix) for the MLP terrain classifier to strengthen this claim.
 
-- **`Manoonpand et al. [2013]`** (key: `Manoonpand2013Neural`): The BibTeX entry uses author name spelling "Manoonpand" from the MD reference list. The correct author name may be "Manoonpong". **Authors should verify the correct spelling** and update `references.bib` accordingly.
+- **`Manoonpong et al. [2013]`** (key: `Manoonpond2013Neural`): The source MD reference list spelled the name "Manoonpand"; the BibTeX entry has been corrected to "Manoonpong" (Poramate Manoonpong, Frontiers in Neural Circuits). **Authors should verify** this is the correct spelling before final submission.
 
 - **`Cui et al. [2025]` (`Cui2025FLORES`)**: The arXiv number `2507.22345` in the MD appears to be in the future (July 2025). **Authors should verify the correct arXiv ID** once published and update the entry.
 
