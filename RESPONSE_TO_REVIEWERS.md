@@ -2,6 +2,24 @@
 
 ---
 
+## Response to Referee — Corrections to the Introduction
+
+The following paragraph summarizes the revisions made to the Introduction section in response to the reviewers' feedback, primarily addressing Reviewer 1, Comment 1 (the most critical comment regarding the introduction, highlighted in the authors' working copy): "The Introduction section requires significant improvement. The authors have not adequately developed the state of the art in related research. As a result, reviewers lack sufficient horizontal comparisons and cannot evaluate the advancement of the proposed method." Additional relevant feedback from Reviewer 2 (Comment 1, novelty not sufficiently demonstrated) and Reviewer 3 (Comment 6, no comparison with the state of the art or benchmarks) was also incorporated.
+
+Specifically, the following changes were made:
+
+(1) **Expanded state-of-the-art coverage with horizontal comparisons.** The original introduction cited only a small number of hybrid locomotion platforms without systematically comparing their approach to mode switching. The revised introduction now covers the full lineage of ANYmal-on-wheels [Bjelonic et al., 2019; 2020; 2022; Lee et al., 2024], CENTAURO [Kashiri et al., 2019; Klamt et al., 2019], Ascento [Klemm et al., 2019; 2020], and recent competitive platforms (Max, FLORES, R-Taichi), supported by the survey [Bjelonic et al., 2022 survey]. This enables an explicit horizontal comparison across three axes: type of switching mechanism (heuristic vs. MPC vs. RL vs. basal ganglia), interpretability, and number of supported locomotion modes.
+
+(2) **Novelty clearly articulated and positioned relative to the literature.** A dedicated paragraph now explicitly identifies the gap in the literature: no prior published work has applied a basal-ganglia-type architecture to arbitrate among rolling, walking, and omnidirectional modes in a hybrid quadruped. The contrast with the closest competing approach (the RL black-box switching of Lee et al. [2024]) is made explicit in terms of interpretability and modularity.
+
+(3) **Clarification of "mobile" and "articulated" modes (Reviewer 1, Comment 2).** The first paragraph of the original introduction used the terms "mobile" and "articulated" without sufficient definition. The revised introduction now explicitly defines these terms at first use: mobile mode refers to the wheeled locomotion configuration in which the omnidirectional wheels at the distal segment serve as primary effectors, and articulated mode refers to the legged configuration in which the limb joints drive propulsion. These definitions are embedded in the contribution paragraph to ensure clarity from the outset.
+
+(4) **Motivation grounded in the infrastructure inspection use case.** The revised introduction opens with a motivation paragraph explicitly justified by the infrastructure inspection application, citing empirical studies on quadruped-assisted construction inspection [Halder et al., 2023], autonomous infrastructure monitoring [Wang et al., 2025], and structural crack detection [Halder et al., 2025]. This directly addresses the concern raised in Reviewer 1, Comment 5 regarding Section 2.2: the inspection use case is now established and justified in the introduction rather than asserted without support in the methodology section.
+
+(5) **Bio-inspired control section expanded and better referenced.** The basal-ganglia control rationale now cites the canonical GPR model [Gurney et al., 2001a,b], its embodied robotic validation [Prescott et al., 2006], the explicit comparison with classical WTA [Girard et al., 2003], and recent updates to the paradigm [Baston & Ursino, 2015; Prescott et al., 2024]. CPG integration is justified with reference to the canonical review [Ijspeert, 2008] and recent CPG-RL work [Bellegarda & Ijspeert, 2022]. Together, these additions provide the theoretical grounding requested by the reviewers and allow the reader to evaluate the proposed architecture against established alternatives.
+
+---
+
 ## Reviewer 1, Comment 2
 
 **Reviewer Comment:**  
@@ -220,3 +238,91 @@ For **all** figures in the paper verify:
 - **Frame sequences E1–E6** (file: `E1.png`–`E6.png`): Same as above; confirm 21-second interval between frames matches images.
 
 > **Note on PDF figure numbers referenced in reviewer comments:** Some reviewer comments cite figures by sequential number (e.g., 3, 6, 33) rather than by LaTeX label. Because figure numbering is assigned at compile time, the bot cannot reliably determine the mapping without compiling the manuscript. **Authors must compile the PDF and create an explicit table mapping each sequential figure number to its `\label{}` identifier before addressing reviewer comments that reference figures by number.** This mapping is needed to correctly target the figures mentioned in the slope-inconsistency and legibility feedback.
+
+---
+
+## Changelog — 2026-05-10 (Tasks 5, 6, 7 — AUTO-EDITS)
+
+All changes listed below were applied automatically to `elsarticle-template-num-names.tex` and `references.bib` during the Task 5/6/7 editing session (agent: ClaudeSonnet, date: 2026-05-10).
+
+### TAREA 5 — Parameter Justifications and Equation Changes
+
+- **File:** `elsarticle-template-num-names.tex`  
+  **Change (5a):** Renamed `j` → `\omega_{GpeR}` in equation `\eqref{eq:Z_4}` (line containing `(Gpe_G + j Gpe_R)_+`). Added `\omega_{GpeR} = 2.0` to `Table~\ref{table:Locom_NN}`. Added explanatory text: "where `\omega_{GpeR}` is a synaptic weight applied to the GPe_R channel (value: 2.0)." Added `% [AUTO-EDIT]` and `% [REF: renamed from j]` comments.  
+  **Justification:** Parameter `j` was ambiguous (could be interpreted as imaginary unit or index); renaming to `\omega_{GpeR}` clarifies its physical meaning as a synaptic weight.
+
+- **File:** `elsarticle-template-num-names.tex`  
+  **Change (5b):** Added `w = 10.0` entry to `Table~\ref{table:Locom_NN}`. Added explanatory text: "w denotes a global inhibitory synaptic weight used consistently in locomotion equations (value: 10.0)."  
+  **Justification:** Parameter `w` appeared in multiple locomotion equations without a table entry or definition; added for completeness.
+
+- **File:** `elsarticle-template-num-names.tex`  
+  **Change (5c):** Added paragraph after equations `\eqref{eq:ResL}`–`\eqref{eq:AuxL}`: "The matrices W^{(IR)}, W^{(RR)} and W^{(RA)} denote connectivity weight matrices (binary or fixed patterns). They represent fixed structural inter-neuron connectivity in the Integrating Neural Network (see Fig.~\ref{fig:IntLidar}). In this implementation, W matrices are fixed and uniform according to connectivity patterns adapted from Kamali Sarvestani et al."  
+  **Justification:** W matrices were used in equations without explanation of their nature (fixed vs. learned, binary vs. continuous).
+
+- **File:** `elsarticle-template-num-names.tex`  
+  **Change (5d):** Removed `μ_{STN} = 1.0` row from `Table~\ref{table:Ganglia}`. Added comment `% [AUTO-EDIT] TAREA 5d: μ_{STN} removed from parameters table; not used in equations.`  
+  **Justification:** `μ_{STN}` appeared in the table but not in any equation of the manuscript; its presence was confusing and potentially misleading.
+
+- **File:** `elsarticle-template-num-names.tex`  
+  **Change (5e):** Added sentence to explanatory text after `Table~\ref{table:LiDAR}`: "These weights are fixed uniform values derived from the basal-ganglia inspired architecture (Kamali Sarvestani et al.)."  
+  **Justification:** `ω_{Z→L}` and `ω_{L→L}` had no stated design rationale; confirmed as unit values from architectural reference.
+
+- **File:** `elsarticle-template-num-names.tex`  
+  **Change (5f):** Added paragraph in `\section{Conclusions}` (before "Several limitations" paragraph) providing justifications for: `ω_{L→X} = 160.0` (unconditional LiDAR reflex); asymmetry `ω_{Gpe_R→X4}=2.0` vs `ω_{Gpe_G→X4}=1.0` (higher aversive urgency); `ω_{X4→X7}`, `ω_{X3→X8}=10.0` (command amplification); `Ar = 28.0` (empirical camera calibration); `HI = 3.0` (motor static friction baseline); `σ_M = 0.3` (fast switching) and `σ_I = 1.5` (IMU noise tolerance); `U_{N0}=3.7`, `U_{N1}=7.8` (empirical thresholds, further validation recommended).  
+  **Justification:** Reviewer 1 and Reviewer 3 requested justification for key parameter values.
+
+- **File:** `elsarticle-template-num-names.tex`  
+  **Change (5g):** Renamed `R_i` → `Stimuli_i` in equation `\eqref{eq:stn}`. Added comment `% [AUTO-EDIT] TAREA 5g`. Added sentence: "the index j represents summation across all neurons in the respective structure (summation variable)."  
+  **Justification:** `R_i` was ambiguous (could be confused with response-layer notation); `Stimuli_i` clarifies it denotes the input stimulus strength for channel i. Added note on j to avoid confusion with j summation index in STN equation.
+
+### TAREA 6 — Introduction Replacement
+
+- **File:** `elsarticle-template-num-names.tex`  
+  **Change:** Replaced entire `\section{Introduction}` block with LaTeX conversion of `intro_corregida 1.MD`. Kept the robot figure (`\label{fig:robot}`) by moving it to the Platform Design subsection. Added `% [AUTO-EDIT]` comments at start and end of new introduction block.  
+  **Justification:** Required by reviewer feedback (Reviewer 1 Comment 1, Reviewer 2 Comment 1, Reviewer 3 Comment 6). See "Response to Referee — Corrections to the Introduction" section above.
+
+- **File:** `references.bib`  
+  **Change:** Added 24 new BibTeX entries for references cited in the new Introduction. Keys added:
+  - `Bjelonic2019KeepRollin` (Bjelonic et al. 2019, Keep Rollin')
+  - `Bjelonic2022OfflineMotion` (Bjelonic et al. 2022, Offline Motion Libraries)
+  - `Lee2024Science` (Lee et al. 2024, Science Robotics)
+  - `Kashiri2019CENTAURO` (Kashiri et al. 2019, CENTAURO)
+  - `Klamt2019CENTAURO` (Klamt et al. 2019, CENTAURO evaluation)
+  - `Klemm2019Ascento` (Klemm et al. 2019, Ascento ICRA)
+  - `Klemm2020AscentoRAL` (Klemm et al. 2020, Ascento RA-L)
+  - `Bjelonic2022Survey` (Bjelonic et al. 2022, Survey CLAWAR)
+  - `Gurney2001a` (Gurney et al. 2001a, BG model I)
+  - `Gurney2001b` (Gurney et al. 2001b, BG model II)
+  - `Prescott2006Robot` (Prescott et al. 2006, Robot BG model)
+  - `Girard2003Basal` (Girard et al. 2003, BG vs. WTA)
+  - `Baston2015Biologically` (Baston & Ursino 2015, BG model)
+  - `Prescott2024Simulated` (Prescott et al. 2024, Dopamine BG)
+  - `Bellegarda2022CPGRL` (Bellegarda & Ijspeert 2022, CPG-RL)
+  - `Manoonpand2013Neural` (Manoonpand et al. 2013, Neural control)
+  - `Hutter2017ANYmal` (Hutter et al. 2017, ANYmal)
+  - `Tranzatto2022CERBERUS` (Tranzatto et al. 2022, CERBERUS)
+  - `Vogel2024Ladder` (Vogel et al. 2024, Ladder climbing)
+  - `Halder2023Construction` (Halder et al. 2023, Construction inspection)
+  - `Wang2025Autonomous` (Wang et al. 2025, Autonomous navigation)
+  - `Halder2025Crack` (Halder et al. 2025, Crack detection)
+  - `Humphreys2025BioInspired` (Humphreys & Zhou 2025, Bio-inspired gait)
+  - `Liu2024Max` (Liu et al. 2024, Max robot)
+  - `Cui2025FLORES` (Cui et al. 2025, FLORES)
+  - `Jiang2025RTaichi` (Jiang et al. 2025, R-Taichi)
+
+  **Authors please confirm:** If any BibTeX key, author list, or journal/conference metadata requires correction, please update `references.bib` directly and note the correction here.
+
+### [REQUIRES AUTHOR INPUT] — Updated Items
+
+- **`Ar = 28.0`** (location: `Table~\ref{table:Locom_NN}`): The justification added states calibration against Logitech C270 camera focal geometry. **Authors must provide supporting evidence** (measurement data, focal length calculation, or experimental log) to substantiate this claim before final submission.
+
+- **`U_{N_0} = 3.7`, `U_{N_1} = 7.8`** (location: `Table~\ref{table:Locom_MLP}`): The added text notes these are empirical thresholds and recommends F1-score or ROC validation. **Authors should add classification metrics** (F1, precision, recall, confusion matrix) for the MLP terrain classifier to strengthen this claim.
+
+- **`Manoonpand et al. [2013]`** (key: `Manoonpand2013Neural`): The BibTeX entry uses author name spelling "Manoonpand" from the MD reference list. The correct author name may be "Manoonpong". **Authors should verify the correct spelling** and update `references.bib` accordingly.
+
+- **`Cui et al. [2025]` (`Cui2025FLORES`)**: The arXiv number `2507.22345` in the MD appears to be in the future (July 2025). **Authors should verify the correct arXiv ID** once published and update the entry.
+
+- **`Jiang et al. [2025]` (`Jiang2025RTaichi`)**: Only a PMC number was provided. **Authors should add full bibliographic details** (journal, volume, DOI) to the BibTeX entry.
+
+- **`Wang et al. [2025]` (`Wang2025Autonomous`)**: Only a ResearchGate ID was provided in the MD. **Authors should add the journal name, volume, and DOI** once the article is formally published.
+

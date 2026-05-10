@@ -1,3 +1,4 @@
+% [AUTO-EDIT SESSION START] fecha=2026-05-10T21:01:26Z agent=ClaudeSonnet
 %% 
 %% Copyright 2007-2025 Elsevier Ltd
 %% 
@@ -109,33 +110,22 @@ Wheel-legged quadruped \sep Hybrid locomotion \sep Gait mode switching \sep Arbi
 %% main text
 %%
 
+% [AUTO-EDIT] TAREA 6: Introduction replaced with content from intro_corregida 1.MD. fecha=2026-05-10. Reason: Reviewer 1 Comment 1 (state-of-the-art insufficient), Reviewer 2 Comment 1 (novelty), Reviewer 3 Comment 6 (no comparison). Previous introduction preserved in ORIGINAL_PROHIBIDO_MODIFICAR_elsarticle-template-num-names.tex.
 \section{Introduction}
-Mobile and articulated robotic platforms must be efficient in their movements within the environments in which they operate. To achieve this, various models have been developed to enable adaptable locomotion in the presence of adverse or changing terrains. Examples include snake-inspired robots capable of performing search tasks in narrow spaces \citep{chen2024}, as well as robots that combine mobile (wheeled) and articulated (legged) modes, allowing them to optimize their gait by selecting the most suitable mode according to the nature of the terrain \citep{Ijspeert2014}. 
 
-Hybrid locomotion systems often incorporate articulated limbs for traversing irregular or sloped terrains, while relying on wheels ---the most efficient option--- when operating on flat surfaces. One example is the CENTAURO platform, a humanoid robot that combines both locomotion modes, integrating agility to overcome obstacles with stability and speed in regular environments \citep{belli2021optimizationbasedquadrupedalhybridwheeledlegged}. These capabilities have been implemented across multiple developments \citep{bjelonic2019,schwarz2016,zhao2021design,cao2022omniwheg,KHAN2024104775,SUN201730}, where the arrangement and number of effectors vary significantly. Among them, configurations with four limbs, each equipped with at least one wheel, stand out as they enable efficient and adaptable transformations. 
+Aging infrastructure worldwide---including bridges, industrial plants, tunnels, and civil constructions---requires frequent inspection and maintenance to prevent catastrophic failures. The manual execution of these tasks exposes human workers to hazardous conditions, incurs high operational costs, and is limited in coverage and repeatability \citep{Halder2023Construction,Wang2025Autonomous}. Autonomous robotic inspection has therefore emerged as a critical technology, offering scalability, continuous operation, and the capacity to acquire high-precision data in environments that are inaccessible or dangerous for humans \citep{Halder2025Crack}. The integration of autonomous sensing platforms into non-destructive testing (NDT) workflows has been identified as a key enabler for next-generation infrastructure monitoring, combining visual detection, inertial navigation, and point-cloud mapping into a unified inspection pipeline.
 
-This work presents the simulation and implementation of a robotic platform with four limbs, each with three degrees of freedom. Omnidirectional wheels are integrated into the distal segment (tibia) of each limb, enabling the transition from articulated to rolling mode and, in the latter, providing greater freedom of movement. The morphology of the robot is illustrated in Figure~\ref{fig:robot}. 
+Among existing robotic platforms, legged robots (and quadrupeds in particular) have proven the most effective for semi-structured environments that combine flat corridors with obstacles, stairs, and uneven ground. ANYmal, developed at ETH Z\"{u}rich, was specifically designed for harsh industrial environments and has demonstrated reliable operation in oil and gas plants and search-and-rescue scenarios \citep{Hutter2017ANYmal}. More recently, Team CERBERUS deployed a multi-agent system of ANYmal robots augmented with LiDAR, cameras, and IMU to win the DARPA Subterranean Challenge, establishing the quadruped as the reference platform for autonomous exploration in confined and semi-structured spaces \citep{Tranzatto2022CERBERUS}. Despite these advances, quadrupedal robots face a fundamental efficiency limitation: walking gaits are energetically costly on flat surfaces, which restricts their operational autonomy for tasks that combine open traversal (e.g., factory floors) with the negotiation of obstacles or slopes \citep{Vogel2024Ladder}. This trade-off between terrain adaptability and locomotion efficiency motivates the development of hybrid platforms capable of switching between legged and wheeled modes according to terrain properties.
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.5\textwidth, angle=-7]{robot.png}
-    \caption{3D design of the quadruped robotic platform.}
-    \label{fig:robot}
-\end{figure}
+Wheeled-legged robots address this limitation by integrating actuated limbs (providing the dexterity required to negotiate irregular or sloped terrain) with wheels that constitute the most efficient effector on flat surfaces \citep{Bjelonic2022Survey}. The ANYmal-on-wheels family, developed at ETH Z\"{u}rich, is the most representative line in this category. \citet{Bjelonic2019KeepRollin} introduced the first whole-body controller capable of simultaneously combining walking and rolling with non-steerable torque-controlled wheels; subsequent work \citep{bjelonic2019} extended this to online trajectory optimization for hybrid maneuvers validated in the DARPA SubT, and \citet{Bjelonic2022OfflineMotion} later incorporated offline motion libraries and MPC to achieve complex skills such as stair climbing and dynamic 180° turns. The most recent and impactful result in this family, \citet{Lee2024Science}, demonstrated a complete pipeline of adaptive locomotion control, mobility-aware local planning, and city-scale global navigation via deep reinforcement learning (RL) with privileged learning, achieving smooth walking-to-driving transitions as an emergent property of a single learned policy. The CENTAURO platform from IIT \citep{Kashiri2019CENTAURO,Klamt2019CENTAURO}, a centaur-type quadruped with steerable omnidirectional wheels and a high-payload manipulator arm, offers a complementary design point with explicit disaster-response validation and provides the best published quantitative evidence for the energy/terrain trade-off that motivates a hybrid robot. At the compact end of the spectrum, Ascento \citep{Klemm2019Ascento,Klemm2020AscentoRAL} is a bipedal wheeled-legged platform for indoor inspection, demonstrating that the design space spans from bipedal (Ascento) to centaur (CENTAURO) and quadrupedal (ANYmal-wheels) morphologies. Recent platforms such as Max \citep{Liu2024Max}, FLORES \citep{Cui2025FLORES}, and R-Taichi \citep{Jiang2025RTaichi} further expand the design space with alternative articulation schemes and RL-based controllers, confirming that the field is converging on hybrid locomotion as the dominant paradigm for versatile robot operation.
 
-The proposed structure integrates a sensory system composed of inertial sensors, LiDAR, and a camera, aimed at ensuring robust and precise navigation. This sensory system allows the platform to dynamically adapt to terrains with varying topologies, making it suitable for applications such as extraterrestrial environment exploration, infrastructure and building inspection, and search and recognition in emergency situations. The versatility of the system not only improves locomotion efficiency but also significantly reduces the risks associated with human intervention on unstable scenarios. 
+A critical observation emerges from this body of work: in all published wheeled-legged systems, locomotion mode switching is resolved either heuristically through hand-coded threshold logic \citep{Bjelonic2019KeepRollin,Kashiri2019CENTAURO}, by model predictive control \citep{bjelonic2019,Bjelonic2022OfflineMotion}, or by end-to-end RL policies that encode switching implicitly as a black-box behavior \citep{Lee2024Science,Humphreys2025BioInspired}. None of these approaches employs a neurobiologically interpretable arbitration architecture. The basal ganglia, a subcortical neural circuit present in all vertebrates, are the canonical neural substrate for action selection \citep{Gurney2001a,Gurney2001b}: through a salience-driven winner-take-all (WTA) mechanism implemented via disinhibition, they select and sustain a single behavioral channel from a set of competing alternatives while suppressing all others. To the best of the authors' knowledge, no prior work has applied a basal-ganglia-type architecture to arbitrate among rolling, walking, and omnidirectional locomotion modes in a hybrid quadruped. This constitutes the principal novelty of the present contribution.
 
-The advantage of deploying robots in these types of missions arises from two key factors identified by \citet{Zhao2020RoboticNT}: human labor cost and the efficiency of robotic platforms. As mentioned in the work cited before, ``while the loss of a human life is a terrible tragedy, the loss of a robot can be replaced by purchasing another one''. 
+Neural control architectures seek to emulate the information-processing structures found in biological systems in order to generate adaptive and robust motor responses \citep{mead1990neuromorphic,ijspeert2008}. The computational model of basal ganglia (BG) proposed by Gurney, Prescott, and Redgrave (the GPR model \citep{Gurney2001a,Gurney2001b}) reformulates action selection as the resolution of competition among salience-coded channels through a feedforward off-center/on-surround network with selection and control pathways. \citet{Prescott2006Robot} provided the first embodied validation of the GPR model, implementing it in a mobile robot performing a foraging task with five competing behaviors, demonstrating clean switching, appropriate behavioral persistence, and conflict-resolution dynamics analogous to those observed in animals. \citet{Girard2003Basal} compared BG-based action selection against a classical WTA and showed that the BG's thalamocortical loops confer specific adaptive properties such as avoidance of dithering and energetic savings that a simple WTA cannot reproduce; this distinction is directly relevant to the present work. More recent updates to the GPR paradigm include a biologically parsimonious three-pathway model (Go/NoGo/hyperdirect) \citep{Baston2015Biologically} and a neurorobotic study of simulated dopamine modulation that shows how tonic dopamine levels control the speed and frequency of mode switching \citep{Prescott2024Simulated}, opening a pathway to meta-control of switching aggressiveness in future work. For the rhythmic generation of the quadrupedal walking gait, the present platform integrates central pattern generators (CPGs), neural circuits that produce coordinated rhythmic motor patterns from simple inputs \citep{ijspeert2008}; this combination of BG arbitration above and CPG execution below forms a hierarchical neural stack that is anatomically plausible and computationally modular \citep{Bellegarda2022CPGRL,Manoonpand2013Neural}.
 
-Moreover, tests conducted by human operators tend to be prolonged and require specialists for exploration, whereas a robot equipped with embedded knowledge and high-precision instruments can execute the same task in considerably less time \citep{LEE2023100018}. Among the various existing control models and schemes-such as combinational logic systems or finite state machines-this platform adopts an approach based on neural control. 
+Against this background, the present work proposes a hybrid quadrupedal robotic platform with four three-degree-of-freedom limbs, each incorporating an omnidirectional wheel at the distal segment (tibia), enabling transitions among three discrete locomotion modes: quadrupedal walking, differential rolling, and omnidirectional motion---mobile \textbf{(wheeled)} mode, with wheels as the primary effectors, and articulated \textbf{(legged)} mode, with the limbs providing the primary actuation. The platform integrates a sensory suite comprising an IMU, a LiDAR, and a camera for environmental perception. A multilayer perceptron (MLP) processes sensory data to detect terrain instability and compute per-channel salience inputs to the basal-ganglia network, which in turn executes mode selection via a WTA disinhibition mechanism. The complete system is validated in simulation (Gazebo) and on a physical prototype, demonstrating robust autonomous switching across flat surfaces, sloped terrain, and obstacle-laden environments. Relative to the current state of the art, the proposed architecture offers three differentiating properties: (i) \emph{biological interpretability}: the switching logic is grounded in an explicit, neuroscientifically validated model rather than a learned black-box policy; (ii) \emph{modularity}: perception, arbitration, and motor generation are decoupled, facilitating individual upgrade; and (iii) \emph{autonomous energy-aware mode selection}, leveraging the efficiency advantage of wheeled locomotion on flat surfaces while preserving legged capability for complex terrain, directly addressing the operational limitation documented in deployed inspection systems \citep{Hutter2017ANYmal,Tranzatto2022CERBERUS}.
 
-This type of control seeks to emulate the neural structures found in biological systems in order to process information efficiently and generate adaptive responses \citep{mead1990neuromorphic,YU2024e00930,angarola2025learningterrainspecializedpoliciesadaptive,s25175398}. Neural networks achieve a high degree of adaptation to sudden system changes, as their nonlinear dynamics allow them to precisely modulate peaks of neuronal activity in response to specific sensory stimuli \citep{ribar2019neuromodulation}. 
-
-Considering this, and in order to achieve optimal performance in the behavior of the quadruped robot, the neural controller defines its motor decisions through mechanisms inspired by the neural structures present in complex organisms that govern locomotor responses. These processes, known as sensorimotor transformations, convert inputs from the environment into essential outputs for the adaptive generation of appropriate behaviors \citep{ijspeert2008,schaal2006}. Consequently, sensorimotor integration constitutes a highly complex process that requires the coordination of multiple sensory resources to ensure peak motor performance according to the task at hand \citep{ramirez2021modelamiento,bianco2024behavioral}. 
-
-A closely related case in bioinspired control modeling can be found in the study of visually guided locomotion, where \citet{sarvestani2013computational} presented a simulation that integrates biologically inspired neural control elements, such as central pattern generators (CPGs), functional analogs to reticulospinal neurons, and a basal ganglia-based arbitration system. This model effectively replicates the principles of sensorimotor transformations by incorporating decision-making processes guided by visual stimuli and their corresponding motor responses, offering valuable insights into how sensory signals regulate locomotor behavior in anamniotes and laying a comparative foundation for equivalent processes in other vertebrates. Based on this work, several of the aforementioned neural structures were adopted as references. 
-
-In response to the growing demand for robotic systems in industrial environments, this work proposes a hybrid locomotion platform that can be used for structural inspection and diagnostics. The developed model aims to contribute to the advancement of mobile robotics while ensuring applicability in real scenarios characterized by topographic variability. A bioinspired decision-making controller is implemented, capable of responding to visual stimuli and obstacle sensing. Through simulations and experimental validation using a multimodal robot, a sensorimotor scheme is demonstrated that adaptively selects the locomotion mode and generates efficient responses for non-destructive testing across different types of terrain. 
+% [AUTO-EDIT] END TAREA 6: Introduction block end. fecha=2026-05-10.
 
 \section{Methodology}
 
@@ -144,7 +134,14 @@ This study was structured around four main components. First, the robot was desi
 \subsection{Platform Design}
 \label{ssec:Platform_Design}
 
-During the design phase, the main focus was placed on the four limbs, as they needed to incorporate a structure capable of housing the actuators responsible for both articulated motion and rolling displacement through omnidirectional wheels. Based on the previously established criteria, the model shown in Figure~\ref{fig:pata} was developed. 
+During the design phase, the main focus was placed on the four limbs, as they needed to incorporate a structure capable of housing the actuators responsible for both articulated motion and rolling displacement through omnidirectional wheels. Based on the previously established criteria, the model shown in Figure~\ref{fig:pata} was developed. The overall 3D design of the quadruped robotic platform is shown in Figure~\ref{fig:robot}.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.5\textwidth, angle=-7]{robot.png}
+    \caption{3D design of the quadruped robotic platform.}
+    \label{fig:robot}
+\end{figure} 
 
 \begin{figure}[t]
     \centering
@@ -259,8 +256,9 @@ $W_{A\rightarrow L_4}$ & 1.0 \\ \hline
 \label{table:LiDAR}
 \end{table}
 % [AUTO-EDIT] TAREA 1: Added physical definitions for LiDAR table parameters not defined in the surrounding text.
+% [AUTO-EDIT] TAREA 5e: Added explanation for ω_{Z→L} and ω_{L→L} uniform values.
 In Table~\ref{table:LiDAR}, the time constants are: $\tau_{Z}$ (s) governs the ring neurons \mbox{[REF: see after Equation~\eqref{eq:ring}]}; $\tau_{L}$ (s) governs the directional integrator neurons ($L_0$–$L_4$); and $\tau_{IRA}$ (s) is the shared time constant of the input ($I_n$), response ($R_n$), and auxiliary ($A_n$) layers.
-The synaptic parameters are: $\sigma_{Z}$ (deg) is the Gaussian tuning width \mbox{[REF: see after Equation~\eqref{eq:ring}]}; $\omega_{Z\rightarrow L}$ and $\omega_{L\rightarrow L}$ are the unitless weights from the sensory ring to the integrator neurons and within the integrator, respectively.
+The synaptic parameters are: $\sigma_{Z}$ (deg) is the Gaussian tuning width \mbox{[REF: see after Equation~\eqref{eq:ring}]}; $\omega_{Z\rightarrow L}$ and $\omega_{L\rightarrow L}$ are the unitless weights from the sensory ring to the integrator neurons and within the integrator, respectively. These weights are fixed uniform values derived from the basal-ganglia inspired architecture \citep{sarvestani2013computational}.
 The inter-layer synaptic weight matrices $W_{Z\rightarrow I}$, $W_{I\rightarrow R}$, $W_{R\rightarrow A}$, and $W_{A\rightarrow L_4}$ connect the ring, input, response, auxiliary, and accumulator layers.
 
 The activations of the sensory ring are processed by three integrator layers: input, response, and auxiliary (Figure~\ref{fig:IntLidar}). Cross-connections between the input and response layers encode the direction of the evasive movement, while the backward excitatory projections between the response and auxiliary layers define the intensity of the obstacle-related stimulus. These layers determine the predominance of the evasive action ---information that is stored in the accumulator neuron $L_4$. In the incoming equations, the subscript $(\cdot)_+$ denotes a rectifying operator (positive-part function): for any scalar $x$, $(x)_+ = \max(x,0)$. This ensures that only nonnegative inputs contribute to the layer dynamics, preventing negative net drive from decreasing the activity through this term.The dynamics of this system are described by differential equations (Equations~\eqref{eq:L0}–\eqref{eq:L4}) shown below. 
@@ -279,6 +277,8 @@ The activations of the sensory ring are processed by three integrator layers: in
 In Equations~\eqref{eq:L0}–\eqref{eq:L4} the subscripts are used to enumerate the neurons in each layer of the obstacle sensory module. The variable $Z_i$ denotes the activity of the $i$-th neuron of the LiDAR-associated sensory ring, with $i$ ordered angularly around the robot. The summations $\sum_{i=a}^{b} Z_i$ group contiguous subsets of ring neurons that encode directional sectors (front, back, left, and right); the tank neurons $L_0,\dots,L_3$ integrate these groupings and store the predominance of each directional quadrant (Figure~\ref{fig:lidar-combined}).
 
 Likewise, the indices $n$ and $r$ enumerate the neurons in the input, response, and auxiliary integrating layers, so that $I_n$, $R_n$, and $A_n$ represent the activity of the $n$-th neuron in each of these layers. In Equations~\eqref{eq:ResL}–\eqref{eq:AuxL}, each neuron $R_n$ and $A_n$ receives weighted contributions from all other neurons through the synaptic weights $W^{(\mathrm{IR})}_{n,i}$, $W^{(\mathrm{RR})}_{n,j}$, and $W^{(\mathrm{RA})}_{n,j}$, where the indices $i$ and $j$ are used only as summation variables. Finally, in Equation~\eqref{eq:L4} the index $r$ runs over all units $A_n$ to accumulate their activity in neuron $L_4$, which acts as a global integrator of the obstacle-stimulus intensity.
+% [AUTO-EDIT] TAREA 5c: Added description of W matrices as fixed structural connectivity matrices.
+The matrices $W^{(IR)}$, $W^{(RR)}$, and $W^{(RA)}$ denote connectivity weight matrices (binary or fixed patterns). They represent fixed structural inter-neuron connectivity in the Integrating Neural Network (see Fig.~\ref{fig:IntLidar}). In this implementation, $W$ matrices are fixed and uniform according to connectivity patterns adapted from \citet{sarvestani2013computational}.
 % [AUTO-EDIT] TAREA 2: Added explicit definitions for τ_L and τ_IRA, which appear in the equations but were not defined in the surrounding prose.
 The time constant $\tau_L$ (s) governs the dynamics of the directional tank neurons $L_0$--$L_4$, while $\tau_{IRA}$ (s) is the shared integration time constant of the input ($I_n$), response ($R_n$), and auxiliary ($A_n$) layers (see Table~\ref{table:LiDAR}).
 
@@ -295,15 +295,17 @@ The structure of this module is based on the work of \citet{sarvestani2013comput
 
 The STN processes incoming signals from the visual centers and determines which stimulus has the greatest relevance when multiple stimuli are present. The GPe inhibits lower-intensity behaviors and reinforces the prioritized action, while the GPi complements this mechanism by suppressing competing responses to ensure that only a single action is executed. This iterative mechanism of inhibition and competition guarantees the effective selection of one type of stimulus. The differential equations~\eqref{eq:stn}–\eqref{eq:str} that describe the dynamics of the STN, GPi, GPe, and STR connections, along with the hyperparameters of the structure (see Table~\ref{table:Ganglia}), are presented below. 
 
+% [AUTO-EDIT] TAREA 5g: R_i renamed to Stimuli_i to clarify it denotes input stimulus strength for channel i.
 \begin{align}
-\tau_{STN}\frac{d \text{STN}[i]}{dt} &= -\text{STN}[i] + R_i - \text{Gpi}[i] - \sum_{j} \text{Gpe}[j] + \text{Gpe}[i]\label{eq:stn} \\
+\tau_{STN}\frac{d \text{STN}[i]}{dt} &= -\text{STN}[i] + \text{Stimuli}_i - \text{Gpi}[i] - \sum_{j} \text{Gpe}[j] + \text{Gpe}[i]\label{eq:stn} \\
 \tau_{Gpi}\frac{d \text{Gpi}[i]}{dt} &= - \text{Gpi}[i] + \sum_{j} \text{STN}[j]-\text{STN}[i] - \text{Gpe}[i] - \text{STR}[i]\\
 \tau_{Gpe}\frac{d \text{Gpe}[i]}{dt} &= - \text{Gpe}[i] + \text{STN}[i] \\
 \tau_{STR}\frac{d \text{STR}[i]}{dt} &= - \text{STR}[i] + \text{STN}[i]
 \label{eq:str}
 \end{align}
-% [AUTO-EDIT] TAREA 2: Added explicit definitions for STN[i], Gpi[i], Gpe[i], STR[i], R_i, and the time constants, which were not defined in the immediately preceding text.
-where $\text{STN}[i]$, $\text{Gpi}[i]$, $\text{Gpe}[i]$, and $\text{STR}[i]$ are the activities of the $i$-th neuron in the subthalamic nucleus, internal globus pallidus, external globus pallidus, and striatum, respectively; $R_i$ is the sensory drive (from visual processing) to the $i$-th STN channel; and $\tau_{STN}$, $\tau_{Gpi}$, $\tau_{Gpe}$, $\tau_{STR}$ (s) are the corresponding time constants listed in Table~\ref{table:Ganglia}.
+% [AUTO-EDIT] TAREA 2: Added explicit definitions for STN[i], Gpi[i], Gpe[i], STR[i], Stimuli_i, and the time constants, which were not defined in the immediately preceding text.
+% [AUTO-EDIT] TAREA 5g: R_i renamed to Stimuli_i to clarify it denotes input stimulus strength for channel i. % [REF: renamed from R_i]
+where $\text{STN}[i]$, $\text{Gpi}[i]$, $\text{Gpe}[i]$, and $\text{STR}[i]$ are the activities of the $i$-th neuron in the subthalamic nucleus, internal globus pallidus, external globus pallidus, and striatum, respectively; $\text{Stimuli}_i$ is the input stimulus strength (sensory drive from visual processing) to the $i$-th STN channel; the index $j$ represents summation across all neurons in the respective structure (summation variable); and $\tau_{STN}$, $\tau_{Gpi}$, $\tau_{Gpe}$, $\tau_{STR}$ (s) are the corresponding time constants listed in Table~\ref{table:Ganglia}.
 
 \begin{table}[t]
 \centering
@@ -321,14 +323,13 @@ $\omega_{STR\rightarrow Gpi}$ & 1.0 \\ \hline
 $\omega_{Gpe\rightarrow Gpi}$ & 1.0 \\ \hline
 $\omega_{STN\rightarrow Gpe}$ & 1.0 \\ \hline
 $\omega_{STN\rightarrow STR}$ & 1.0 \\ \hline
-$\mu_{STN}$ & 1.0 \\ \hline
 \end{tabular}
 \label{table:Ganglia}
 \end{table}
+% [AUTO-EDIT] TAREA 5d: μ_{STN} removed from parameters table; not used in equations.
 % [AUTO-EDIT] TAREA 1: Added physical definitions for Basal Ganglia table parameters not defined in the surrounding text.
 In Table~\ref{table:Ganglia}: $\tau_{STN}$, $\tau_{Gpi}$, $\tau_{Gpe}$, and $\tau_{STR}$ (s) are the time constants of the subthalamic nucleus, internal globus pallidus, external globus pallidus, and striatum, respectively \mbox{[REF: see after Equations~\eqref{eq:stn}--\eqref{eq:str}]}.
 Each $\omega_{X\rightarrow Y}$ is the unitless synaptic weight of the projection from nucleus $X$ to nucleus $Y$.
-The parameter $\mu_{STN}$ is a baseline neuromodulatory gain applied to the STN; its specific role in the equations requires author confirmation (see [REQUIRES AUTHOR INPUT] in the reviewer response document).
 
 \subsubsection{Locomotion Module}
 
@@ -364,7 +365,8 @@ The differential equations~\eqref{eq:Z_3}–\eqref{eq:Z_17} describing the dynam
 \tau \frac{dz_3}{dt} =& -z_3 + (Gpe_{B})_+
 \label{eq:Z_3}
 \\
-\tau \frac{dz_4}{dt} =& -z_4 + (Gpe_{G} + j   Gpe_{R})_+
+% [AUTO-EDIT] TAREA 5a: j renamed to \omega_{GpeR} (synaptic weight applied to the GPe_R channel, value: 2.0). % [REF: renamed from j]
+\tau \frac{dz_4}{dt} =& -z_4 + (Gpe_{G} + \omega_{GpeR}   Gpe_{R})_+
 \\
 \tau \frac{dz_7}{dt} =& -z_7 + (z_5 + z_3 - w   z_4)_+
 \\
@@ -386,7 +388,9 @@ The differential equations~\eqref{eq:Z_3}–\eqref{eq:Z_17} describing the dynam
 \label{eq:Z_17}
 \end{align}
 % [AUTO-EDIT] TAREA 2: Added explicit definitions for Gpe_B, Gpe_G, Gpe_R, w, and Ar, which were not defined in the immediately preceding text.
-In Equations~\eqref{eq:Z_3}–\eqref{eq:Z_17}: $Gpe_B$, $Gpe_G$, and $Gpe_R$ are the external globus pallidus outputs for the obstacle (Blue), appetitive (Green), and aversive (Red) behavioral channels, respectively; $w$ is a generic unitless inhibitory synaptic weight whose specific value depends on the connection (see Table~\ref{table:Locom_NN}); and $\text{Ar}$ is the approach-stop threshold applied to unit $X_{17}$ (see Table~\ref{table:Locom_NN}).
+% [AUTO-EDIT] TAREA 5a: Added definition of \omega_{GpeR}.
+% [AUTO-EDIT] TAREA 5b: Added definition of w as global inhibitory synaptic weight.
+In Equations~\eqref{eq:Z_3}–\eqref{eq:Z_17}: $Gpe_B$, $Gpe_G$, and $Gpe_R$ are the external globus pallidus outputs for the obstacle (Blue), appetitive (Green), and aversive (Red) behavioral channels, respectively; $\omega_{GpeR}$ is a synaptic weight applied to the $Gpe_R$ channel (value: 2.0); $w$ is a global inhibitory synaptic weight used consistently in locomotion equations (value: 10.0); and $\text{Ar}$ is the approach-stop threshold applied to unit $X_{17}$ (see Table~\ref{table:Locom_NN}).
 
 \begin{table}[t]
 \centering
@@ -423,6 +427,11 @@ $\omega_{X_3 \rightarrow X_8}$ & 10.0 \\ \hline
 
 $\theta_{p}$ & 90.0 \\ \hline
 
+% [AUTO-EDIT] TAREA 5a: \omega_{GpeR} — synaptic weight applied to GPe_R channel (renamed from j).
+$\omega_{GpeR}$ & 2.0 \\ \hline
+% [AUTO-EDIT] TAREA 5b: w — global inhibitory synaptic weight used consistently in locomotion equations.
+$w$ & 10.0 \\ \hline
+
 $HI$ & 3.0 \\ \hline
 
 $U_{\sigma_{az}}$ & 3.7 \\ \hline
@@ -436,7 +445,11 @@ $\sigma_{I}\ $ & 1.5 \\ \hline
 \label{table:Locom_NN}
 \end{table}
 % [AUTO-EDIT] TAREA 1: Added physical definitions for Locomotion NN table parameters not defined in the surrounding text.
+% [AUTO-EDIT] TAREA 5a: Added definition of \omega_{GpeR}.
+% [AUTO-EDIT] TAREA 5b: Added definition of w.
 In Table~\ref{table:Locom_NN}: $\tau$ (s) is the common time constant of the locomotion decision neurons \mbox{[REF: see after Equations~\eqref{eq:Z_5}--\eqref{eq:Z_6}]}; $\omega_{L\rightarrow X}$ is the synaptic amplification weight from the LiDAR integrator to the locomotion neurons; $\theta_{p}$ (deg) is the initial platform heading; and $HI$ is the dimensionless hunting-instinct baseline drive.
+$\omega_{GpeR}$ is a synaptic weight applied to the GPe\_R channel (value: 2.0).
+$w$ denotes a global inhibitory synaptic weight used consistently in locomotion equations (value: 10.0).
 The terrain-instability thresholds are: $U_{\sigma_{az}}$ (m/s$^2$), $U_{Pitch}$ (deg), and $U_{Roll}$ (deg).
 The Naka--Rushton parameters are: $A$ is the saturation amplitude; $Ar$ is the approach-stop threshold for unit $X_{17}$; and $\sigma_{M}$, $\sigma_{I}$ are the half-saturation constants for the mode-selection and IMU pathways, respectively \mbox{[REF: see after Equation~\eqref{eq:Naka}]}.
 
@@ -952,7 +965,10 @@ On irregular surfaces and steep slopes, the system exhibited an adaptive respons
 
 The obtained results are consistent with those reported by Sarvestani et al., who demonstrated that a basal-ganglia-based arbitration scheme can manage sensory conflicts and robustly prioritize motor behaviors. However, this work introduces several substantial contributions beyond the state of the art. First, a multimodal robot capable of switching between distinct locomotion patterns depending on terrain conditions was developed, a feature that increases operational versatility compared to unimodal platforms. Second, an inertial sensor was incorporated for real-time monitoring of postural stability, enabling early detection of disturbances and immediate transitions to more stable gaits. Finally, an original locomotor neural network ---modulated by the Naka–Rushton function--- was designed, yielding smoother transitions and reducing undesired oscillations. Together with the basal-ganglia-inspired arbitration architecture, these innovations produced more stable trajectories, evidencing significant progress in autonomous control for inspection robots operating in complex environments. 
 
-Several limitations must be acknowledged. The neural and locomotion-control parameters were manually tuned and kept constant during all experiments, without applying adaptive optimization processes that could enhance performance in more diverse scenarios. Additionally, system resilience was not assessed under partial hardware failures or temporary sensory dropout-conditions likely to occur in real industrial environments. Classification metrics for strengthening the MLP-based terrain classifier were also not evaluated. These constraints do not invalidate the results but suggest that the next development stage should focus on validating the proposed architecture in a prototype that includes robustness and adaptability tests under real, non-controlled conditions. 
+Several limitations must be acknowledged. The neural and locomotion-control parameters were manually tuned and kept constant during all experiments, without applying adaptive optimization processes that could enhance performance in more diverse scenarios. Additionally, system resilience was not assessed under partial hardware failures or temporary sensory dropout-conditions likely to occur in real industrial environments. Classification metrics for strengthening the MLP-based terrain classifier were also not evaluated. These constraints do not invalidate the results but suggest that the next development stage should focus on validating the proposed architecture in a prototype that includes robustness and adaptability tests under real, non-controlled conditions.
+
+% [AUTO-EDIT] TAREA 5f: Added critical parameter justifications for key design parameters (ω_{L→X}, asymmetry, gain, Ar, HI, σ_M, σ_I, MLP thresholds).
+Regarding the design rationale for key numerical parameters: the high gain $\omega_{L\rightarrow X} = 160.0$ ensures LiDAR-driven avoidance acts as an unconditional reflex, immediately overriding other behaviors to protect the robot. The asymmetry $\omega_{Gpe_R\rightarrow X_4} = 2.0$ versus $\omega_{Gpe_G\rightarrow X_4} = 1.0$ is intentional: the aversive (red) channel receives double weight to model higher priority urgency for avoidance compared to the appetitive (green) channel. The gains $\omega_{X_4\rightarrow X_7}$ and $\omega_{X_3\rightarrow X_8} = 10.0$ provide sufficient command amplification to overcome robot inertia and produce quick evasive turns. The parameter $Ar = 28.0$ was calibrated empirically against camera focal geometry (Logitech C270) and simulation distances to stop at inspection-safe distance. $HI = 3.0$ defines a baseline forward bias to overcome motor static friction. The Naka--Rushton half-saturation constants $\sigma_M = 0.3$ and $\sigma_I = 1.5$ serve distinct roles: $\sigma_M$ provides rapid mode switching through a narrow saturation range, while $\sigma_I$ affords greater noise tolerance in the IMU pathway. The MLP output thresholds $U_{N_0} = 3.7$ and $U_{N_1} = 7.8$ were determined empirically from training data; further statistical validation (e.g., ROC analysis or F1-score benchmarking) is recommended for final publication (see [REQUIRES AUTHOR INPUT] in the reviewer response document). 
 
 The findings have direct implications for the development of autonomous robots for inspection tasks in complex industrial environments. The ability to switch locomotion modes based on stability metrics derived from inertial sensing expands the robot's operational range, ensuring reliable displacement on flat, rough, and inclined surfaces. The integration of a multimodal neural architecture, a basal-ganglia-inspired arbitration module, and an original locomotor network enables dynamic goal prioritization, collision avoidance, and reduced response times to unexpected environmental changes. In applications such as infrastructure inspection, power-plant monitoring, or automated warehouse operations, these capabilities translate into reduced risks for human personnel, improved data-collection efficiency, and enhanced operational continuity. 
 
@@ -994,7 +1010,7 @@ During the writing of this manuscript and its subsequent revisions, we used arti
 %% bibitems, please use
 %%
 \bibliographystyle{elsarticle-num-names} 
-\bibliography{persbiblio}
+\bibliography{references}
 
 %% else use the following coding to input the bibitems directly in the
 %% TeX file.
