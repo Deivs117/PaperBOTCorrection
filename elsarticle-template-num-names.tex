@@ -258,8 +258,10 @@ $W_{A\rightarrow L_4}$ & 1.0 \\ \hline
 \end{tabular}
 \label{table:LiDAR}
 \end{table}
-% [AUTO-EDIT] TAREA 1: Added brief physical definitions for LiDAR table parameters not defined in the surrounding text.
-In Table~\ref{table:LiDAR}: $\tau_{Z}$ (s) is the time constant of the ring neurons \mbox{[REF: defined after Equation~\eqref{eq:ring}]}; $\tau_{L}$ (s) is the time constant of the directional integrator neurons ($L_0$–$L_4$); $\tau_{IRA}$ (s) is the shared time constant of the input ($I_n$), response ($R_n$), and auxiliary ($A_n$) layers; $\sigma_{Z}$ (deg) is the Gaussian tuning width \mbox{[REF: defined after Equation~\eqref{eq:ring}]}; $\omega_{Z\rightarrow L}$ and $\omega_{L\rightarrow L}$ are the unitless synaptic weights from the sensory ring to the integrator neurons and within the integrator, respectively; and $W_{Z\rightarrow I}$, $W_{I\rightarrow R}$, $W_{R\rightarrow A}$, and $W_{A\rightarrow L_4}$ are the inter-layer synaptic weight matrices connecting the ring, input, response, auxiliary, and accumulator layers.
+% [AUTO-EDIT] TAREA 1: Added physical definitions for LiDAR table parameters not defined in the surrounding text.
+In Table~\ref{table:LiDAR}, the time constants are: $\tau_{Z}$ (s) governs the ring neurons \mbox{[REF: see after Equation~\eqref{eq:ring}]}; $\tau_{L}$ (s) governs the directional integrator neurons ($L_0$–$L_4$); and $\tau_{IRA}$ (s) is the shared time constant of the input ($I_n$), response ($R_n$), and auxiliary ($A_n$) layers.
+The synaptic parameters are: $\sigma_{Z}$ (deg) is the Gaussian tuning width \mbox{[REF: see after Equation~\eqref{eq:ring}]}; $\omega_{Z\rightarrow L}$ and $\omega_{L\rightarrow L}$ are the unitless weights from the sensory ring to the integrator neurons and within the integrator, respectively.
+The inter-layer synaptic weight matrices $W_{Z\rightarrow I}$, $W_{I\rightarrow R}$, $W_{R\rightarrow A}$, and $W_{A\rightarrow L_4}$ connect the ring, input, response, auxiliary, and accumulator layers.
 
 The activations of the sensory ring are processed by three integrator layers: input, response, and auxiliary (Figure~\ref{fig:IntLidar}). Cross-connections between the input and response layers encode the direction of the evasive movement, while the backward excitatory projections between the response and auxiliary layers define the intensity of the obstacle-related stimulus. These layers determine the predominance of the evasive action ---information that is stored in the accumulator neuron $L_4$. In the incoming equations, the subscript $(\cdot)_+$ denotes a rectifying operator (positive-part function): for any scalar $x$, $(x)_+ = \max(x,0)$. This ensures that only nonnegative inputs contribute to the layer dynamics, preventing negative net drive from decreasing the activity through this term.The dynamics of this system are described by differential equations (Equations~\eqref{eq:L0}–\eqref{eq:L4}) shown below. 
 
@@ -323,8 +325,10 @@ $\mu_{STN}$ & 1.0 \\ \hline
 \end{tabular}
 \label{table:Ganglia}
 \end{table}
-% [AUTO-EDIT] TAREA 1: Added brief physical definitions for Basal Ganglia table parameters not defined in the surrounding text.
-In Table~\ref{table:Ganglia}: $\tau_{STN}$, $\tau_{Gpi}$, $\tau_{Gpe}$, and $\tau_{STR}$ (s) are the time constants of the subthalamic nucleus, internal globus pallidus, external globus pallidus, and striatum, respectively \mbox{[REF: defined after Equations~\eqref{eq:stn}--\eqref{eq:str}]}; each $\omega_{X\rightarrow Y}$ is the unitless synaptic weight of the projection from nucleus $X$ to nucleus $Y$; and $\mu_{STN}$ is a baseline neuromodulatory gain applied to the STN input (specific usage: \mbox{[REQUIRES AUTHOR INPUT]}).
+% [AUTO-EDIT] TAREA 1: Added physical definitions for Basal Ganglia table parameters not defined in the surrounding text.
+In Table~\ref{table:Ganglia}: $\tau_{STN}$, $\tau_{Gpi}$, $\tau_{Gpe}$, and $\tau_{STR}$ (s) are the time constants of the subthalamic nucleus, internal globus pallidus, external globus pallidus, and striatum, respectively \mbox{[REF: see after Equations~\eqref{eq:stn}--\eqref{eq:str}]}.
+Each $\omega_{X\rightarrow Y}$ is the unitless synaptic weight of the projection from nucleus $X$ to nucleus $Y$.
+The parameter $\mu_{STN}$ is a baseline neuromodulatory gain applied to the STN; its specific role in the equations requires author confirmation (see [REQUIRES AUTHOR INPUT] in the reviewer response document).
 
 \subsubsection{Locomotion Module}
 
@@ -431,8 +435,10 @@ $\sigma_{I}\ $ & 1.5 \\ \hline
 \end{tabular}
 \label{table:Locom_NN}
 \end{table}
-% [AUTO-EDIT] TAREA 1: Added brief physical definitions for Locomotion NN table parameters not defined in the surrounding text.
-In Table~\ref{table:Locom_NN}: $\tau$ (s) is the common time constant of the locomotion decision neurons \mbox{[REF: defined after Equations~\eqref{eq:Z_5}--\eqref{eq:Z_6}]}; $\omega_{L\rightarrow X}$ is the synaptic amplification weight from the LiDAR integrator to the locomotion neurons; $\theta_{p}$ (deg) is the initial platform heading; $HI$ is the dimensionless hunting-instinct baseline drive; $U_{\sigma_{az}}$ (m/s$^2$), $U_{Pitch}$ (deg), and $U_{Roll}$ (deg) are the activation thresholds for terrain-instability detection; $A$ is the saturation amplitude of the Naka--Rushton function; $Ar$ is the approach-stop threshold for unit $X_{17}$; and $\sigma_{M}$ and $\sigma_{I}$ are the half-saturation constants of the Naka--Rushton function for the mode-selection and IMU pathways, respectively \mbox{[REF: defined after Equation~\eqref{eq:Naka}]}.
+% [AUTO-EDIT] TAREA 1: Added physical definitions for Locomotion NN table parameters not defined in the surrounding text.
+In Table~\ref{table:Locom_NN}: $\tau$ (s) is the common time constant of the locomotion decision neurons \mbox{[REF: see after Equations~\eqref{eq:Z_5}--\eqref{eq:Z_6}]}; $\omega_{L\rightarrow X}$ is the synaptic amplification weight from the LiDAR integrator to the locomotion neurons; $\theta_{p}$ (deg) is the initial platform heading; and $HI$ is the dimensionless hunting-instinct baseline drive.
+The terrain-instability thresholds are: $U_{\sigma_{az}}$ (m/s$^2$), $U_{Pitch}$ (deg), and $U_{Roll}$ (deg).
+The Naka--Rushton parameters are: $A$ is the saturation amplitude; $Ar$ is the approach-stop threshold for unit $X_{17}$; and $\sigma_{M}$, $\sigma_{I}$ are the half-saturation constants for the mode-selection and IMU pathways, respectively \mbox{[REF: see after Equation~\eqref{eq:Naka}]}.
 
 \subsubsection{Gait Decision Module}
 
@@ -490,7 +496,8 @@ The differential equations~\eqref{eq:Z0}–\eqref{eq:Z16} describing the dynamic
 \label{eq:Z16}
 \end{align}
 % [AUTO-EDIT] TAREA 2: Added explicit definitions for σ_az, Roll, Pitch, thresholds, G_pe/G_pi signals, and w, which appear in these equations but were not defined in the immediately preceding text.
-In Equations~\eqref{eq:Z0}–\eqref{eq:Z16}: $\sigma_{az}$ (m/s$^2$) is the standard deviation of the linear acceleration along the $Z$~axis computed over the current sensing window; $U_{\sigma_{az}}$, $U_{Roll}$, and $U_{Pitch}$ are the corresponding activation thresholds for terrain-instability detection; $Roll$ and $Pitch$ (deg) are the roll and pitch angles measured by the IMU; $G_{pe,y}$ is the GPe output of the appetitive behavioral channel; $G_{pi,x}$ and $G_{pi,z}$ are the GPi outputs of the obstacle and aversive channels, respectively; and $w$ is a generic unitless inhibitory synaptic weight. % [REF] Same notation as in Equations~\eqref{eq:Z_3}--\eqref{eq:Z_17}.
+In Equations~\eqref{eq:Z0}–\eqref{eq:Z16}: $\sigma_{az}$ (m/s$^2$) is the standard deviation of the linear acceleration along the $Z$~axis over the current sensing window; $U_{\sigma_{az}}$, $U_{Roll}$, and $U_{Pitch}$ are the corresponding activation thresholds for terrain-instability detection; and $Roll$ and $Pitch$ (deg) are the roll and pitch angles measured by the IMU.
+The neural pathway signals are: $G_{pe,y}$ is the GPe output of the appetitive behavioral channel; $G_{pi,x}$ and $G_{pi,z}$ are the GPi outputs of the obstacle and aversive channels, respectively; and $w$ is a generic unitless inhibitory synaptic weight. % [REF] Same notation as in Equations~\eqref{eq:Z_3}--\eqref{eq:Z_17}.
 
 For the physical implementation of the gait-decision module, an alternative based on a multilayer perceptron (MLP) network was proposed \citep{Grajales_Des_2025} (Figure~\ref{fig:MLP}). This network includes two hidden layers of 150 and 80 units, respectively. This modification was motivated by the fact that, in rough-terrain tests, variations in roll and pitch together with the standard deviation of Z-axis acceleration were not sufficient for the level of repeatability required by the application. In contrast, training the MLP with real data from different terrains ensures the appropriate gait selection based on actual ground conditions. 
 
