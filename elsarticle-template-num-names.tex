@@ -236,6 +236,8 @@ A Gaussian activation function was implemented in the sensory ring, where $\thet
 \begin{equation}\label{eq:ring}
 \frac{d Z_j}{d t} = \frac{1}{\tau_Z} \left( -Z_j + \exp\left( -\frac{(\theta_j - \theta_{\text{Obstacle}})^2}{2\sigma_{Z}^2} \right) \right)
 \end{equation}
+% [AUTO-EDIT] TAREA 2: Added explicit definitions for τ_Z and σ_Z, not defined in the immediately preceding text.
+where $\tau_Z$ (s) is the integration time constant of the ring neurons, and $\sigma_Z$ (deg) is the Gaussian tuning width controlling the angular selectivity of each unit (see Table~\ref{table:LiDAR}).
 
 \begin{table}[t]
 \centering
@@ -256,6 +258,8 @@ $W_{A\rightarrow L_4}$ & 1.0 \\ \hline
 \end{tabular}
 \label{table:LiDAR}
 \end{table}
+% [AUTO-EDIT] TAREA 1: Added brief physical definitions for LiDAR table parameters not defined in the surrounding text.
+In Table~\ref{table:LiDAR}: $\tau_{Z}$ (s) is the time constant of the ring neurons \mbox{[REF: defined after Equation~\eqref{eq:ring}]}; $\tau_{L}$ (s) is the time constant of the directional integrator neurons ($L_0$–$L_4$); $\tau_{IRA}$ (s) is the shared time constant of the input ($I_n$), response ($R_n$), and auxiliary ($A_n$) layers; $\sigma_{Z}$ (deg) is the Gaussian tuning width \mbox{[REF: defined after Equation~\eqref{eq:ring}]}; $\omega_{Z\rightarrow L}$ and $\omega_{L\rightarrow L}$ are the unitless synaptic weights from the sensory ring to the integrator neurons and within the integrator, respectively; and $W_{Z\rightarrow I}$, $W_{I\rightarrow R}$, $W_{R\rightarrow A}$, and $W_{A\rightarrow L_4}$ are the inter-layer synaptic weight matrices connecting the ring, input, response, auxiliary, and accumulator layers.
 
 The activations of the sensory ring are processed by three integrator layers: input, response, and auxiliary (Figure~\ref{fig:IntLidar}). Cross-connections between the input and response layers encode the direction of the evasive movement, while the backward excitatory projections between the response and auxiliary layers define the intensity of the obstacle-related stimulus. These layers determine the predominance of the evasive action ---information that is stored in the accumulator neuron $L_4$. In the incoming equations, the subscript $(\cdot)_+$ denotes a rectifying operator (positive-part function): for any scalar $x$, $(x)_+ = \max(x,0)$. This ensures that only nonnegative inputs contribute to the layer dynamics, preventing negative net drive from decreasing the activity through this term.The dynamics of this system are described by differential equations (Equations~\eqref{eq:L0}–\eqref{eq:L4}) shown below. 
 
@@ -273,6 +277,8 @@ The activations of the sensory ring are processed by three integrator layers: in
 In Equations~\eqref{eq:L0}–\eqref{eq:L4} the subscripts are used to enumerate the neurons in each layer of the obstacle sensory module. The variable $Z_i$ denotes the activity of the $i$-th neuron of the LiDAR-associated sensory ring, with $i$ ordered angularly around the robot. The summations $\sum_{i=a}^{b} Z_i$ group contiguous subsets of ring neurons that encode directional sectors (front, back, left, and right); the tank neurons $L_0,\dots,L_3$ integrate these groupings and store the predominance of each directional quadrant (Figure~\ref{fig:lidar-combined}).
 
 Likewise, the indices $n$ and $r$ enumerate the neurons in the input, response, and auxiliary integrating layers, so that $I_n$, $R_n$, and $A_n$ represent the activity of the $n$-th neuron in each of these layers. In Equations~\eqref{eq:ResL}–\eqref{eq:AuxL}, each neuron $R_n$ and $A_n$ receives weighted contributions from all other neurons through the synaptic weights $W^{(\mathrm{IR})}_{n,i}$, $W^{(\mathrm{RR})}_{n,j}$, and $W^{(\mathrm{RA})}_{n,j}$, where the indices $i$ and $j$ are used only as summation variables. Finally, in Equation~\eqref{eq:L4} the index $r$ runs over all units $A_n$ to accumulate their activity in neuron $L_4$, which acts as a global integrator of the obstacle-stimulus intensity.
+% [AUTO-EDIT] TAREA 2: Added explicit definitions for τ_L and τ_IRA, which appear in the equations but were not defined in the surrounding prose.
+The time constant $\tau_L$ (s) governs the dynamics of the directional tank neurons $L_0$--$L_4$, while $\tau_{IRA}$ (s) is the shared integration time constant of the input ($I_n$), response ($R_n$), and auxiliary ($A_n$) layers (see Table~\ref{table:LiDAR}).
 
 \subsubsection{Basal Ganglia Module}
 
@@ -294,6 +300,8 @@ The STN processes incoming signals from the visual centers and determines which 
 \tau_{STR}\frac{d \text{STR}[i]}{dt} &= - \text{STR}[i] + \text{STN}[i]
 \label{eq:str}
 \end{align}
+% [AUTO-EDIT] TAREA 2: Added explicit definitions for STN[i], Gpi[i], Gpe[i], STR[i], R_i, and the time constants, which were not defined in the immediately preceding text.
+where $\text{STN}[i]$, $\text{Gpi}[i]$, $\text{Gpe}[i]$, and $\text{STR}[i]$ are the activities of the $i$-th neuron in the subthalamic nucleus, internal globus pallidus, external globus pallidus, and striatum, respectively; $R_i$ is the sensory drive (from visual processing) to the $i$-th STN channel; and $\tau_{STN}$, $\tau_{Gpi}$, $\tau_{Gpe}$, $\tau_{STR}$ (s) are the corresponding time constants listed in Table~\ref{table:Ganglia}.
 
 \begin{table}[t]
 \centering
@@ -315,6 +323,8 @@ $\mu_{STN}$ & 1.0 \\ \hline
 \end{tabular}
 \label{table:Ganglia}
 \end{table}
+% [AUTO-EDIT] TAREA 1: Added brief physical definitions for Basal Ganglia table parameters not defined in the surrounding text.
+In Table~\ref{table:Ganglia}: $\tau_{STN}$, $\tau_{Gpi}$, $\tau_{Gpe}$, and $\tau_{STR}$ (s) are the time constants of the subthalamic nucleus, internal globus pallidus, external globus pallidus, and striatum, respectively \mbox{[REF: defined after Equations~\eqref{eq:stn}--\eqref{eq:str}]}; each $\omega_{X\rightarrow Y}$ is the unitless synaptic weight of the projection from nucleus $X$ to nucleus $Y$; and $\mu_{STN}$ is a baseline neuromodulatory gain applied to the STN input (specific usage: \mbox{[REQUIRES AUTHOR INPUT]}).
 
 \subsubsection{Locomotion Module}
 
@@ -332,6 +342,8 @@ The sensory layer processes all inputs derived from visual stimuli and their dir
 {L}_{4}   \big[\theta_p - \theta_s - 20\big] \right)_+
 \label{eq:Z_6}
 \end{align}
+% [AUTO-EDIT] TAREA 2: Added explicit definitions for τ, ω_{L→X}, L_2, and L_4 as used in the locomotion sensory-layer equations, not defined in the immediately preceding text.
+where $\tau$ (s) is the common neuron time constant (see Table~\ref{table:Locom_NN}); $\omega_{L\rightarrow X}$ is the synaptic amplification weight from the LiDAR integrator to the locomotion neurons; $\text{L}_2$ and $L_4$ denote the left/right directional quadrant neuron and the LiDAR accumulator neuron from Equations~\eqref{eq:L2} and~\eqref{eq:L4}, respectively; and the bracketed term encodes a $20^\circ$ angular margin defining the frontal zone of the robot's field of view.
 
 \begin{figure}[t]
     \centering
@@ -369,6 +381,8 @@ The differential equations~\eqref{eq:Z_3}–\eqref{eq:Z_17} describing the dynam
 \tau \frac{dz_{17}}{dt} =& -z_{17} + (Gpe_{B} - \text{Ar})_+
 \label{eq:Z_17}
 \end{align}
+% [AUTO-EDIT] TAREA 2: Added explicit definitions for Gpe_B, Gpe_G, Gpe_R, w, and Ar, which were not defined in the immediately preceding text.
+In Equations~\eqref{eq:Z_3}–\eqref{eq:Z_17}: $Gpe_B$, $Gpe_G$, and $Gpe_R$ are the external globus pallidus outputs for the obstacle (Blue), appetitive (Green), and aversive (Red) behavioral channels, respectively; $w$ is a generic unitless inhibitory synaptic weight whose specific value depends on the connection (see Table~\ref{table:Locom_NN}); and $\text{Ar}$ is the approach-stop threshold applied to unit $X_{17}$ (see Table~\ref{table:Locom_NN}).
 
 \begin{table}[t]
 \centering
@@ -417,6 +431,8 @@ $\sigma_{I}\ $ & 1.5 \\ \hline
 \end{tabular}
 \label{table:Locom_NN}
 \end{table}
+% [AUTO-EDIT] TAREA 1: Added brief physical definitions for Locomotion NN table parameters not defined in the surrounding text.
+In Table~\ref{table:Locom_NN}: $\tau$ (s) is the common time constant of the locomotion decision neurons \mbox{[REF: defined after Equations~\eqref{eq:Z_5}--\eqref{eq:Z_6}]}; $\omega_{L\rightarrow X}$ is the synaptic amplification weight from the LiDAR integrator to the locomotion neurons; $\theta_{p}$ (deg) is the initial platform heading; $HI$ is the dimensionless hunting-instinct baseline drive; $U_{\sigma_{az}}$ (m/s$^2$), $U_{Pitch}$ (deg), and $U_{Roll}$ (deg) are the activation thresholds for terrain-instability detection; $A$ is the saturation amplitude of the Naka--Rushton function; $Ar$ is the approach-stop threshold for unit $X_{17}$; and $\sigma_{M}$ and $\sigma_{I}$ are the half-saturation constants of the Naka--Rushton function for the mode-selection and IMU pathways, respectively \mbox{[REF: defined after Equation~\eqref{eq:Naka}]}.
 
 \subsubsection{Gait Decision Module}
 
@@ -435,6 +451,8 @@ Units $z_0$--$z_2$ and $z_{14}$--$z_{16}$ use a second-order Naka--Rushton nonli
 f(x;\sigma) = \frac{A x_+^2}{\sigma^2 + x_+^2}
 \label{eq:Naka}
 \end{equation}
+% [AUTO-EDIT] TAREA 2: Added explicit definitions for A and σ in the Naka-Rushton equation, not defined in the immediately preceding text.
+where $x$ is the net input to the neuron; $x_+ = \max(x,0)$ is the rectified input; $A$ is the saturation amplitude of the function; and $\sigma$ is the half-saturation constant controlling the sensitivity of the nonlinearity (see Table~\ref{table:Locom_NN}).
 
 Based on this general formulation, two task-specific activation functions are defined by instantiating Equation~\eqref{eq:Naka} with different sensitivity parameters. Specifically, $f_{\mathrm{Imu}}(\cdot)$ and $f_{\mathrm{Mode}}(\cdot)$ Equations~\eqref{eq:NakaImu} and \eqref{eq:NakaMode},share the same second-order Naka--Rushton structure, but use different saturation constants ($\sigma_I$ and $\sigma_M$) to match the dynamic range required by each neuronal pathway:
 
@@ -442,11 +460,14 @@ Based on this general formulation, two task-specific activation functions are de
 f_{\mathrm{Imu}}(x) = \frac{\mathrm{A}\, x_+^2}{\sigma_{I}^2 + x_+^2}
 \label{eq:NakaImu}
 \end{equation}
+% [AUTO-EDIT] TAREA 2: Added REF comment — A and the Naka–Rushton structure are defined after eq:Naka; σ_I is the IMU-pathway half-saturation constant (Table~\ref{table:Locom_NN}).
+% [REF] A and the Naka–Rushton structure are defined in Equation~\eqref{eq:Naka}; $\sigma_I$ is the IMU-pathway half-saturation constant (see Table~\ref{table:Locom_NN}).
 
 \begin{equation}
 f_{\mathrm{Mode}}(x) = \frac{\mathrm{A}\, x_+^2}{\sigma_{M}^2 + x_+^2}
 \label{eq:NakaMode}
 \end{equation}
+% [REF] Same Naka–Rushton structure as Equation~\eqref{eq:Naka}; $\sigma_M$ is the mode-selection half-saturation constant (see Table~\ref{table:Locom_NN}).
 
 
 The differential equations~\eqref{eq:Z0}–\eqref{eq:Z16} describing the dynamics of the gait-mode network, along with the hyperparameters in Table~\ref{table:Locom_NN}, are presented below. 
@@ -468,6 +489,8 @@ The differential equations~\eqref{eq:Z0}–\eqref{eq:Z16} describing the dynamic
 &\hspace{5cm}+ 0.7z_1 + 0.7z_2 - 1.5wz_{15} + HI)
 \label{eq:Z16}
 \end{align}
+% [AUTO-EDIT] TAREA 2: Added explicit definitions for σ_az, Roll, Pitch, thresholds, G_pe/G_pi signals, and w, which appear in these equations but were not defined in the immediately preceding text.
+In Equations~\eqref{eq:Z0}–\eqref{eq:Z16}: $\sigma_{az}$ (m/s$^2$) is the standard deviation of the linear acceleration along the $Z$~axis computed over the current sensing window; $U_{\sigma_{az}}$, $U_{Roll}$, and $U_{Pitch}$ are the corresponding activation thresholds for terrain-instability detection; $Roll$ and $Pitch$ (deg) are the roll and pitch angles measured by the IMU; $G_{pe,y}$ is the GPe output of the appetitive behavioral channel; $G_{pi,x}$ and $G_{pi,z}$ are the GPi outputs of the obstacle and aversive channels, respectively; and $w$ is a generic unitless inhibitory synaptic weight. % [REF] Same notation as in Equations~\eqref{eq:Z_3}--\eqref{eq:Z_17}.
 
 For the physical implementation of the gait-decision module, an alternative based on a multilayer perceptron (MLP) network was proposed \citep{Grajales_Des_2025} (Figure~\ref{fig:MLP}). This network includes two hidden layers of 150 and 80 units, respectively. This modification was motivated by the fact that, in rough-terrain tests, variations in roll and pitch together with the standard deviation of Z-axis acceleration were not sufficient for the level of repeatability required by the application. In contrast, training the MLP with real data from different terrains ensures the appropriate gait selection based on actual ground conditions. 
 
@@ -528,6 +551,8 @@ The hyperparameters (Table~\ref{table:Locom_MLP}) and the Equations~\eqref{eq:Z0
 \tau \frac{dz_{16}}{dt} &= -z_{16} +  f_{Mode}( z_4 - wG_{pe,y} - 1.5wz_{14}  + 0.7z_1 - 1.5wz_{15} + HI)
 \label{eq:Z16V2}
 \end{align}
+% [AUTO-EDIT] TAREA 2: Added explicit definitions for N_0, N_1, N_2, U_{N0}, U_{N1}, which appear in these equations but were not defined in the immediately preceding text.
+In Equations~\eqref{eq:Z0V2}–\eqref{eq:Z16V2}: $N_0$ is the MLP output probability of flat terrain; $N_1$ is the MLP output probability of inclined terrain; $N_2$ is the binary stagnation indicator ($1 ={}$stuck, $0 ={}$not stuck); and $U_{N_0}$, $U_{N_1}$ are the corresponding activation thresholds (see Table~\ref{table:Locom_MLP}). % [REF] $w$ retains the same meaning as in Equations~\eqref{eq:Z_3}--\eqref{eq:Z_17}.
 
 \begin{table}%[t]
 \centering
@@ -542,6 +567,8 @@ $U_{N_{1}}$ & 7.8 \\ \hline
 \end{tabular}
 \label{table:Locom_MLP}
 \end{table}
+% [AUTO-EDIT] TAREA 1: Added brief physical definitions for MLP table parameters not defined in the surrounding text.
+In Table~\ref{table:Locom_MLP}: $U_{N_0}$ and $U_{N_1}$ are the activation thresholds applied to MLP outputs $N_0$ (flat-terrain probability) and $N_1$ (inclined-terrain probability), respectively, used in Equations~\eqref{eq:Z0V2}--\eqref{eq:Z16V2}.
 
 \subsection{Robot Construction Materials and Testing Space}
 \label{ssec:Construction}
