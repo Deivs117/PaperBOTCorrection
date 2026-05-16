@@ -251,3 +251,52 @@ All changes listed below were applied automatically to `elsarticle-template-num-
 
 - **`Wang et al. [2025]` (`Wang2025Autonomous`)**: Only a ResearchGate ID was provided in the MD. **Authors should add the journal name, volume, and DOI** once the article is formally published.
 
+---
+
+## Changelog — 2026-05-16 (Tasks 8, 9, 10, 11 — AUTO-EDITS)
+
+All changes listed below were applied automatically to `elsarticle-template-num-names.tex`, `RESPONSE_TO_REVIEWERS.md`, and `Changelog.md` during the Task 8/9/10/11 editing session (agent: ClaudeSonnet, date: 2026-05-16).
+
+### TAREA 8 — Ar Parameter Analytical Justification
+
+- fecha: 2026-05-16  
+  file: elsarticle-template-num-names.tex  
+  change: Inserted analytical justification paragraph for $Ar = 28.0$ after Table~\ref{table:Locom_NN} description. % [AUTO-EDIT]  
+  reviewer: Reviewer 2, Comment 2 / Reviewer 3, Comment 8  
+  notes: Derivation uses pinhole camera model for Logitech C270 at 640×480 resolution.
+
+- fecha: 2026-05-16  
+  file: elsarticle-template-num-names.tex  
+  change: Updated brief Ar mention in Discussion paragraph to cross-reference the new analytical derivation. % [AUTO-EDIT]  
+  reviewer: Reviewer 2, Comment 2 / Reviewer 3, Comment 8  
+  notes: Previous text stated "calibrated empirically"; now references the pinhole model derivation.
+
+### TAREA 9 — Terrain Description Replacement
+
+- fecha: 2026-05-16  
+  file: elsarticle-template-num-names.tex  
+  change: Replaced primitive terrain description (90×130 cm², 3.6 cm protrusions) with full Perlin-noise procedural characterization including statistical metrics. % [AUTO-EDIT]  
+  reviewer: Reviewer 1, Comment 10  
+  notes: New description includes μ_h ≈ 0.0 mm, σ_h² = 5.469 mm², σ_h = 2.339 mm, max 8.129 mm, min −8.983 mm, R_q = 2.339 mm. Figure references preserved.
+
+### TAREA 10 — Proofreading
+
+- fecha: 2026-05-16  
+  file: elsarticle-template-num-names.tex  
+  change: Comprehensive proofreading pass applied across all prose sections. Grammar, spelling, punctuation, and academic style corrected. Technical content unchanged. % [AUTO-EDIT]  
+  reviewer: Reviewer 3, Comment 9  
+  notes: Each edited paragraph marked with % [AUTO-EDIT] Proofreading: grammar/style comment. Equations, labels, references, and numerical values not modified.
+
+### TAREA 11 — RESPONSE_TO_REVIEWERS.md Restructuring
+
+- fecha: 2026-05-16  
+  file: RESPONSE_TO_REVIEWERS.md  
+  change: Added entries for Reviewer 1 Comment 10 (T9), Reviewer 2/3 Comment on Ar (T8), and Reviewer 3 Comment 9 (T10) in standard format. % [AUTO-EDIT]  
+  reviewer: Reviewer 1, Comment 10 / Reviewer 2, Comment 2 / Reviewer 3, Comments 8 and 9  
+  notes: Each entry follows exact format: Reviewer Comment, Change Made, Justification.
+
+### ⚠️ [REQUIRES AUTHOR INPUT]
+
+- **`Ar = 28.0` calibration log** (location: `Table~\ref{table:Locom_NN}`, analytical justification paragraph after table): The analytical derivation using the pinhole camera model has been added. However, authors should provide experimental validation data (e.g., measured stopping distance, actual focal length calibration from camera_calibration tool) to confirm that $Z = 31$ cm and $W_{obj} = 10$ cm match the physical experimental setup.
+
+- **Terrain image update** (location: `\label{fig:Terreno_irre}`, file `TERRENO_IRREGULAR.jpeg`): The terrain description now references a Perlin-noise generated 1300×900 mm surface. Authors must update the figure to show the actual Perlin-noise terrain (or confirm the existing image matches the new description). The old caption "Irregular terrain." may need updating if the image changes.
