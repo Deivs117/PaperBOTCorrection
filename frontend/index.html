@@ -2,269 +2,603 @@
 <html lang="es">
 <head>
   <meta charset="utf-8"/>
-  <title>Dashboard — Respuesta a Reviewers (PaperBOT) — Tema Oscuro</title>
+  <title>PaperBOT — Dashboard de Revisiones</title>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
-    :root{
-      --bg:#050608;           /* fondo general (casi negro) */
-      --panel:#0b1220;        /* tarjetas/paneles */
-      --muted:#9aa4b2;        /* texto secundario */
-      --text:#e6eef8;         /* texto principal claro */
-      --border:#111827;       /* bordes sutiles */
-      --accent:#0ea5a4;       /* acento/correcciones */
-      --done-bg:#063e2a;
-      --done-border:#085f46;
-      --partial-bg:#2a1f00;
-      --partial-border:#7c4a00;
-      --pending-bg:#3a0620;
-      --pending-border:#8b122d;
-      --manual-bg:#11123a;
-      --manual-border:#2b2f9b;
-      --table-head:#071227;
-      --card-shadow: 0 6px 18px rgba(2,6,23,0.7);
-    }
-
-    html,body{height:100%}
-    body{
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      margin:20px;
-      color:var(--text);
-      background:linear-gradient(180deg,var(--bg),#061018 90%);
-      -webkit-font-smoothing:antialiased;
-    }
-
-    h1{margin-bottom:6px; font-weight:600}
-    .small{font-size:13px; color:var(--muted)}
-    .summary{display:flex; gap:1rem; margin-bottom:1rem; flex-wrap:wrap}
-    .card{
-      background:linear-gradient(180deg,var(--panel),#071426 120%);
-      border:1px solid var(--border);
-      padding:12px;
-      border-radius:10px;
-      min-width:180px;
-      box-shadow: var(--card-shadow);
-    }
-    .filters{margin:12px 0 18px; display:flex; gap:8px; align-items:center; flex-wrap:wrap}
-    select,button{
-      padding:8px 10px;
-      border-radius:8px;
-      border:1px solid rgba(255,255,255,0.06);
-      background:rgba(255,255,255,0.03);
-      color:var(--text);
-      min-height:38px;
-    }
-    button{cursor:pointer}
-    table{width:100%; border-collapse:collapse; margin-top:8px; background:transparent}
-    thead th{position:sticky; top:0; background:var(--table-head); color:var(--muted); padding:10px; text-align:left; border-bottom:1px solid rgba(255,255,255,0.03)}
-    th,td{padding:12px; border-bottom:1px solid rgba(255,255,255,0.03); text-align:left; vertical-align:top; font-size:14px}
-    td {color:var(--text)}
-    .badge{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:600}
-    .done{background:linear-gradient(180deg,var(--done-bg),#064e33);color:#a7f3d0;border:1px solid var(--done-border)}
-    .partial{background:linear-gradient(180deg,var(--partial-bg),#1f1500);color:#ffd8a8;border:1px solid var(--partial-border)}
-    .pending{background:linear-gradient(180deg,var(--pending-bg),#5a0929);color:#ffd6e0;border:1px solid var(--pending-border)}
-    .manual{background:linear-gradient(180deg,var(--manual-bg),#11113f);color:#dbe4ff;border:1px solid var(--manual-border)}
-    details{margin-top:6px}
-    .evidence{font-size:13px; color:var(--accent); margin-bottom:6px}
-    .foot{margin-top:14px; color:var(--muted); font-size:13px}
-    .nowrap{white-space:nowrap}
-    .count{font-weight:700; font-size:18px; color:var(--text)}
-    a { color: var(--accent); text-decoration:underline; }
-    /* responsive */
-    @media (max-width:820px){
-      .summary{flex-direction:column}
-      th,td{padding:10px}
-    }
+    [x-cloak]{display:none}
+    .tab-active{border-bottom:2px solid #06b6d4;color:#e2e8f0;}
+    .tab-inactive{border-bottom:2px solid transparent;color:#64748b;}
+    .timeline-line{position:absolute;left:12px;top:24px;bottom:0;width:2px;background:#1e293b;}
+    .badge-pending{background:#450a0a;color:#fca5a5;border:1px solid #7f1d1d;}
+    .badge-analysis{background:#451a03;color:#fcd34d;border:1px solid #78350f;}
+    .badge-resolved{background:#052e16;color:#86efac;border:1px solid #14532d;}
+    .badge-todo{background:#3b0764;color:#d8b4fe;border:1px solid #581c87;}
+    .badge-inprogress{background:#451a03;color:#fcd34d;border:1px solid #78350f;}
+    .badge-done{background:#052e16;color:#86efac;border:1px solid #14532d;}
+    select,input,textarea{background:#0f172a;color:#e2e8f0;border:1px solid #334155;border-radius:6px;padding:6px 10px;}
+    select:focus,input:focus,textarea:focus{outline:2px solid #06b6d4;outline-offset:1px;}
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:50;display:flex;align-items:center;justify-content:center;}
+    ::-webkit-scrollbar{width:6px;height:6px}
+    ::-webkit-scrollbar-track{background:#0f172a}
+    ::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
   </style>
 </head>
-<body>
-  <h1>Dashboard — Estado de las peticiones de los revisores</h1>
-  <p class="small">Resumen extraído de: Changelog.md, RESPONSE_TO_REVIEWERS.md y REVIEWERS_PETITIONS.md (repositorio: Deivs117/PaperBOTCorrection).</p>
+<body class="bg-slate-950 text-slate-200 min-h-screen font-sans antialiased">
 
-  <div class="summary">
-    <div class="card">
-      <div class="count" id="total">—</div>
-      <div class="small">Total de ítems listados</div>
+<!-- ===== SYNC ALERT ===== -->
+<div id="syncAlert" class="bg-amber-950 border border-amber-700 text-amber-300 text-xs px-4 py-2 flex items-center justify-between gap-4">
+  <span>⚠️ <strong>Regla de Sincronización del Equipo:</strong> Para actualizar el estado maestro para todo el equipo, descarga el archivo <code>data.json</code> mediante el botón de exportación y súbelo a la carpeta <code>frontend/</code> de este repositorio en GitHub.</span>
+  <button onclick="document.getElementById('syncAlert').remove()" class="text-amber-500 hover:text-white ml-4 shrink-0">✕</button>
+</div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="bg-zinc-900 border-b border-slate-800 px-4 flex items-center justify-between sticky top-0 z-40">
+  <div class="flex items-center gap-3 py-3">
+    <span class="text-cyan-400 font-bold text-sm tracking-wide">🤖 PaperBOT</span>
+    <span class="text-slate-600 text-xs hidden sm:inline">Deivs117/PaperBOTCorrection</span>
+  </div>
+  <div class="flex gap-1">
+    <button onclick="showTab('reviewers')" id="tab-reviewers" class="tab-active px-3 py-4 text-sm font-medium transition-colors">👥 Revisiones</button>
+    <button onclick="showTab('tasks')" id="tab-tasks" class="tab-inactive px-3 py-4 text-sm font-medium transition-colors">�� Panel de Tareas</button>
+    <button onclick="showTab('analytics')" id="tab-analytics" class="tab-inactive px-3 py-4 text-sm font-medium transition-colors">📊 Métricas</button>
+  </div>
+  <button onclick="exportState()" class="bg-cyan-700 hover:bg-cyan-600 text-white text-xs font-semibold px-3 py-2 rounded-lg transition-colors">⬇ Exportar JSON</button>
+</nav>
+
+<!-- ============================================================ -->
+<!-- TAB 1: REVIEWERS                                             -->
+<!-- ============================================================ -->
+<div id="panel-reviewers" class="p-4 max-w-7xl mx-auto">
+
+  <!-- Petitions grid -->
+  <h2 class="text-lg font-semibold text-slate-100 mt-2 mb-4">👥 Peticiones de los Evaluadores</h2>
+  <div class="overflow-x-auto rounded-xl border border-slate-800">
+    <table class="w-full text-sm">
+      <thead class="bg-slate-900 text-slate-400 uppercase text-xs">
+        <tr>
+          <th class="px-4 py-3 text-left w-28">ID</th>
+          <th class="px-4 py-3 text-left">Comentario del Revisor</th>
+          <th class="px-4 py-3 text-left w-36">Estado</th>
+          <th class="px-4 py-3 text-left w-36">Asignatario</th>
+          <th class="px-4 py-3 text-left w-56">Nota Rápida</th>
+        </tr>
+      </thead>
+      <tbody id="reviewersTbody" class="divide-y divide-slate-800">
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Changelog timeline -->
+  <h2 class="text-lg font-semibold text-slate-100 mt-10 mb-4">📜 Línea de Tiempo del Changelog</h2>
+  <div id="changelogTimeline" class="space-y-0">
+    <div class="text-slate-500 text-sm italic">Cargando Changelog.md…</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 2: TASKS CRUD                                            -->
+<!-- ============================================================ -->
+<div id="panel-tasks" class="p-4 max-w-7xl mx-auto hidden">
+
+  <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+    <h2 class="text-lg font-semibold text-slate-100">📋 Panel Operativo de Tareas</h2>
+    <button onclick="openTaskModal(null)" class="bg-cyan-700 hover:bg-cyan-600 text-white text-xs font-semibold px-4 py-2 rounded-lg">+ Nueva Tarea</button>
+  </div>
+
+  <!-- Filters -->
+  <div class="flex flex-wrap gap-3 mb-5 bg-slate-900 border border-slate-800 rounded-xl p-3">
+    <div class="flex items-center gap-2">
+      <label class="text-xs text-slate-400">Estado:</label>
+      <select id="fStatus" onchange="renderTasks()" class="text-xs">
+        <option value="">Todos</option>
+        <option value="To Do">To Do</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Done">Done</option>
+      </select>
     </div>
-    <div class="card">
-      <div class="count" id="doneCount">—</div>
-      <div class="small">Hecho (ediciones automáticas o textuales)</div>
+    <div class="flex items-center gap-2">
+      <label class="text-xs text-slate-400">Asignado a:</label>
+      <select id="fPerson" onchange="renderTasks()" class="text-xs">
+        <option value="">Todos</option>
+        <option value="SapoMarapo">SapoMarapo</option>
+        <option value="Flagugu">Flagugu</option>
+        <option value="Homo">Homo</option>
+        <option value="Negriche">Negriche</option>
+      </select>
     </div>
-    <div class="card">
-      <div class="count" id="partialCount">—</div>
-      <div class="small">Parcial (texto agregado, falta validación/autores)</div>
+    <div class="flex items-center gap-2">
+      <label class="text-xs text-slate-400">Referencia:</label>
+      <select id="fRef" onchange="renderTasks()" class="text-xs">
+        <option value="">Todas</option>
+      </select>
     </div>
-    <div class="card">
-      <div class="count" id="pendingCount">—</div>
-      <div class="small">Pendiente / Requiere input de autores</div>
+    <button onclick="resetFilters()" class="text-xs text-slate-400 hover:text-white underline ml-auto">Limpiar filtros</button>
+  </div>
+
+  <!-- Task cards -->
+  <div id="tasksGrid" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"></div>
+  <div id="tasksEmpty" class="hidden text-center py-12 text-slate-500 text-sm">No hay tareas que coincidan con los filtros.</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 3: ANALYTICS                                             -->
+<!-- ============================================================ -->
+<div id="panel-analytics" class="p-4 max-w-5xl mx-auto hidden">
+  <h2 class="text-lg font-semibold text-slate-100 mt-2 mb-6">📊 Métricas de Estado</h2>
+
+  <!-- KPI Cards -->
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 text-center">
+      <div id="kpiResRate" class="text-4xl font-bold text-emerald-400">—</div>
+      <div class="text-xs text-slate-400 mt-1">Tasa de Resolución</div>
     </div>
-    <div class="card">
-      <div class="count" id="manualCount">—</div>
-      <div class="small">Acción manual (figuras, imágenes) — prioridad alta/med</div>
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 text-center">
+      <div id="kpiResolved" class="text-4xl font-bold text-emerald-400">—</div>
+      <div class="text-xs text-slate-400 mt-1">Comentarios Mitigados</div>
+    </div>
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 text-center">
+      <div id="kpiPending" class="text-4xl font-bold text-amber-400">—</div>
+      <div class="text-xs text-slate-400 mt-1">Tareas Pendientes (To Do + In Progress)</div>
+    </div>
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 text-center">
+      <div id="kpiTotal" class="text-4xl font-bold text-slate-200">—</div>
+      <div class="text-xs text-slate-400 mt-1">Total de Tareas</div>
     </div>
   </div>
 
-  <div class="filters">
-    <label class="nowrap">Filtrar por revisor:
-      <select id="filterReviewer">
-        <option value="all">Todos</option>
-        <option value="R1">Reviewer 1</option>
-        <option value="R2">Reviewer 2</option>
-        <option value="R3">Reviewer 3</option>
-        <option value="cross">General / multi</option>
-      </select>
-    </label>
-
-    <label class="nowrap">Filtrar por estado:
-      <select id="filterStatus">
-        <option value="all">Todos</option>
-        <option value="done">Hecho</option>
-        <option value="partial">Parcial</option>
-        <option value="pending">Pendiente</option>
-        <option value="manual">Manual</option>
-      </select>
-    </label>
-
-    <button id="resetBtn">Restablecer filtros</button>
+  <!-- Chart -->
+  <div class="bg-slate-900 border border-slate-800 rounded-xl p-6">
+    <h3 class="text-sm font-semibold text-slate-300 mb-4">Distribución de Tareas por Miembro del Equipo</h3>
+    <div class="relative" style="height:280px">
+      <canvas id="teamChart"></canvas>
+    </div>
   </div>
+</div>
 
-  <table id="tasksTable" aria-label="Listado de peticiones y estado">
-    <thead>
-      <tr>
-        <th style="width:6%">#</th>
-        <th style="width:10%">Revisor</th>
-        <th>Petición</th>
-        <th style="width:12%">Estado</th>
-        <th style="width:32%">Evidencia / Qué se hizo</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+<!-- ============================================================ -->
+<!-- TASK MODAL                                                   -->
+<!-- ============================================================ -->
+<div id="taskModal" class="modal-overlay hidden">
+  <div class="bg-zinc-900 border border-slate-700 rounded-2xl p-6 w-full max-w-lg mx-4 max-h-screen overflow-y-auto">
+    <h3 class="text-base font-semibold text-white mb-4" id="modalTitle">Nueva Tarea</h3>
+    <div class="space-y-3">
+      <div>
+        <label class="text-xs text-slate-400 block mb-1">Título *</label>
+        <input id="mTitle" type="text" class="w-full text-sm" placeholder="Título de la tarea"/>
+      </div>
+      <div>
+        <label class="text-xs text-slate-400 block mb-1">Descripción</label>
+        <textarea id="mDesc" rows="3" class="w-full text-sm" placeholder="Descripción detallada…"></textarea>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-xs text-slate-400 block mb-1">Estado *</label>
+          <select id="mStatus" class="w-full text-sm">
+            <option>To Do</option>
+            <option>In Progress</option>
+            <option>Done</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs text-slate-400 block mb-1">Referencia Revisor *</label>
+          <select id="mRef" class="w-full text-sm"></select>
+        </div>
+      </div>
+      <div>
+        <label class="text-xs text-slate-400 block mb-1">Asignatarios * (requerido)</label>
+        <div class="flex gap-3 flex-wrap mt-1">
+          <label class="flex items-center gap-1 text-sm cursor-pointer"><input type="checkbox" value="SapoMarapo" class="mAssignee accent-cyan-400"> SapoMarapo</label>
+          <label class="flex items-center gap-1 text-sm cursor-pointer"><input type="checkbox" value="Flagugu" class="mAssignee accent-cyan-400"> Flagugu</label>
+          <label class="flex items-center gap-1 text-sm cursor-pointer"><input type="checkbox" value="Homo" class="mAssignee accent-cyan-400"> Homo</label>
+          <label class="flex items-center gap-1 text-sm cursor-pointer"><input type="checkbox" value="Negriche" class="mAssignee accent-cyan-400"> Negriche</label>
+        </div>
+      </div>
+    </div>
+    <div class="flex gap-2 mt-5 justify-end">
+      <button onclick="closeTaskModal()" class="px-4 py-2 text-sm text-slate-400 hover:text-white border border-slate-700 rounded-lg">Cancelar</button>
+      <button onclick="saveTask()" class="px-4 py-2 text-sm bg-cyan-700 hover:bg-cyan-600 text-white rounded-lg font-medium">Guardar</button>
+    </div>
+  </div>
+</div>
 
-  <p class="foot">Leyenda: <span class="badge done">Hecho</span> &nbsp; <span class="badge partial">Parcial</span> &nbsp; <span class="badge pending">Pendiente (autor)</span> &nbsp; <span class="badge manual">Manual (figs)</span></p>
+<script>
+// ================================================================
+// STATE & PERSISTENCE
+// ================================================================
+let state = { reviewers: [], tasks: [] };
+let editingTaskId = null;
+let chartInstance = null;
 
-  <script>
-    // Datos sintetizados a partir de los archivos proporcionados
-    const tasks = [
-      {id:1, reviewer:"R1", title:"Mejorar Introducción y estado del arte", status:"done",
-       evidence:"TAREA 6: Replaced entire Introduction (Changelog.md). RESPONSE_TO_REVIEWERS documents the changes."},
-      {id:2, reviewer:"R1", title:'Aclarar "mobile" y "articulated" (wheeled vs legged)', status:"done",
-       evidence:"RESPONSE_TO_REVIEWERS: Added parenthetical qualifiers '(wheeled)' y '(legged)' (textual edit)."},
-      {id:3, reviewer:"R1", title:"Clarificar construcción del robot físico (contradicción)", status:"done",
-       evidence:"RESPONSE_TO_REVIEWERS: Sentence reworded to state physical robot follows simulation morphology."},
-      {id:4, reviewer:"R1", title:"Inconsistencias en figuras de pendientes / slopes", status:"manual",
-       evidence:"Changelog: Section 'Action Plan: Figure Improvements' lists many figure fixes; imágenes requieren regeneración y reemplazo (Manual, alta prioridad)."},
-      {id:5, reviewer:"R1", title:"Incluir escenario industrial/infraestructura en la simulación", status:"done",
-       evidence:"Introduction replacement and RESPONSE mention motivation grounded in inspection use case (Changelog TAREA6 + RESPONSE)."},
-      {id:6, reviewer:"R1", title:"Motivación y razón para usar MLP (IMU → MLP)", status:"partial",
-       evidence:"Tables updated with thresholds (U_N0/U_N1) and notes, but ML training data / performance metrics not present — Authors must add (Changelog 'REQUIRES AUTHOR INPUT')."},
-      {id:7, reviewer:"R1", title:"Clarificar entrada de 135 dimensiones (9×15)", status:"done",
-       evidence:"RESPONSE_TO_REVIEWERS: Added explicit '9 × 15 = 135' text (proofreading/edit)."},
-      {id:8, reviewer:"R1", title:"Presentar datos de entrenamiento y desempeño del MLP", status:"pending",
-       evidence:"Changelog marca U_N0/U_N1 y recomienda F1/ROC validation; authors must provide dataset & metrics (REQUIRES AUTHOR INPUT)."},
-      {id:9, reviewer:"R1", title:"Separar resultados: simulación vs físico", status:"done",
-       evidence:"Changelog TAREA 3: Reorganized Results into Simulation Results and Physical Implementation Results (auto-edit)."},
-      {id:10, reviewer:"R1", title:"Descripción del terreno irregular (90×130 cm, 3.6 cm)", status:"done",
-       evidence:"TAREA 9 (2026-05-16): Replaced primitive description with Perlin-noise procedural characterization (Changelog). Note: imagen debe actualizarse manualmente."},
-      {id:11, reviewer:"R1", title:"Pre-diseño de modos de movimiento (limitación)", status:"partial",
-       evidence:"Some clarifications in Introduction/Conclusions may exist, but engineering / quantitative limitation discussion not fully expanded — requiere respuesta de autores."},
+const STORAGE_KEY = 'flux_dashboard_state';
 
-      // Reviewer 2
-      {id:12, reviewer:"R2", title:"Demostrar novedad vs estado del arte", status:"partial",
-       evidence:"Introduction expanded to position contribution (TAREA6), pero reviewers piden benchmarking cuantitativo — pendiente ampliar comparativa / métricas."},
-      {id:13, reviewer:"R2", title:"Falta formulación rigurosa / análisis de estabilidad", status:"pending",
-       evidence:"No evidencia de análisis de estabilidad en Changelog/Response; requiere trabajo teórico o experimental por autores."},
-      {id:14, reviewer:"R2", title:"Validación cuantitativa insuficiente (métricas)", status:"pending",
-       evidence:"Results remain cualitativos; los changelogs no añaden success rates/time-to-switch — authors must añadir métricas."},
-      {id:15, reviewer:"R2", title:"Experimentos reales limitados", status:"pending",
-       evidence:"Changelog describe pruebas reales pero no nuevas validaciones robustas; requiere ampliar experimentos o explicar limitaciones."},
-      {id:16, reviewer:"R2", title:"Claridad y legibilidad: variables indefinidas", status:"done",
-       evidence:"Multiple auto-edits added 'where...' sentences defining τ, σ, ω, etc. (Changelog AUTO-EDITS: added definitions throughout). Proofreading applied (TAREA10)."},
+const DEFAULT_REVIEWERS = [
+  {id:'R1C1', reviewer:'Reviewer 1', comment:1, body:'The Introduction section needs to be significantly improved. The authors have not adequately elaborated on the current state of the art in related research. As a result, reviewers lack sufficient horizontal comparisons and are unable to judge the advancement of the proposed method.', status:'Mitigado', assignee:'Homo', note:''},
+  {id:'R1C2', reviewer:'Reviewer 1', comment:2, body:'In the first paragraph of Section 1, it is unclear what kind of robot is referred to by mobile and articulated modes, which is difficult to understand.', status:'Mitigado', assignee:'Homo', note:''},
+  {id:'R1C3', reviewer:'Reviewer 1', comment:3, body:'The sentence "Finally, the physical robot was constructed and implemented, taking advantage of the previous engineering development…" is difficult to understand. If improvements have been made, why can the simulation platform still be directly adopted?', status:'Mitigado', assignee:'Homo', note:''},
+  {id:'R1C4', reviewer:'Reviewer 1', comment:4, body:'Figures 3, 6 and 33 respectively illustrate the slopes used in the experiments, but they are inconsistent with each other. In particular, the description of Figure 3 does not match the content shown in the figure.', status:'En Análisis', assignee:'SapoMarapo', note:'Pendiente regenerar figuras de pendientes'},
+  {id:'R1C5', reviewer:'Reviewer 1', comment:5, body:'In Section 2.2, the sentence "Additionally, to orient the simulation toward infrastructure-inspection applications, a representative industrial-building scenario was included..." is not demonstrated or supported in the paper.', status:'Mitigado', assignee:'Homo', note:'Replaced in Tarea 17'},
+  {id:'R1C6', reviewer:'Reviewer 1', comment:6, body:'The paper designs an MLP to replace IMU-based perception. The statement would be better supported by comparative experiments. Since IMUs have been widely used in robotics, there should be established methods to handle such fluctuations.', status:'En Análisis', assignee:'Flagugu', note:'Requiere experimentos comparativos o justificación ampliada'},
+  {id:'R1C7', reviewer:'Reviewer 1', comment:7, body:'The input to Figure 10 requires 135-dimensional information. What exactly do these dimensions represent? The reviewer could not find this information in the paper.', status:'Mitigado', assignee:'Homo', note:''},
+  {id:'R1C8', reviewer:'Reviewer 1', comment:8, body:'The data source for training the MLP, as well as its final performance, are not presented in the paper.', status:'Pendiente', assignee:'Flagugu', note:'[REQUIRES AUTHOR INPUT] Datos de entrenamiento y métricas ML'},
+  {id:'R1C9', reviewer:'Reviewer 1', comment:9, body:'In the results section, simulation results and physical experiments should be presented separately.', status:'Mitigado', assignee:'Homo', note:''},
+  {id:'R1C10', reviewer:'Reviewer 1', comment:10, body:'The single maximum height value cannot sufficiently represent the fluctuation of the terrain. More detailed parameters, including the mean and variance, should be provided. The terrain has no negative height values.', status:'Mitigado', assignee:'Homo', note:''},
+  {id:'R1C11', reviewer:'Reviewer 1', comment:11, body:'Under specific working conditions, the robot\'s motion modes are pre-designed. This simplifies the complexity of robot control, but to a certain extent weakens its motion capability.', status:'En Análisis', assignee:'Negriche', note:'Requiere discusión de limitaciones ampliada'},
+  {id:'R2C1', reviewer:'Reviewer 2', comment:1, body:'Novelty is not sufficiently demonstrated. The overall pipeline has been widely studied. The authors must clearly explain what new scientific or technical contributions are made beyond prior work.', status:'Mitigado', assignee:'Homo', note:''},
+  {id:'R2C2', reviewer:'Reviewer 2', comment:2, body:'Control design lacks rigorous formulation and stability analysis. No theoretical analysis is provided to guarantee reliable action selection under sensor noise or uncertain terrain.', status:'Pendiente', assignee:'Flagugu', note:'[REQUIRES AUTHOR INPUT] Análisis de estabilidad formal'},
+  {id:'R2C3', reviewer:'Reviewer 2', comment:3, body:'Quantitative validation is insufficient. Key metrics such as success rate, response time, gait-switching delay, terrain adaptability rate, and tracking accuracy are missing.', status:'Pendiente', assignee:'SapoMarapo', note:'[REQUIRES AUTHOR INPUT] Métricas cuantitativas'},
+  {id:'R2C4', reviewer:'Reviewer 2', comment:4, body:'Real-world experiment is limited and weak. No tests are performed under disturbance, uneven terrain, slippage, or dynamic obstacles.', status:'Pendiente', assignee:'SapoMarapo', note:'[REQUIRES AUTHOR INPUT] Ampliar experimentos reales'},
+  {id:'R2C5', reviewer:'Reviewer 2', comment:5, body:'Clarity and readability need major improvement. Many equations and neural modules are poorly explained. Variables are often undefined.', status:'Mitigado', assignee:'Homo', note:''},
+  {id:'R3C1', reviewer:'Reviewer 3', comment:1, body:'The core contribution of the basal ganglia‑inspired neural arbitration is not sufficiently validated from a biological or computational perspective. No quantitative metrics are provided.', status:'En Análisis', assignee:'Homo', note:''},
+  {id:'R3C2', reviewer:'Reviewer 3', comment:2, body:'The locomotion mode switching lacks critical quantitative engineering metrics. No data on transition success rate, switching delay, stability margin, energy consumption, or repeatability.', status:'Pendiente', assignee:'SapoMarapo', note:'[REQUIRES AUTHOR INPUT] Métricas de switching'},
+  {id:'R3C3', reviewer:'Reviewer 3', comment:3, body:'The multimodal sensing is not integrated within a formal sensor fusion framework. The fusion logic is heuristic and ad‑hoc without design, verification, or comparison to standard fusion methods.', status:'Pendiente', assignee:'Flagugu', note:'[REQUIRES AUTHOR INPUT] Framework de fusión formal'},
+  {id:'R3C4', reviewer:'Reviewer 3', comment:4, body:'The MLP‑based terrain classification lacks standard machine learning evaluation. No accuracy, precision, recall, F1‑score, confusion matrix, or cross‑validation provided.', status:'Pendiente', assignee:'Flagugu', note:'[REQUIRES AUTHOR INPUT] Métricas ML completas'},
+  {id:'R3C5', reviewer:'Reviewer 3', comment:5, body:'All real‑world experiments are conducted in highly controlled indoor environments. No tests in unstructured outdoor environments, with dynamic obstacles, moving targets, or complex sensory conflicts.', status:'Pendiente', assignee:'SapoMarapo', note:''},
+  {id:'R3C6', reviewer:'Reviewer 3', comment:6, body:'The novelty and advancement are not clearly demonstrated due to insufficient comparison with the state of the art. Quantitative benchmarking against representative platforms is missing.', status:'Mitigado', assignee:'Homo', note:''},
+  {id:'R3C7', reviewer:'Reviewer 3', comment:7, body:'Figure quality and readability should be improved for better presentation of neural activities and robot trajectories.', status:'En Análisis', assignee:'Negriche', note:'Alta prioridad: regenerar con DPI ≥300'},
+  {id:'R3C8', reviewer:'Reviewer 3', comment:8, body:'Parameter settings in Tables 1-5 need clearer physical interpretation and justification.', status:'Mitigado', assignee:'Homo', note:''},
+  {id:'R3C9', reviewer:'Reviewer 3', comment:9, body:'The writing, grammar, and academic expression should be polished to meet the standards of an international journal.', status:'Mitigado', assignee:'Homo', note:''},
+];
 
+const DEFAULT_TASKS = [
+  {id:'T001',title:'Tarea 1 — Definición parámetros tablas (τ, ω)',desc:'Añadir definiciones físicas de τ_L, τ_IRA y matrices W tras Table LiDAR.',status:'Done',assignees:['Homo'],ref:'R2C5'},
+  {id:'T002',title:'Tarea 2 — Definición de variables ecuaciones',desc:'Añadir cláusulas "where…" tras ecuaciones de ring, STN/STR, GPe/GPi, Naka, Z0-Z16.',status:'Done',assignees:['Homo'],ref:'R2C5'},
+  {id:'T003',title:'Tarea 3 — Separar Results: Sim vs Físico',desc:'Reorganizar sección Results en subsecciones Simulation Results y Physical Implementation Results.',status:'Done',assignees:['Homo'],ref:'R1C9'},
+  {id:'T004',title:'Tarea 4 — Inconsistencias slope Figs 3/6/33',desc:'Revisar y alinear descripción de pendientes en Figura 3 con contenido real.',status:'In Progress',assignees:['SapoMarapo'],ref:'R1C4'},
+  {id:'T005',title:'Tarea 5 — Justificación diseño parámetros (Ar, ω)',desc:'Derivar analíticamente Ar=28.0, justificar asimetrías de peso y ganancias ω.',status:'Done',assignees:['Homo'],ref:'R3C8'},
+  {id:'T006',title:'Tarea 6 — Rewrite Introducción completa',desc:'Ampliar estado del arte con ANYmal, CENTAURO, Ascento, Max, FLORES, R-Taichi. Posicionar novedad BG.',status:'Done',assignees:['Homo'],ref:'R1C1'},
+  {id:'T007',title:'Tarea 7 — Clarificación modos (wheeled/legged)',desc:'Añadir "(wheeled)" y "(legged)" tras términos mobile y articulated.',status:'Done',assignees:['Homo'],ref:'R1C2'},
+  {id:'T008',title:'Tarea 8 — Justificación parámetro Ar (pinhole)',desc:'Añadir derivación pinhole camera tras tabla Locom_NN.',status:'Done',assignees:['Homo'],ref:'R3C8'},
+  {id:'T009',title:'Tarea 9 — Descripción terreno Perlin-noise',desc:'Reemplazar descripción primitiva con caracterización procedural Perlin-noise.',status:'Done',assignees:['Homo'],ref:'R1C10'},
+  {id:'T010',title:'Tarea 10 — Proofreading académico',desc:'Revisión gramatical completa: voz pasiva en Metodología, presente en Resultados, léxico Q1.',status:'Done',assignees:['Homo'],ref:'R3C9'},
+  {id:'T011',title:'Tarea 11 — Plataforma low-cost exploratoria',desc:'Reencuadrar prototipo como baseline exploratorio de bajo costo. Limitar promesas industriales.',status:'Done',assignees:['Homo'],ref:'R2C4'},
+  {id:'T012',title:'Tarea 12 — Scope low-cost formalización',desc:'Añadir párrafo de delimitación física y algorítmica en Discussion.',status:'Done',assignees:['Homo'],ref:'R2C4'},
+  {id:'T013',title:'Tarea 13 — 9×15=135 input MLP',desc:'Añadir "$9 \\times 15 = 135$" explícito en texto.',status:'Done',assignees:['Homo'],ref:'R1C7'},
+  {id:'T014',title:'Tarea 14 — Descripción terreno irregular (media/varianza)',desc:'Ampliar caracterización del terreno MDF con parámetros estadísticos.',status:'Done',assignees:['Homo'],ref:'R1C10'},
+  {id:'T015',title:'Tarea 15 — Justificación BG vs WTA (Girard)',desc:'Ampliar discusión de propiedades adaptativas BG sobre WTA clásico.',status:'Done',assignees:['Homo'],ref:'R3C1'},
+  {id:'T016',title:'Tarea 16 — Citas neurociencia BG (Baston, Prescott 2024)',desc:'Añadir citas actualizadas del paradigma GPR.',status:'Done',assignees:['Homo'],ref:'R3C1'},
+  {id:'T017',title:'Tarea 17 — Purgado afirmaciones industriales',desc:'Reencuadrar Abstract, Sec 2.2 y Discusión/Conclusiones hacia viabilidad computacional.',status:'Done',assignees:['Homo'],ref:'R1C5'},
+  {id:'T018',title:'Tarea 18 — Refinamiento Introducción (coautores)',desc:'Conectar Girard→KamaliSarvestani2013, simplificar modos, añadir párrafo estructural cierre.',status:'Done',assignees:['Homo'],ref:'R1C1'},
+  {id:'T019',title:'Tarea 19 — Dashboard interactivo SPA',desc:'Diseñar e implementar frontend/index.html con 3 módulos, persistencia JSON/localStorage y Chart.js.',status:'Done',assignees:['Homo'],ref:'R3C7'},
+  {id:'T020',title:'Datos entrenamiento MLP y métricas (F1, ROC)',desc:'[REQUIRES AUTHOR INPUT] Proveer dataset de entrenamiento y métricas de desempeño del clasificador.',status:'To Do',assignees:['Flagugu'],ref:'R1C8'},
+  {id:'T021',title:'Análisis de estabilidad formal del controlador',desc:'[REQUIRES AUTHOR INPUT] Añadir prueba de estabilidad, convergencia o análisis de robustez.',status:'To Do',assignees:['Flagugu'],ref:'R2C2'},
+  {id:'T022',title:'Métricas cuantitativas de switching (success rate, delay)',desc:'[REQUIRES AUTHOR INPUT] Reportar tasa de éxito, latencia de transición, oscilación durante cambios de modo.',status:'To Do',assignees:['SapoMarapo'],ref:'R3C2'},
+  {id:'T023',title:'Framework de fusión sensorial formal',desc:'[REQUIRES AUTHOR INPUT] Reemplazar lógica heurística con esquema formal (Kalman, Bayesiano o deep fusion).',status:'To Do',assignees:['Flagugu'],ref:'R3C3'},
+  {id:'T024',title:'Regeneración de figuras en alta calidad (DPI≥300)',desc:'Regenerar Figs 3, 6, 33 y figuras de actividad neuronal con resolución alta y leyendas legibles.',status:'In Progress',assignees:['Negriche'],ref:'R3C7'},
+  {id:'T025',title:'Experimentos reales ampliados (terreno no estructurado)',desc:'[REQUIRES AUTHOR INPUT] Diseñar y ejecutar pruebas en exteriores o con obstáculos dinámicos.',status:'To Do',assignees:['SapoMarapo'],ref:'R2C4'},
+];
 
-      // Reviewer 3
-      {id:17, reviewer:"R3", title:"Validación biológica/computacional del modelo BG", status:"partial",
-       evidence:"Introduction cites canonical BG refs and added text (TAREA6 & new refs), but deep biological validation not added — authors may expand or refer to supplementary analyses."},
-      {id:18, reviewer:"R3", title:"Métricas de cambio de modo (success rate, delay)", status:"pending",
-       evidence:"No new quantitative switching metrics present in changelog; requiere métricas/experimentos adicionales."},
-      {id:19, reviewer:"R3", title:"Fusión multimodal formal (sensor fusion)", status:"pending",
-       evidence:"Current fusion described heurísticamente; changelog added clarifications on weights but no formal fusion framework — authors action required."},
-      {id:20, reviewer:"R3", title:"Evaluación ML (precision, recall, F1, confusion matrix)", status:"pending",
-       evidence:"Changelog recommends F1/ROC validation for U_N thresholds; actual ML metrics not present (REQUIRES AUTHOR INPUT)."},
-      {id:21, reviewer:"R3", title:"Mejorar calidad de figuras (legibilidad, DPI)", status:"manual",
-       evidence:"Action Plan: Figure Improvements (Changelog). Muchas figuras requieren regeneración con >300 DPI, etiquetas y leyendas (Manual)."},
-      {id:22, reviewer:"R3", title:"Justificación de parámetros en tablas (Ar, w, ω, σ, etc.)", status:"partial",
-       evidence:"TAREA5/TAREA8: Many parameters were added/explained (e.g., w, ω_{GpeR}, removal of μ_{STN}, analytical Ar derivation). Several entries still REQUIEREN pruebas/inputs (Changelog 'REQUIRES AUTHOR INPUT')."},
-      {id:23, reviewer:"cross", title:"Proofreading / inglés académico", status:"done",
-       evidence:"TAREA 10: Comprehensive proofreading applied across manuscript (Changelog)."}
-    ];
-
-    // render table
-    const tbody = document.querySelector("#tasksTable tbody");
-    function render(filtered) {
-      tbody.innerHTML = "";
-      filtered.forEach(t=>{
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${t.id}</td>
-          <td>${t.reviewer}</td>
-          <td><strong>${escapeHtml(t.title)}</strong></td>
-          <td>
-            ${statusBadge(t.status)}
-          </td>
-          <td>
-            <div class="evidence">${escapeHtml(t.evidence)}</div>
-            <details>
-              <summary class="small">Más info</summary>
-              <div class="small" style="margin-top:6px; color:var(--muted);">
-                Archivos de referencia: <em>Changelog.md</em>, <em>RESPONSE_TO_REVIEWERS.md</em>, <em>elsarticle-template-num-names.tex</em> (ediciones automatizadas).
-              </div>
-            </details>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-      document.getElementById("total").textContent = tasks.length;
-      document.getElementById("doneCount").textContent = tasks.filter(x=>x.status==="done").length;
-      document.getElementById("partialCount").textContent = tasks.filter(x=>x.status==="partial").length;
-      document.getElementById("pendingCount").textContent = tasks.filter(x=>x.status==="pending").length;
-      document.getElementById("manualCount").textContent = tasks.filter(x=>x.status==="manual").length;
-    }
-
-    function statusBadge(s){
-      if(s==="done") return '<span class="badge done">Hecho</span>';
-      if(s==="partial") return '<span class="badge partial">Parcial</span>';
-      if(s==="pending") return '<span class="badge pending">Pendiente</span>';
-      if(s==="manual") return '<span class="badge manual">Manual</span>';
-      return s;
-    }
-
-    function escapeHtml(t){ return (t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
-
-    // filtering
-    const reviewerSel = document.getElementById("filterReviewer");
-    const statusSel = document.getElementById("filterStatus");
-    reviewerSel.addEventListener("change",applyFilters);
-    statusSel.addEventListener("change",applyFilters);
-    document.getElementById("resetBtn").addEventListener("click", ()=>{
-      reviewerSel.value="all"; statusSel.value="all"; applyFilters();
-    });
-
-    function applyFilters(){
-      const r = reviewerSel.value;
-      const s = statusSel.value;
-      let filtered = tasks.slice();
-      if(r!=="all"){
-        filtered = filtered.filter(t=> t.reviewer === r || (r==="cross" && t.reviewer==="cross"));
+async function initState() {
+  // Step 1: try data.json
+  try {
+    const resp = await fetch('data.json');
+    if (resp.ok) {
+      const data = await resp.json();
+      if (data && data.reviewers && data.tasks) {
+        state = data;
+        renderAll();
+        return;
       }
-      if(s!=="all"){
-        filtered = filtered.filter(t=> t.status === s);
-      }
-      render(filtered);
     }
+  } catch(e) {}
+  // Step 2: localStorage
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (data && data.reviewers && data.tasks) {
+        state = data;
+        renderAll();
+        return;
+      }
+    }
+  } catch(e) {}
+  // Step 3: defaults
+  state = { reviewers: JSON.parse(JSON.stringify(DEFAULT_REVIEWERS)), tasks: JSON.parse(JSON.stringify(DEFAULT_TASKS)) };
+  saveToStorage();
+  renderAll();
+}
 
-    // initial render
-    render(tasks);
+function saveToStorage() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
 
-  </script>
+function exportState() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'data.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// ================================================================
+// TAB NAVIGATION
+// ================================================================
+function showTab(name) {
+  ['reviewers','tasks','analytics'].forEach(t => {
+    document.getElementById('panel-'+t).classList.toggle('hidden', t!==name);
+    const btn = document.getElementById('tab-'+t);
+    btn.className = btn.className.replace(/tab-active|tab-inactive/g,'');
+    btn.classList.add(t===name ? 'tab-active' : 'tab-inactive');
+  });
+  if (name === 'analytics') renderAnalytics();
+}
+
+// ================================================================
+// MODULE 1: REVIEWERS
+// ================================================================
+function statusBadgeReviewer(s) {
+  if(s==='Mitigado') return '<span class="badge-resolved text-xs px-2 py-0.5 rounded-full font-semibold">✔ Mitigado</span>';
+  if(s==='En Análisis') return '<span class="badge-analysis text-xs px-2 py-0.5 rounded-full font-semibold">⏳ En Análisis</span>';
+  return '<span class="badge-pending text-xs px-2 py-0.5 rounded-full font-semibold">✖ Pendiente</span>';
+}
+
+function renderReviewers() {
+  const tbody = document.getElementById('reviewersTbody');
+  tbody.innerHTML = state.reviewers.map(r => `
+    <tr class="hover:bg-slate-900 transition-colors">
+      <td class="px-4 py-3 text-xs text-cyan-400 font-mono whitespace-nowrap">${r.id}</td>
+      <td class="px-4 py-3 text-slate-300 text-sm leading-snug max-w-xs">${escHtml(r.body)}</td>
+      <td class="px-4 py-3">
+        <select class="text-xs" onchange="updateReviewerStatus('${r.id}', this.value)">
+          ${['Pendiente','En Análisis','Mitigado'].map(s=>`<option ${r.status===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </td>
+      <td class="px-4 py-3">
+        <select class="text-xs" onchange="updateReviewerAssignee('${r.id}', this.value)">
+          ${['SapoMarapo','Flagugu','Homo','Negriche'].map(p=>`<option ${r.assignee===p?'selected':''}>${p}</option>`).join('')}
+        </select>
+      </td>
+      <td class="px-4 py-3">
+        <input type="text" class="text-xs w-full" value="${escHtml(r.note||'')}" placeholder="Nota rápida…" onblur="updateReviewerNote('${r.id}', this.value)"/>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function updateReviewerStatus(id, val) {
+  const r = state.reviewers.find(x=>x.id===id);
+  if(r){ r.status=val; saveToStorage(); }
+}
+function updateReviewerAssignee(id, val) {
+  const r = state.reviewers.find(x=>x.id===id);
+  if(r){ r.assignee=val; saveToStorage(); }
+}
+function updateReviewerNote(id, val) {
+  const r = state.reviewers.find(x=>x.id===id);
+  if(r){ r.note=val; saveToStorage(); }
+}
+
+// ================================================================
+// CHANGELOG TIMELINE
+// ================================================================
+async function loadChangelog() {
+  const el = document.getElementById('changelogTimeline');
+  const paths = ['../Changelog.md', 'Changelog.md'];
+  let raw = null;
+  for (const p of paths) {
+    try {
+      const resp = await fetch(p);
+      if (resp.ok) { raw = await resp.text(); break; }
+    } catch(e) {}
+  }
+  if (!raw) {
+    el.innerHTML = `<div class="bg-amber-950 border border-amber-700 rounded-xl p-4 text-amber-300 text-sm">
+      ⚠️ No se pudo cargar <code>Changelog.md</code>. Asegúrate de que el archivo existe y sigue el formato definido en <code>AGENTS.MD</code>, o que el servidor sirve los archivos correctamente desde el directorio raíz del repositorio.</div>`;
+    return;
+  }
+  const entries = parseChangelog(raw);
+  if (!entries.length) {
+    el.innerHTML = `<div class="bg-amber-950 border border-amber-700 rounded-xl p-4 text-amber-300 text-sm">⚠️ El archivo <code>Changelog.md</code> no contiene entradas en el formato esperado (<code>## [FECHA] - Tarea #N: …</code>).</div>`;
+    return;
+  }
+  el.innerHTML = `<div class="relative pl-8">`+
+    entries.map((e,i) => `
+    <div class="relative mb-6">
+      ${i<entries.length-1?'<div class="timeline-line"></div>':''}
+      <div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-cyan-900 border-2 border-cyan-500 flex items-center justify-center text-xs text-cyan-300 font-bold">${entries.length-i}</div>
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <span class="text-cyan-400 text-xs font-mono">${escHtml(e.date)}</span>
+          <span class="text-slate-200 text-sm font-semibold">${escHtml(e.title)}</span>
+        </div>
+        ${e.reviewerComment?`<p class="text-xs text-slate-400 mb-1"><span class="text-slate-500 font-semibold">Reviewer Comment:</span> ${escHtml(e.reviewerComment)}</p>`:''}
+        ${e.changeMade?`<p class="text-xs text-slate-400 mb-1"><span class="text-slate-500 font-semibold">Change Made:</span> ${escHtml(e.changeMade)}</p>`:''}
+        ${e.justification?`<p class="text-xs text-slate-400"><span class="text-slate-500 font-semibold">Justification:</span> ${escHtml(e.justification)}</p>`:''}
+      </div>
+    </div>`).join('')+`</div>`;
+}
+
+function parseChangelog(raw) {
+  const blockRe = /^## \[([^\]]+)\]\s*-\s*(.+)$/m;
+  const sections = raw.split(/^(?=## \[)/m).filter(s => blockRe.test(s));
+  return sections.map(s => {
+    const hm = s.match(blockRe);
+    const date = hm ? hm[1] : '';
+    const title = hm ? hm[2] : '';
+    const field = (label) => {
+      const re = new RegExp('\\* \\*\\*'+label+':\\*\\*\\s*([\\s\\S]*?)(?=\\n\\* \\*\\*|$)','i');
+      const m = s.match(re);
+      return m ? m[1].replace(/\n/g,' ').trim() : '';
+    };
+    return { date, title, reviewerComment: field('Reviewer Comment'), changeMade: field('Change Made'), justification: field('Justification') };
+  }).filter(e => e.date);
+}
+
+// ================================================================
+// MODULE 2: TASKS CRUD
+// ================================================================
+function populateRefFilter() {
+  const sel = document.getElementById('fRef');
+  const sel2 = document.getElementById('mRef');
+  const refs = [...new Set(state.reviewers.map(r=>r.id))];
+  [sel, sel2].forEach(s => {
+    if (!s) return;
+    const prev = s.value;
+    s.innerHTML = (s===sel?'<option value="">Todas</option>':'')+refs.map(r=>`<option value="${r}">${r}</option>`).join('');
+    if (prev) s.value = prev;
+  });
+}
+
+function taskStatusBadge(s) {
+  if(s==='Done') return '<span class="badge-done text-xs px-2 py-0.5 rounded-full font-semibold">✔ Done</span>';
+  if(s==='In Progress') return '<span class="badge-inprogress text-xs px-2 py-0.5 rounded-full font-semibold">⏳ In Progress</span>';
+  return '<span class="badge-todo text-xs px-2 py-0.5 rounded-full font-semibold">☐ To Do</span>';
+}
+
+function renderTasks() {
+  const fStatus = document.getElementById('fStatus').value;
+  const fPerson = document.getElementById('fPerson').value;
+  const fRef = document.getElementById('fRef').value;
+  let tasks = state.tasks.slice();
+  if (fStatus) tasks = tasks.filter(t => t.status === fStatus);
+  if (fPerson) tasks = tasks.filter(t => t.assignees && t.assignees.includes(fPerson));
+  if (fRef) tasks = tasks.filter(t => t.ref === fRef);
+
+  const grid = document.getElementById('tasksGrid');
+  const empty = document.getElementById('tasksEmpty');
+  if (!tasks.length) { grid.innerHTML = ''; empty.classList.remove('hidden'); return; }
+  empty.classList.add('hidden');
+  grid.innerHTML = tasks.map(t => `
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col gap-2 hover:border-slate-700 transition-colors">
+      <div class="flex items-start justify-between gap-2">
+        <span class="text-xs font-mono text-cyan-500">${escHtml(t.id)}</span>
+        ${taskStatusBadge(t.status)}
+      </div>
+      <p class="text-sm font-semibold text-slate-100 leading-snug">${escHtml(t.title)}</p>
+      ${t.desc?`<p class="text-xs text-slate-500 leading-relaxed">${escHtml(t.desc)}</p>`:''}
+      <div class="flex flex-wrap gap-1 mt-1">
+        ${(t.assignees||[]).map(a=>`<span class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full border border-slate-700">${escHtml(a)}</span>`).join('')}
+        ${t.ref?`<span class="text-xs bg-cyan-950 text-cyan-400 px-2 py-0.5 rounded-full border border-cyan-900 ml-auto">${escHtml(t.ref)}</span>`:''}
+      </div>
+      <div class="flex gap-2 mt-1 justify-end">
+        <button onclick="openTaskModal('${t.id}')" class="text-xs text-slate-400 hover:text-white underline">Editar</button>
+        <button onclick="deleteTask('${t.id}')" class="text-xs text-red-500 hover:text-red-300 underline">Eliminar</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function resetFilters() {
+  document.getElementById('fStatus').value = '';
+  document.getElementById('fPerson').value = '';
+  document.getElementById('fRef').value = '';
+  renderTasks();
+}
+
+function openTaskModal(id) {
+  editingTaskId = id;
+  const modal = document.getElementById('taskModal');
+  const t = id ? state.tasks.find(x=>x.id===id) : null;
+  document.getElementById('modalTitle').textContent = id ? 'Editar Tarea' : 'Nueva Tarea';
+  document.getElementById('mTitle').value = t ? t.title : '';
+  document.getElementById('mDesc').value = t ? (t.desc||'') : '';
+  document.getElementById('mStatus').value = t ? t.status : 'To Do';
+  populateRefFilter();
+  document.getElementById('mRef').value = t ? (t.ref||'') : '';
+  document.querySelectorAll('.mAssignee').forEach(cb => {
+    cb.checked = t ? (t.assignees||[]).includes(cb.value) : false;
+  });
+  modal.classList.remove('hidden');
+}
+
+function closeTaskModal() {
+  document.getElementById('taskModal').classList.add('hidden');
+  editingTaskId = null;
+}
+
+function saveTask() {
+  const title = document.getElementById('mTitle').value.trim();
+  if (!title) { alert('El título es requerido.'); return; }
+  const assignees = [...document.querySelectorAll('.mAssignee:checked')].map(c=>c.value);
+  if (!assignees.length) { alert('Debes asignar al menos un responsable del equipo.'); return; }
+  const data = {
+    title,
+    desc: document.getElementById('mDesc').value.trim(),
+    status: document.getElementById('mStatus').value,
+    ref: document.getElementById('mRef').value,
+    assignees,
+  };
+  if (editingTaskId) {
+    const idx = state.tasks.findIndex(t=>t.id===editingTaskId);
+    if (idx>=0) state.tasks[idx] = {...state.tasks[idx], ...data};
+  } else {
+    data.id = 'T'+String(Date.now()).slice(-6);
+    state.tasks.push(data);
+  }
+  saveToStorage();
+  closeTaskModal();
+  renderTasks();
+}
+
+function deleteTask(id) {
+  if (!confirm('¿Eliminar esta tarea?')) return;
+  state.tasks = state.tasks.filter(t=>t.id!==id);
+  saveToStorage();
+  renderTasks();
+}
+
+// ================================================================
+// MODULE 3: ANALYTICS
+// ================================================================
+function renderAnalytics() {
+  const total = state.reviewers.length;
+  const resolved = state.reviewers.filter(r=>r.status==='Mitigado').length;
+  const rate = total > 0 ? Math.round(resolved/total*100) : 0;
+  const pendingTasks = state.tasks.filter(t=>t.status!=='Done').length;
+  document.getElementById('kpiResRate').textContent = rate+'%';
+  document.getElementById('kpiResolved').textContent = resolved+'/'+total;
+  document.getElementById('kpiPending').textContent = pendingTasks;
+  document.getElementById('kpiTotal').textContent = state.tasks.length;
+
+  const team = ['SapoMarapo','Flagugu','Homo','Negriche'];
+  const todoData = team.map(p=>state.tasks.filter(t=>t.status==='To Do'&&(t.assignees||[]).includes(p)).length);
+  const inprogressData = team.map(p=>state.tasks.filter(t=>t.status==='In Progress'&&(t.assignees||[]).includes(p)).length);
+  const doneData = team.map(p=>state.tasks.filter(t=>t.status==='Done'&&(t.assignees||[]).includes(p)).length);
+
+  const ctx = document.getElementById('teamChart').getContext('2d');
+  if (chartInstance) chartInstance.destroy();
+  chartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: team,
+      datasets: [
+        {label:'To Do',data:todoData,backgroundColor:'#ef4444',borderRadius:4},
+        {label:'In Progress',data:inprogressData,backgroundColor:'#f59e0b',borderRadius:4},
+        {label:'Done',data:doneData,backgroundColor:'#10b981',borderRadius:4},
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color:'#e2e8f0', font:{size:12} } },
+      },
+      scales: {
+        x: { stacked:true, ticks:{color:'#94a3b8'}, grid:{color:'#1e293b'} },
+        y: { stacked:true, ticks:{color:'#94a3b8',stepSize:1}, grid:{color:'#1e293b'} }
+      }
+    }
+  });
+}
+
+// ================================================================
+// UTILS
+// ================================================================
+function escHtml(t){ return (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function renderAll() {
+  populateRefFilter();
+  renderReviewers();
+  renderTasks();
+  loadChangelog();
+}
+
+// ================================================================
+// INIT
+// ================================================================
+initState();
+</script>
 </body>
 </html>

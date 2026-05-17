@@ -20,6 +20,28 @@ Specifically, the following changes were made:
 
 ---
 
+## Reviewer 1, Comment 1
+
+**Reviewer Comment:** The Introduction section needs to be significantly improved. The authors have not adequately elaborated on the current state of the art in related research. As a result, reviewers lack sufficient horizontal comparisons and are unable to judge the advancement of the proposed method.
+
+**Change made:** *Location: Section 1 (Introduction), final paragraphs.*
+> "Building upon this theoretical foundation, \citet{KamaliSarvestani2013} developed a computational network model that operationalizes these selection mechanics... The remainder of this article is organized as follows: Section 2 details the methodology..."
+
+**Justification:** The Introduction has been thoroughly reinforced by linking the theoretical foundation of bio-inspired action selection directly to the specific computational model implemented in this work. Additionally, a formal structural paragraph has been appended to the end of the section to map out the contents of the manuscript, providing the clear, organized, and progressive flow requested by the reviewer to facilitate horizontal comparison and judgment of our methodological advancement.
+
+---
+
+## Reviewer 1, Comment 5
+
+**Reviewer Comment:** In Section 2.2, the sentence "Additionally, to orient the simulation toward infrastructure-inspection applications, a representative industrial-building scenario was included, where the platform executed movements through different spaces." is not demonstrated or supported in the paper.
+
+**Change made:** *Location: Section 2.2 (Gazebo Simulation) paragraph.*
+> "To systematically evaluate the performance of the neural arbitration network, the multi-body physical simulations were strictly restricted to structured topographies, including calibrated inclines, procedurally generated Perlin-noise surfaces, and simple non-dynamic obstacles. This layout ensures a highly controlled and reproducible virtual environment to validate the algorithmic response of the controller before its embedded physical implementation."
+
+**Justification:** The reviewer is entirely correct; the mention of a representative industrial-building scenario was a legacy statement from an early design draft and was not supported by the empirical results. The sentence has been completely replaced. The new text explicitly clarifies that the simulation boundaries were restricted to structured, non-dynamic topographies (ramps, Perlin noise, and simple obstacles) to match the exact validation pipeline presented in the results, ensuring absolute methodological consistency and transparency.
+
+---
+
 ## Reviewer 1, Comment 2
 
 **Reviewer Comment:**  
