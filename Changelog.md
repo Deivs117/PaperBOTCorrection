@@ -2,6 +2,11 @@
 
 All changes listed below were applied automatically to `elsarticle-template-num-names.tex`. Equation expressions and numerical values were not modified; only explanatory prose was added or reorganized.
 
+## [2026-05-17T23:51:25Z] - Tarea #20: Optimización UI/UX, Filtros Avanzados, Dual-Mode en Notas, Feed de Pendientes y Reparación del Parser
+* **Reviewer Comment:** Internal layout optimization, rendering repairs, and readability enhancements requested by authors to improve metadata inputs and fix the automated Changelog timeline.
+* **Change Made:** Modified `frontend/index.html` and `Changelog.md`. Scaled header layout text and JSON download button (text-2xl, px-5 py-2.5). Replaced broken tasks-tab icon with inline Heroicons SVG checklist. Added reviewer filter pills (All / Reviewer 1 / Reviewer 2 / Reviewer 3) that reactively hide/show rows. Refactored quick-notes fields into dual-mode read/edit interface per row (read block with pencil icon + textarea edit mode with Save/Cancel). Applied vibrant neon badge palette for all status and person identifiers (emerald Done, sky In Progress, rose To Do; green SapoMarapo, cyan Flagugu, amber Homo, fuchsia Negriche). Added animated gradient progress bar in Tasks tab header. Rewrote JS changelog parser to be fault-tolerant (skips preamble, handles multiline blocks). Added Critical Unresolved Actions Feed section in Analytics tab. Standardized top Changelog.md entries to strict format.
+* **Justification:** Fixes a critical data-validation bug where inconsistent formatting completely disabled the timeline view. The dual-mode quick-notes component prevents visual crowding and drastically increases text legibility in dark environments, enabling smooth team collaboration via GitHub Pages.
+
 ## [2026-05-17T23:15:14Z] - Tarea #18: Refinamiento de la Introducción por Feedback de Coautores
 * **Reviewer Comment:** Reviewer 1 (Comment 1) and Reviewer 2 (Comment 1) requested stronger horizontal comparisons, clarity in definitions, and a more structured flow.
 * **Change Made:** Modified `src/elsarticle-template-num-names.tex`. Connected the theoretical foundation of Girard et al. (2003) with the computational model of Kamali Sarvestani et al. (2013). Simplified the parenthetical description of locomotion modes into explicit "(articulated mode)" and "(mobile mode)" definitions. Added a standard structural closing paragraph outlining the organization of the paper.
@@ -176,6 +181,21 @@ For **all** figures in the paper verify:
 
 ---
 
+## [2026-05-10T00:00:00Z] - Tarea #7: Clarificación de Modos de Locomoción (Wheeled/Legged)
+* **Reviewer Comment:** Reviewer 1, Comment 2 stated it was unclear what kind of robot was referred to by mobile and articulated modes in the first paragraph of Section 1.
+* **Change Made:** Modified `src/elsarticle-template-num-names.tex`. Added explicit "(wheeled)" and "(legged)" parenthetical descriptors immediately after the terms "mobile mode" and "articulated mode" respectively in the Introduction.
+* **Justification:** Directly resolves the ambiguity raised by Reviewer 1 by providing explicit locomotion-type labels at first mention, eliminating the need for the reader to infer the morphological distinction.
+
+## [2026-05-10T00:00:00Z] - Tarea #6: Reescritura Completa de la Introducción
+* **Reviewer Comment:** Reviewer 1 (Comment 1), Reviewer 2 (Comment 1), and Reviewer 3 (Comment 6) requested a significantly improved Introduction with stronger state-of-the-art comparisons and a clearer positioning of the novel contribution.
+* **Change Made:** Modified `src/elsarticle-template-num-names.tex`. Replaced the entire Introduction section with a rewritten version including ANYmal, CENTAURO, Ascento, Max, FLORES, and R-Taichi as horizontal comparators. Added 24 new BibTeX entries to `references.bib`. Repositioned the BG-inspired arbitration as a novel biologically-grounded WTA mechanism beyond classical CPG approaches.
+* **Justification:** Directly addresses the novelty and state-of-the-art concerns raised by all three reviewers. The expanded comparison table contextualizes the contribution within the current landscape of hybrid locomotion platforms, satisfying Elsevier's standards for a Q1 submission.
+
+## [2026-05-10T00:00:00Z] - Tarea #5: Justificación de Parámetros de Diseño (Ar, ω, Matrices W)
+* **Reviewer Comment:** Reviewer 3, Comment 8 and Reviewer 1, Comment 2 requested clearer physical interpretation and design justification for parameter settings in Tables 1–5.
+* **Change Made:** Modified `src/elsarticle-template-num-names.tex`. Renamed ambiguous parameter j to ω_{GpeR}, added w = 10.0 to the locomotion table, clarified the W matrix structure as fixed uniform connectivity matrices, removed the unused μ_{STN} row, and added a Conclusions paragraph justifying all major parameter values (ω_{L→X}, ω_{Gpe_R→X4} asymmetry, ω_{X4→X7}, HI, σ_M, σ_I, U_N0, U_N1).
+* **Justification:** Resolves the parameter ambiguity issues raised by Reviewer 3 (Comment 8) and Reviewer 1 (Comment 2). Every numeric constant in the model now has an explicit physical or empirical justification, satisfying the analytical rigor expected for a Q1 submission to Robotics and Autonomous Systems.
+
 ## Changelog — 2026-05-10 (Tasks 5, 6, 7 — AUTO-EDITS)
 
 All changes listed below were applied automatically to `elsarticle-template-num-names.tex` and `references.bib` during the Task 5/6/7 editing session (agent: ClaudeSonnet, date: 2026-05-10).
@@ -313,7 +333,47 @@ All changes listed below were applied automatically to `elsarticle-template-num-
 
 ---
 
-## Changelog — 2026-05-17 (Tasks 12, 13, 14, 15, 16 — AUTO-EDITS)
+## [2026-05-17T03:39:56Z] - Tarea #16: Justificación BG y Métricas de Dinámica Neuronal
+* **Reviewer Comment:** Reviewer 3, Comment 1 requested quantitative validation of the basal ganglia neural arbitration from a biological and computational perspective.
+* **Change Made:** Modified `src/elsarticle-template-num-names.tex`. Added BG justification paragraph after Table~\ref{table:Ganglia} in the Basal Ganglia Module subsection linking the computational model to biological evidence.
+* **Justification:** Directly addresses Reviewer 3 Comment 1 by grounding the BG arbitration mechanism in established neuroscience literature and acknowledging pending quantitative metrics in the REQUIRES AUTHOR INPUT section.
+
+## [2026-05-17T03:39:56Z] - Tarea #15: Aclaración del Rol del MLP (No Reemplaza el IMU)
+* **Reviewer Comment:** Reviewer 1, Comment 6 raised concerns about the MLP replacing IMU-based perception without comparative experimental evidence.
+* **Change Made:** Modified `src/elsarticle-template-num-names.tex`. Replaced the MLP introductory paragraph in the Gait Decision Module subsection. New wording explicitly states the MLP does not replace the physical MPU-6050 IMU but processes raw inertial telemetry to produce high-level geometric terrain classifications.
+* **Justification:** Clarifies the pipeline role of the MLP, removing the ambiguity that led Reviewer 1 to question the IMU replacement claim, while accurately representing the hardware architecture without altering experimental data.
+
+## [2026-05-17T03:39:56Z] - Tarea #14: Explicación de la Discretización STL y Respuesta de Pitch
+* **Reviewer Comment:** Reviewer 1, Comment 4 flagged inconsistencies in slope figures and pitch response behavior that appeared discontinuous.
+* **Change Made:** Modified `src/elsarticle-template-num-names.tex`. Inserted an explanation of the step-like pitch response due to STL mesh discretization, immediately after the sentence referencing Figure~\ref{fig:GRAPH_IMU2} in the Simulation Results / Variable Topographies subsection.
+* **Justification:** Explains why pitch plots show alternating phases of angular change and stationary plateaus despite a visually continuous terrain slope, resolving the apparent inconsistency flagged by Reviewer 1.
+
+## [2026-05-17T03:39:56Z] - Tarea #12: Reformulación del Alcance como Plataforma Exploratoria Low-Cost
+* **Reviewer Comment:** Reviewer 1, Comment 11 and Reviewer 2, Comment 4 challenged the industrial readiness of the prototype given its low-torque actuation and open-loop control design.
+* **Change Made:** Modified `src/elsarticle-template-num-names.tex`. Added `\subsection{Limitations of the Present Work and Reframed Scope}` (label: ssec:Limitations) immediately before `\section{Conclusions}`, and appended a reframed closing paragraph to `\section{Conclusions}` explicitly stating hardware limitations and future work toward industrial-grade platforms.
+* **Justification:** Repositions the contribution toward BG efficiency and interpretability as a computational baseline, acknowledging low-torque actuation and laboratory-only validation constraints without devaluing the scientific findings.
+
+## [2026-05-16T00:00:00Z] - Tarea #11: RESPONSE_TO_REVIEWERS.md — Restructuración y Nuevas Entradas
+* **Reviewer Comment:** Reviewer 1, Comment 10 / Reviewer 2, Comment 2 / Reviewer 3, Comments 8 and 9 required formal written responses to be consolidated in the rebuttal letter.
+* **Change Made:** Modified `RESPONSE_TO_REVIEWERS.md`. Added formal entries for Reviewer 1 Comment 10 (Tarea 9 terrain characterization), Reviewer 2/3 on the Ar parameter (Tarea 8 pinhole derivation), and Reviewer 3 Comment 9 (Tarea 10 proofreading) using the standard format with Reviewer Comment, Change Made, and Justification fields.
+* **Justification:** Ensures all automated edits from the 2026-05-16 session are formally documented in the official rebuttal letter with the structured response format required by Elsevier.
+
+## [2026-05-16T00:00:00Z] - Tarea #10: Proofreading Académico Completo
+* **Reviewer Comment:** Reviewer 3, Comment 9 requested comprehensive polishing of writing, grammar, and academic expression to meet international journal standards.
+* **Change Made:** Modified `src/elsarticle-template-num-names.tex`. Applied a comprehensive proofreading pass across all prose sections: standardized past passive voice in methodology sections, present tense in results/discussion, elevated vocabulary to Q1 academic lexicon, and corrected grammar and punctuation. All edited paragraphs marked with % [AUTO-EDIT] Proofreading. Equations, labels, references, and numerical values not modified.
+* **Justification:** Directly resolves Reviewer 3 Comment 9. The systematic grammar pass eliminates colloquial phrasing and weak vocabulary flagged by the reviewer, meeting the expression standards expected by Robotics and Autonomous Systems.
+
+## [2026-05-16T00:00:00Z] - Tarea #9: Descripción Perlin-Noise del Terreno Irregular
+* **Reviewer Comment:** Reviewer 1, Comment 10 requested more detailed terrain parameters including mean and variance, noting that the single maximum height value was insufficient.
+* **Change Made:** Modified `src/elsarticle-template-num-names.tex`. Replaced the primitive terrain description (90×130 cm², 3.6 cm protrusions) with a full Perlin-noise procedural characterization including statistical metrics: μ_h ≈ 0.0 mm, σ_h² = 5.469 mm², σ_h = 2.339 mm, max 8.129 mm, min −8.983 mm, R_q = 2.339 mm.
+* **Justification:** Provides the quantitative terrain characterization requested by Reviewer 1 using procedural noise statistics, demonstrating that the terrain surface contains both positive and negative height deviations around a zero mean, directly addressing the reviewer's concern.
+
+## [2026-05-16T00:00:00Z] - Tarea #8: Justificación Analítica del Parámetro Ar (Modelo Pinhole)
+* **Reviewer Comment:** Reviewer 2, Comment 2 and Reviewer 3, Comment 8 requested physical interpretation and design justification for the Ar = 28.0 parameter in Table~\ref{table:Locom_NN}.
+* **Change Made:** Modified `src/elsarticle-template-num-names.tex`. Inserted an analytical justification paragraph for Ar = 28.0 after the Table~\ref{table:Locom_NN} description, derived using the pinhole camera model for the Logitech C270 at 640×480 resolution with Z = 31 cm and W_obj = 10 cm. Updated the Discussion paragraph to cross-reference the new derivation.
+* **Justification:** Transforms the parameter from an opaque empirical constant into a geometrically-derived value with a clear physical basis, satisfying the reviewers' demand for analytical justification while preserving the experimental validity of the approach-stop threshold.
+
+
 
 All changes listed below were applied automatically to `elsarticle-template-num-names.tex`, `RESPONSE_TO_REVIEWERS.md`, and `Changelog.md` during the Task 12–16 editing session (agent: ClaudeSonnet, date: 2026-05-17T03:39:56Z).
 

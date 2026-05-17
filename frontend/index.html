@@ -11,18 +11,36 @@
     .tab-active{border-bottom:2px solid #06b6d4;color:#e2e8f0;}
     .tab-inactive{border-bottom:2px solid transparent;color:#64748b;}
     .timeline-line{position:absolute;left:12px;top:24px;bottom:0;width:2px;background:#1e293b;}
-    .badge-pending{background:#450a0a;color:#fca5a5;border:1px solid #7f1d1d;}
-    .badge-analysis{background:#451a03;color:#fcd34d;border:1px solid #78350f;}
-    .badge-resolved{background:#052e16;color:#86efac;border:1px solid #14532d;}
-    .badge-todo{background:#3b0764;color:#d8b4fe;border:1px solid #581c87;}
-    .badge-inprogress{background:#451a03;color:#fcd34d;border:1px solid #78350f;}
-    .badge-done{background:#052e16;color:#86efac;border:1px solid #14532d;}
+    /* Reviewer status badges */
+    .badge-pending{background:rgba(244,63,94,0.15);color:#fb7185;border:1px solid rgba(244,63,94,0.3);}
+    .badge-analysis{background:rgba(251,191,36,0.15);color:#fbbf24;border:1px solid rgba(251,191,36,0.3);}
+    .badge-resolved{background:rgba(52,211,153,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3);}
+    /* Task status badges */
+    .badge-todo{background:rgba(244,63,94,0.15);color:#fb7185;border:1px solid rgba(244,63,94,0.3);}
+    .badge-inprogress{background:rgba(56,189,248,0.15);color:#38bdf8;border:1px solid rgba(56,189,248,0.3);}
+    .badge-done{background:rgba(52,211,153,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3);}
+    /* Reviewer filter pills */
+    .reviewer-pill-active{background:rgba(6,182,212,0.2);color:#22d3ee;border-color:rgba(6,182,212,0.5);}
+    .reviewer-pill-inactive{background:transparent;color:#64748b;border-color:#334155;}
+    .reviewer-pill-inactive:hover{color:#cbd5e1;border-color:#475569;}
+    /* Person colors */
+    .person-sapomarapo{color:#4ade80;}
+    .person-flagugu{color:#22d3ee;}
+    .person-homo{color:#fbbf24;}
+    .person-negriche{color:#e879f9;}
+    .badge-sapomarapo{background:rgba(74,222,128,0.1);color:#4ade80;border:1px solid rgba(74,222,128,0.2);}
+    .badge-flagugu{background:rgba(34,211,238,0.1);color:#22d3ee;border:1px solid rgba(34,211,238,0.2);}
+    .badge-homo{background:rgba(251,191,36,0.1);color:#fbbf24;border:1px solid rgba(251,191,36,0.2);}
+    .badge-negriche{background:rgba(232,121,249,0.1);color:#e879f9;border:1px solid rgba(232,121,249,0.2);}
     select,input,textarea{background:#0f172a;color:#e2e8f0;border:1px solid #334155;border-radius:6px;padding:6px 10px;}
     select:focus,input:focus,textarea:focus{outline:2px solid #06b6d4;outline-offset:1px;}
     .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:50;display:flex;align-items:center;justify-content:center;}
     ::-webkit-scrollbar{width:6px;height:6px}
     ::-webkit-scrollbar-track{background:#0f172a}
     ::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+    /* Dual-mode note */
+    .note-read-block{background:rgba(15,23,42,0.5);border:1px solid #1e293b;border-radius:6px;padding:8px 10px;font-style:italic;color:#94a3b8;font-size:0.75rem;line-height:1.5;min-height:36px;cursor:pointer;}
+    .note-read-block:hover{border-color:#334155;}
   </style>
 </head>
 <body class="bg-slate-950 text-slate-200 min-h-screen font-sans antialiased">
@@ -36,15 +54,20 @@
 <!-- ===== NAVBAR ===== -->
 <nav class="bg-zinc-900 border-b border-slate-800 px-4 flex items-center justify-between sticky top-0 z-40">
   <div class="flex items-center gap-3 py-3">
-    <span class="text-cyan-400 font-bold text-sm tracking-wide">🤖 PaperBOT</span>
+    <span class="text-cyan-400 font-bold text-2xl tracking-tight">🤖 PaperBOT</span>
     <span class="text-slate-600 text-xs hidden sm:inline">Deivs117/PaperBOTCorrection</span>
   </div>
   <div class="flex gap-1">
     <button onclick="showTab('reviewers')" id="tab-reviewers" class="tab-active px-3 py-4 text-sm font-medium transition-colors">👥 Revisiones</button>
-    <button onclick="showTab('tasks')" id="tab-tasks" class="tab-inactive px-3 py-4 text-sm font-medium transition-colors">�� Panel de Tareas</button>
+    <button onclick="showTab('tasks')" id="tab-tasks" class="tab-inactive px-3 py-4 text-sm font-medium transition-colors flex items-center gap-1.5">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+      </svg>
+      Panel de Tareas
+    </button>
     <button onclick="showTab('analytics')" id="tab-analytics" class="tab-inactive px-3 py-4 text-sm font-medium transition-colors">📊 Métricas</button>
   </div>
-  <button onclick="exportState()" class="bg-cyan-700 hover:bg-cyan-600 text-white text-xs font-semibold px-3 py-2 rounded-lg transition-colors">⬇ Exportar JSON</button>
+  <button onclick="exportState()" class="bg-cyan-700 hover:bg-cyan-500 text-white text-base font-semibold px-5 py-2.5 rounded-lg transition-colors shadow-lg shadow-cyan-900/40">⬇ Exportar JSON</button>
 </nav>
 
 <!-- ============================================================ -->
@@ -53,7 +76,16 @@
 <div id="panel-reviewers" class="p-4 max-w-7xl mx-auto">
 
   <!-- Petitions grid -->
-  <h2 class="text-lg font-semibold text-slate-100 mt-2 mb-4">👥 Peticiones de los Evaluadores</h2>
+  <h2 class="text-lg font-semibold text-slate-100 mt-2 mb-3">👥 Peticiones de los Evaluadores</h2>
+
+  <!-- Reviewer filter pills -->
+  <div class="flex flex-wrap gap-2 mb-4" id="reviewerFilterPills">
+    <button onclick="setReviewerFilter('')" data-filter="" class="reviewer-pill-active px-3 py-1 rounded-full text-xs font-semibold border transition-colors">Todos los Revisores</button>
+    <button onclick="setReviewerFilter('Reviewer 1')" data-filter="Reviewer 1" class="reviewer-pill-inactive px-3 py-1 rounded-full text-xs font-semibold border transition-colors">Reviewer 1</button>
+    <button onclick="setReviewerFilter('Reviewer 2')" data-filter="Reviewer 2" class="reviewer-pill-inactive px-3 py-1 rounded-full text-xs font-semibold border transition-colors">Reviewer 2</button>
+    <button onclick="setReviewerFilter('Reviewer 3')" data-filter="Reviewer 3" class="reviewer-pill-inactive px-3 py-1 rounded-full text-xs font-semibold border transition-colors">Reviewer 3</button>
+  </div>
+
   <div class="overflow-x-auto rounded-xl border border-slate-800">
     <table class="w-full text-sm">
       <thead class="bg-slate-900 text-slate-400 uppercase text-xs">
@@ -85,6 +117,17 @@
   <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
     <h2 class="text-lg font-semibold text-slate-100">📋 Panel Operativo de Tareas</h2>
     <button onclick="openTaskModal(null)" class="bg-cyan-700 hover:bg-cyan-600 text-white text-xs font-semibold px-4 py-2 rounded-lg">+ Nueva Tarea</button>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="mb-5">
+    <div class="flex items-center justify-between mb-1">
+      <span class="text-xs text-slate-400 font-medium">Progreso General de Tareas</span>
+      <span id="taskProgressPct" class="text-xs font-bold text-indigo-300">0%</span>
+    </div>
+    <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
+      <div id="taskProgressBar" class="h-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-500" style="width:0%"></div>
+    </div>
   </div>
 
   <!-- Filters -->
@@ -155,6 +198,15 @@
       <canvas id="teamChart"></canvas>
     </div>
   </div>
+
+  <!-- Critical Unresolved Actions Feed -->
+  <div class="mt-8">
+    <h3 class="text-base font-bold text-rose-400 mb-4 flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+      Critical Unresolved Actions Feed
+    </h3>
+    <div id="criticalFeed" class="grid sm:grid-cols-2 gap-4"></div>
+  </div>
 </div>
 
 <!-- ============================================================ -->
@@ -210,6 +262,7 @@
 let state = { reviewers: [], tasks: [] };
 let editingTaskId = null;
 let chartInstance = null;
+let activeReviewerFilter = '';
 
 const STORAGE_KEY = 'paperbot_dashboard_state';
 
@@ -324,22 +377,61 @@ function showTab(name) {
     btn.classList.add(t===name ? 'tab-active' : 'tab-inactive');
   });
   if (name === 'analytics') renderAnalytics();
+  if (name === 'tasks') renderTaskProgress();
 }
 
 // ================================================================
 // MODULE 1: REVIEWERS
 // ================================================================
+
+// Reviewer filter
+function setReviewerFilter(val) {
+  activeReviewerFilter = val;
+  document.querySelectorAll('[data-filter]').forEach(btn => {
+    const isActive = btn.dataset.filter === val;
+    btn.className = btn.className.replace(/reviewer-pill-active|reviewer-pill-inactive/g,'');
+    btn.classList.add(isActive ? 'reviewer-pill-active' : 'reviewer-pill-inactive');
+  });
+  renderReviewers();
+}
+
+function personBadgeClass(name) {
+  const map = {SapoMarapo:'badge-sapomarapo', Flagugu:'badge-flagugu', Homo:'badge-homo', Negriche:'badge-negriche'};
+  return map[name] || 'bg-slate-800 text-slate-300 border-slate-700';
+}
+
 function statusBadgeReviewer(s) {
   if(s==='Mitigado') return '<span class="badge-resolved text-xs px-2 py-0.5 rounded-full font-semibold">✔ Mitigado</span>';
   if(s==='En Análisis') return '<span class="badge-analysis text-xs px-2 py-0.5 rounded-full font-semibold">⏳ En Análisis</span>';
   return '<span class="badge-pending text-xs px-2 py-0.5 rounded-full font-semibold">✖ Pendiente</span>';
 }
 
+// Dual-mode note state per reviewer id
+const noteEditMode = {};
+
 function renderReviewers() {
   const tbody = document.getElementById('reviewersTbody');
-  tbody.innerHTML = state.reviewers.map(r => `
-    <tr class="hover:bg-slate-900 transition-colors">
-      <td class="px-4 py-3 text-xs text-cyan-400 font-mono whitespace-nowrap">${r.id}</td>
+  let rows = state.reviewers;
+  if (activeReviewerFilter) rows = rows.filter(r => r.reviewer === activeReviewerFilter);
+  tbody.innerHTML = rows.map(r => {
+    const isEditing = !!noteEditMode[r.id];
+    const noteHtml = isEditing
+      ? `<div class="flex flex-col gap-1">
+           <textarea id="noteTA_${r.id}" rows="3" class="text-xs w-full" style="min-width:160px">${escHtml(r.note||'')}</textarea>
+           <div class="flex gap-1 justify-end">
+             <button onclick="saveNote('${r.id}')" class="text-xs bg-emerald-700 hover:bg-emerald-600 text-white px-2 py-0.5 rounded">Guardar</button>
+             <button onclick="cancelNote('${r.id}')" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-300 px-2 py-0.5 rounded">Cancelar</button>
+           </div>
+         </div>`
+      : `<div class="flex items-start gap-1">
+           <div class="note-read-block flex-1" ondblclick="editNote('${r.id}')">${escHtml(r.note||'') || '<span class="text-slate-600 not-italic">Sin nota…</span>'}</div>
+           <button onclick="editNote('${r.id}')" title="Editar nota" class="text-slate-500 hover:text-cyan-400 mt-1 shrink-0">
+             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 012.828 2.828L11.828 15.828a2 2 0 01-1.414.586H9v-2a2 2 0 01.586-1.414z"/></svg>
+           </button>
+         </div>`;
+    return `
+    <tr class="hover:bg-slate-900/60 transition-colors">
+      <td class="px-4 py-3 text-xs text-cyan-400 font-mono whitespace-nowrap">${escHtml(r.id)}</td>
       <td class="px-4 py-3 text-slate-300 text-sm leading-snug max-w-xs">${escHtml(r.body)}</td>
       <td class="px-4 py-3">
         <select class="text-xs" onchange="updateReviewerStatus('${r.id}', this.value)">
@@ -351,11 +443,28 @@ function renderReviewers() {
           ${['SapoMarapo','Flagugu','Homo','Negriche'].map(p=>`<option ${r.assignee===p?'selected':''}>${p}</option>`).join('')}
         </select>
       </td>
-      <td class="px-4 py-3">
-        <input type="text" class="text-xs w-full" value="${escHtml(r.note||'')}" placeholder="Nota rápida…" onblur="updateReviewerNote('${r.id}', this.value)"/>
-      </td>
-    </tr>
-  `).join('');
+      <td class="px-4 py-3 w-56">${noteHtml}</td>
+    </tr>`;
+  }).join('');
+}
+
+function editNote(id) {
+  noteEditMode[id] = true;
+  renderReviewers();
+}
+
+function cancelNote(id) {
+  delete noteEditMode[id];
+  renderReviewers();
+}
+
+function saveNote(id) {
+  const ta = document.getElementById('noteTA_' + id);
+  if (!ta) return;
+  const r = state.reviewers.find(x => x.id === id);
+  if (r) { r.note = ta.value; saveToStorage(); }
+  delete noteEditMode[id];
+  renderReviewers();
 }
 
 function updateReviewerStatus(id, val) {
@@ -365,10 +474,6 @@ function updateReviewerStatus(id, val) {
 function updateReviewerAssignee(id, val) {
   const r = state.reviewers.find(x=>x.id===id);
   if(r){ r.assignee=val; saveToStorage(); }
-}
-function updateReviewerNote(id, val) {
-  const r = state.reviewers.find(x=>x.id===id);
-  if(r){ r.note=val; saveToStorage(); }
 }
 
 // ================================================================
@@ -412,19 +517,42 @@ async function loadChangelog() {
 }
 
 function parseChangelog(raw) {
+  // Skip any preamble: start parsing from the first '## [' token
+  const firstIdx = raw.indexOf('## [');
+  if (firstIdx < 0) return [];
+  const relevant = raw.slice(firstIdx);
+
+  // Split into blocks starting with ## [
+  const sections = relevant.split(/^(?=## \[)/m).filter(s => s.trim());
+
   const blockRe = /^## \[([^\]]+)\]\s*-\s*(.+)$/m;
-  const sections = raw.split(/^(?=## \[)/m).filter(s => blockRe.test(s));
+
+  // Fault-tolerant field extractor: captures text until the next bold-key bullet or end
+  const field = (block, label) => {
+    // Match: * **Label:** followed by one or more lines of content
+    const re = new RegExp(
+      '\\*\\s*\\*\\*' + label.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ':\\*\\*\\s*([\\s\\S]*?)(?=\\n\\s*\\*\\s*\\*\\*|\\n##\\s|$)',
+      'i'
+    );
+    const m = block.match(re);
+    if (!m) return '';
+    // Collapse internal newlines, trim
+    return m[1].replace(/\n/g,' ').replace(/\s+/g,' ').trim();
+  };
+
   return sections.map(s => {
     const hm = s.match(blockRe);
-    const date = hm ? hm[1] : '';
-    const title = hm ? hm[2] : '';
-    const field = (label) => {
-      const re = new RegExp('\\* \\*\\*'+label+':\\*\\*\\s*([\\s\\S]*?)(?=\\n\\* \\*\\*|$)','i');
-      const m = s.match(re);
-      return m ? m[1].replace(/\n/g,' ').trim() : '';
+    if (!hm) return null;
+    const date = hm[1].trim();
+    const title = hm[2].trim();
+    return {
+      date,
+      title,
+      reviewerComment: field(s, 'Reviewer Comment'),
+      changeMade: field(s, 'Change Made'),
+      justification: field(s, 'Justification'),
     };
-    return { date, title, reviewerComment: field('Reviewer Comment'), changeMade: field('Change Made'), justification: field('Justification') };
-  }).filter(e => e.date);
+  }).filter(e => e && e.date);
 }
 
 // ================================================================
@@ -448,7 +576,18 @@ function taskStatusBadge(s) {
   return '<span class="badge-todo text-xs px-2 py-0.5 rounded-full font-semibold">☐ To Do</span>';
 }
 
+function renderTaskProgress() {
+  const total = state.tasks.length;
+  const done = state.tasks.filter(t => t.status === 'Done').length;
+  const pct = total > 0 ? Math.round(done / total * 100) : 0;
+  const bar = document.getElementById('taskProgressBar');
+  const lbl = document.getElementById('taskProgressPct');
+  if (bar) bar.style.width = pct + '%';
+  if (lbl) lbl.textContent = pct + '% (' + done + '/' + total + ' Done)';
+}
+
 function renderTasks() {
+  renderTaskProgress();
   const fStatus = document.getElementById('fStatus').value;
   const fPerson = document.getElementById('fPerson').value;
   const fRef = document.getElementById('fRef').value;
@@ -470,7 +609,7 @@ function renderTasks() {
       <p class="text-sm font-semibold text-slate-100 leading-snug">${escHtml(t.title)}</p>
       ${t.desc?`<p class="text-xs text-slate-500 leading-relaxed">${escHtml(t.desc)}</p>`:''}
       <div class="flex flex-wrap gap-1 mt-1">
-        ${(t.assignees||[]).map(a=>`<span class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full border border-slate-700">${escHtml(a)}</span>`).join('')}
+        ${(t.assignees||[]).map(a=>`<span class="text-xs px-2 py-0.5 rounded-full border ${personBadgeClass(a)}">${escHtml(a)}</span>`).join('')}
         ${t.ref?`<span class="text-xs bg-cyan-950 text-cyan-400 px-2 py-0.5 rounded-full border border-cyan-900 ml-auto">${escHtml(t.ref)}</span>`:''}
       </div>
       <div class="flex gap-2 mt-1 justify-end">
@@ -565,9 +704,9 @@ function renderAnalytics() {
     data: {
       labels: team,
       datasets: [
-        {label:'To Do',data:todoData,backgroundColor:'#ef4444',borderRadius:4},
-        {label:'In Progress',data:inprogressData,backgroundColor:'#f59e0b',borderRadius:4},
-        {label:'Done',data:doneData,backgroundColor:'#10b981',borderRadius:4},
+        {label:'To Do',data:todoData,backgroundColor:'rgba(251,113,133,0.7)',borderRadius:4},
+        {label:'In Progress',data:inprogressData,backgroundColor:'rgba(56,189,248,0.7)',borderRadius:4},
+        {label:'Done',data:doneData,backgroundColor:'rgba(52,211,153,0.7)',borderRadius:4},
       ]
     },
     options: {
@@ -581,6 +720,57 @@ function renderAnalytics() {
       }
     }
   });
+
+  renderCriticalFeed();
+}
+
+function renderCriticalFeed() {
+  const feedEl = document.getElementById('criticalFeed');
+  if (!feedEl) return;
+
+  const openReviewers = state.reviewers.filter(r => r.status !== 'Mitigado');
+  const openTasks = state.tasks.filter(t => t.status === 'To Do' || t.status === 'In Progress');
+
+  if (!openReviewers.length && !openTasks.length) {
+    feedEl.innerHTML = `<div class="sm:col-span-2 text-center py-6 text-emerald-400 font-semibold text-sm">
+      🎉 All clear! No pending actions required.
+    </div>`;
+    return;
+  }
+
+  const reviewerCol = `
+    <div class="bg-slate-900 border border-rose-500/20 rounded-xl p-4">
+      <h4 class="text-xs font-bold text-rose-400 uppercase tracking-wide mb-3 flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-3 3-3-3z"/></svg>
+        Peticiones Abiertas (${openReviewers.length})
+      </h4>
+      <ul class="space-y-1.5">
+        ${openReviewers.map(r => `
+          <li class="flex items-center gap-2 text-xs">
+            <span class="font-mono text-cyan-500 shrink-0">${escHtml(r.id)}</span>
+            <span class="text-slate-400 truncate" title="${escHtml(r.body)}">${escHtml(r.body.slice(0,80))}${r.body.length>80?'…':''}</span>
+            <span class="shrink-0 ml-auto">${statusBadgeReviewer(r.status)}</span>
+          </li>`).join('')}
+      </ul>
+    </div>`;
+
+  const tasksCol = `
+    <div class="bg-slate-900 border border-sky-500/20 rounded-xl p-4">
+      <h4 class="text-xs font-bold text-sky-400 uppercase tracking-wide mb-3 flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+        Tareas Técnicas Pendientes (${openTasks.length})
+      </h4>
+      <ul class="space-y-1.5">
+        ${openTasks.map(t => `
+          <li class="flex items-center gap-2 text-xs">
+            <span class="font-mono text-cyan-500 shrink-0">${escHtml(t.id)}</span>
+            <span class="text-slate-400 truncate" title="${escHtml(t.title)}">${escHtml(t.title.slice(0,70))}${t.title.length>70?'…':''}</span>
+            <span class="shrink-0 ml-auto">${taskStatusBadge(t.status)}</span>
+          </li>`).join('')}
+      </ul>
+    </div>`;
+
+  feedEl.innerHTML = reviewerCol + tasksCol;
 }
 
 // ================================================================
