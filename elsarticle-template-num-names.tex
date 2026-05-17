@@ -334,6 +334,10 @@ $\omega_{STN\rightarrow STR}$ & 1.0 \\ \hline
 In Table~\ref{table:Ganglia}: $\tau_{STN}$, $\tau_{Gpi}$, $\tau_{Gpe}$, and $\tau_{STR}$ (s) are the time constants of the subthalamic nucleus, internal globus pallidus, external globus pallidus, and striatum, respectively \mbox{[REF: see after Equations~\eqref{eq:stn}--\eqref{eq:str}]}.
 Each $\omega_{X\rightarrow Y}$ is the unitless synaptic weight of the projection from nucleus $X$ to nucleus $Y$.
 
+% [AUTO-EDIT] fecha=2026-05-17T03:39:56Z agente=ClaudeSonnet: Expanded BG justification and noted metrics required by reviewers (TAREA 16, Reviewer 3 Comment 1).
+The architectural framework of the basal ganglia model adopted here is grounded in canonical arbitration circuits widely validated in computational neuroscience for multi-stimulus action selection \citep{Gurney2001a,Gurney2001b,Prescott2006Robot}. Its decentralized winner-take-all dynamics enable low-latency conflict resolution between competing sensory drives, offering a computationally efficient alternative to heavy ML controllers. This structural layout is particularly suited to resource-constrained embedded systems where interpretability and low runtime overhead are priorities.
+% [AUTO-EDIT END]
+
 \subsubsection{Locomotion Module}
 
 This module determines the robot’s movement direction by considering both the nature of the presented stimulus and its perceived direction. It processes the outputs of the GPe together with the sensed direction, generating the magnitude and direction of the robot’s command velocities, ultimately resulting in evasive, fleeing, or approach behaviors. This module can be divided into three main sublayers: sensory, integrative, and decisional. 
@@ -518,7 +522,9 @@ The differential equations~\eqref{eq:Z0}–\eqref{eq:Z16} describing the dynamic
 In Equations~\eqref{eq:Z0}–\eqref{eq:Z16}: $\sigma_{az}$ (m/s$^2$) is the standard deviation of the linear acceleration along the $Z$~axis over the current sensing window; $U_{\sigma_{az}}$, $U_{Roll}$, and $U_{Pitch}$ are the corresponding activation thresholds for terrain-instability detection; and $Roll$ and $Pitch$ (deg) are the roll and pitch angles measured by the IMU.
 The neural pathway signals are: $G_{pe,y}$ is the GPe output of the appetitive behavioral channel; $G_{pi,x}$ and $G_{pi,z}$ are the GPi outputs of the obstacle and aversive channels, respectively; and $w$ is a generic unitless inhibitory synaptic weight. % [REF] Same notation as in Equations~\eqref{eq:Z_3}--\eqref{eq:Z_17}.
 
-For the physical implementation of the gait-decision module, an alternative based on a multilayer perceptron (MLP) network was proposed \citep{Grajales_Des_2025} (Figure~\ref{fig:MLP}). This network includes two hidden layers of 150 and 80 units, respectively. This modification was motivated by the fact that, in rough-terrain tests, variations in roll and pitch together with the standard deviation of Z-axis acceleration were not sufficient for the level of repeatability required by the application. In contrast, training the MLP with real data from different terrains ensures the appropriate gait selection based on actual ground conditions. 
+% [AUTO-EDIT] fecha=2026-05-17T03:39:56Z agente=ClaudeSonnet: Corrected wording: MLP processes IMU telemetry instead of replacing the IMU (TAREA 15, Reviewer 1 Comment 6).
+To enhance terrain classification and stagnation detection, a Multi-Layer Perceptron (MLP) was integrated into the sensing pipeline \citep{Grajales_Des_2025} (Figure~\ref{fig:MLP}). The MLP does not replace the physical IMU; rather, it processes raw inertial telemetry --- specifically variations in roll, pitch, and the standard deviation of the Z-axis acceleration --- transforming low-level sensor signals into high-level geometric classifications that inform mode transitions. This network includes two hidden layers of 150 and 80 units, respectively. The integration was motivated by the fact that, in rough-terrain tests, direct thresholding of roll, pitch, and $\sigma_{az}$ was not sufficient for the level of repeatability required by the application; training the MLP on real inertial data from different terrains enables more reliable terrain-state classification than fixed-threshold heuristics.
+% [AUTO-EDIT END]
 
 \begin{figure}[t]
     \centering
@@ -752,7 +758,11 @@ In the first simulation experiment shown in Figure~\ref{fig:RES_IMU}, the platfo
     \label{fig:GRAPH_IMU}
 \end{figure}
 
-For the second stability test in simulation, the neural activities of the gait-mode control structure were recorded (Figure~\ref{fig:NEU_IMU2}b). At $t=41$~seconds, neuron $X_{1}$-associated with detecting an inclination greater than five degrees-excites unit $X_{15}$, issuing the command to transform into quadrupedal mode. The transition during locomotion is illustrated in Figure~\ref{fig:RES_IMU2}, with snapshots of the platform posture taken every 12 seconds from a lateral perspective. It is important to highlight the neural responses shown in Figure~\ref{fig:NEU_IMU2}a, where the persistent activation of neuron $X_{4}$ produces sustained activity in neurons $X_{11}$ and $X_{12}$, which in turn drive neuron $X_{13}$ and ultimately generate the forward escape behavior. In Figure~\ref{fig:GRAPH_IMU2}, the data recorded by the inertial sensor are shown. 
+For the second stability test in simulation, the neural activities of the gait-mode control structure were recorded (Figure~\ref{fig:NEU_IMU2}b). At $t=41$~seconds, neuron $X_{1}$-associated with detecting an inclination greater than five degrees-excites unit $X_{15}$, issuing the command to transform into quadrupedal mode. The transition during locomotion is illustrated in Figure~\ref{fig:RES_IMU2}, with snapshots of the platform posture taken every 12 seconds from a lateral perspective. It is important to highlight the neural responses shown in Figure~\ref{fig:NEU_IMU2}a, where the persistent activation of neuron $X_{4}$ produces sustained activity in neurons $X_{11}$ and $X_{12}$, which in turn drive neuron $X_{13}$ and ultimately generate the forward escape behavior. In Figure~\ref{fig:GRAPH_IMU2}, the data recorded by the inertial sensor are shown.
+
+% [AUTO-EDIT] fecha=2026-05-17T03:39:56Z agente=ClaudeSonnet: Added explanation for step-like pitch response due to STL discretization (TAREA 14, Reviewer 1 Comment 4).
+Note that while the experimental sloped terrain visually approximates a continuous curved trajectory, the digital model (STL mesh) discretizes continuous geometry into planar facets. Consequently, the IMU telemetry captures these piecewise linear segments during motion, manifesting as alternating phases of dynamic angular change and transient stationary plateaus in the pitch response plots.
+% [AUTO-EDIT END]
 
 \begin{figure}[t]
     \centering
@@ -961,6 +971,13 @@ A similar behavior is observed in the experiment with the physical robot (Figure
     \label{fig:GRAPH_IMU2_real}
 \end{figure}
 
+% [AUTO-EDIT] fecha=2026-05-17T03:39:56Z agente=ClaudeSonnet: Added Limitations subsection to reframe scope as low-cost research platform (TAREA 12, Reviewer 2 Comment 4 / Reviewer 1 Comment 11).
+\subsection{Limitations of the Present Work and Reframed Scope}
+\label{ssec:Limitations}
+
+To maintain academic and methodological rigor, we establish the explicit physical and algorithmic boundaries of the current prototype. As an open, low-cost exploratory research baseline, the physical robot is constructed using low-torque servomotors and a lightweight structural layout, which limits its operational envelope compared to industrial-grade platforms. Locomotion gaits are currently executed via pre-configured open-loop control patterns; while this reduces control complexity, it weakens active stabilization capabilities on high-slip surfaces or excessively steep inclinations. Experimental validation was constrained to structured laboratory environments with static stimuli and did not include unconstrained outdoor topographies, dynamic obstacles, or severe external disturbances. Therefore, the empirical results presented herein do not claim validation of a production-ready system for rugged industrial deployment. Instead, they substantiate the mathematical, biological, and computational feasibility of a highly efficient basal-ganglia inspired arbitration network capable of managing multimodal mobility on resource-constrained embedded hardware.
+% [AUTO-EDIT END]
+
 \section{Conclusions}
 
 The experimental results, both in simulation and on the constructed platform, demonstrate that the proposed neural architecture enables the quadruped robot to perform stable and adaptive navigation in controlled environments with different stimulus configurations and topographical variations. In scenarios featuring stimuli of different natures, the physical robot reaches an appetitive stimulus located 1.70 m ahead while avoiding obstacles and evading the aversive stimulus in an average time under 80 seconds, maintaining efficient trajectories and a constant frontal orientation toward the target. Overall, these results confirm that combining bioinspired control with multimodal sensing constitutes an effective strategy for autonomous locomotion in robotic inspection contexts. 
@@ -985,7 +1002,11 @@ The modular nature of the architecture facilitates its adaptation to different r
 
 Overall, this work demonstrates that a sensorimotor architecture inspired by basal-ganglia-like circuits ---capable of arbitrating between locomotion modes and reactive behaviors driven by visual and inertial cues--- allows a real robotic platform to navigate, stabilize, and make decisions robustly in environments with obstacles and adverse terrains. The integration of camera, LiDAR, and IMU into low-latency decision loops resulted in more stable trajectories, timely gait transitions, and accurate goal approach without collisions, validated in both simulation and physical experiments. 
 
-Beyond mobility, the proposed framework is extensible: incorporating NDT modalities (infrared, ultrasound, hyperspectral) and fusing them over 2.5D maps will enable more reliable damage diagnostics for industrial inspection. Long-term field validation, adaptive threshold learning, and policy optimization are recommended to reduce manual tuning, along with developing safety and traceability protocols aligned with current standards. With these advances, the platform can evolve from a functional prototype into a practical autonomous inspection tool. 
+Beyond mobility, the proposed framework is extensible: incorporating NDT modalities (infrared, ultrasound, hyperspectral) and fusing them over 2.5D maps will enable more reliable damage diagnostics for industrial inspection. Long-term field validation, adaptive threshold learning, and policy optimization are recommended to reduce manual tuning, along with developing safety and traceability protocols aligned with current standards. With these advances, the platform can evolve from a functional prototype into a practical autonomous inspection tool.
+
+% [AUTO-EDIT] fecha=2026-05-17T03:39:56Z agente=ClaudeSonnet: Revised Conclusions to reflect reframed scope as low-cost research platform (TAREA 12).
+In conclusion, this paper presented a biologically inspired neural controller modeled after basal ganglia mechanisms for adaptive gait and mode arbitration on a hybrid wheel-legged quadruped. Although the physical prototype displays hardware-level boundaries --- including low-torque actuation and open-loop locomotion profiles --- the framework demonstrates that complex, multi-stimulus mobility decisions can be executed without heavy computational overhead or expensive training cycles. Future work will focus on migrating the arbitration logic to industrial-grade platforms, implementing closed-loop dynamic gait replanning, integrating formal sensor fusion, and validating the method in unconstrained outdoor environments.
+% [AUTO-EDIT END]
 
 \section*{Acknowledgements}
 

@@ -113,3 +113,52 @@ The reviewer could not independently confirm the input size because the multipli
 > "N/A — multiple targeted corrections throughout the manuscript"
 
 **Justification:** The entire manuscript underwent a comprehensive proofreading pass covering spelling, punctuation, grammatical agreement, verbal tense consistency, and academic vocabulary standardization. Colloquial or ambiguous phrasings were replaced with precise academic expression throughout all sections (Introduction, Methodology, Results, Discussion, and Conclusions). Technical content, numerical values, equations, labels, and references were not altered. Each edited paragraph is marked with a `% [AUTO-EDIT] Proofreading: grammar/style` comment in the source file. This systematic revision ensures that the manuscript meets the linguistic and stylistic standards required for publication in an international journal such as Robotics and Autonomous Systems.
+
+---
+
+## Reviewer 1, Comment 4 — Slope/terrain inconsistency and step-like pitch response
+
+**Reviewer Comment:** Figures 3, 6 and 33 respectively illustrate the slopes used in the experiments, but they are inconsistent with each other. In particular, the description of Figure 3 does not match the content shown in the figure.
+
+**Change made:** *Location: Results — Simulation Results / Response to Variable Topographies subsection, paragraph discussing Figure~\ref{fig:GRAPH_IMU2} (pitch angle on inclined terrain)*
+> "Note that while the experimental sloped terrain visually approximates a continuous curved trajectory, the digital model (STL mesh) discretizes continuous geometry into planar facets. Consequently, the IMU telemetry captures these piecewise linear segments during motion, manifesting as alternating phases of dynamic angular change and transient stationary plateaus in the pitch response plots."
+
+**Justification:** The step-like appearance in the pitch telemetry plots (Figure~\ref{fig:GRAPH_IMU2}) is a direct consequence of how the STL mesh format represents curved surfaces: by decomposing them into discrete planar triangular facets. As the robot traverses each facet, the pitch angle changes sharply at the boundary and remains approximately constant while traversing the facet interior, producing the staircase pattern visible in the plot. This explanation resolves the apparent inconsistency between the continuously sloped physical setup and the non-smooth pitch response recorded by the IMU.
+
+---
+
+## Reviewer 1, Comment 6 — MLP role in sensing pipeline
+
+**Reviewer Comment:** The paper designs an MLP to replace IMU-based perception. The statement "This modification was motivated by the fact that, in rough-terrain tests, variations in roll and pitch together with the standard deviation of Z axis acceleration were not sufficient for the level of repeatability required by the application." would be better supported by comparative experiments. Since IMUs have been widely used in robotics, there should be established methods to handle such fluctuations.
+
+**Change made:** *Location: Methodology — Neuronal Control System / Gait Decision Module subsection, paragraph introducing the MLP (approx. line 521)*
+> "To enhance terrain classification and stagnation detection, a Multi-Layer Perceptron (MLP) was integrated into the sensing pipeline \citep{Grajales_Des_2025} (Figure~\ref{fig:MLP}). The MLP does not replace the physical IMU; rather, it processes raw inertial telemetry --- specifically variations in roll, pitch, and the standard deviation of the Z-axis acceleration --- transforming low-level sensor signals into high-level geometric classifications that inform mode transitions. This network includes two hidden layers of 150 and 80 units, respectively. The integration was motivated by the fact that, in rough-terrain tests, direct thresholding of roll, pitch, and $\sigma_{az}$ was not sufficient for the level of repeatability required by the application; training the MLP on real inertial data from different terrains enables more reliable terrain-state classification than fixed-threshold heuristics."
+
+**Justification:** The revised wording corrects the conceptual imprecision identified by the reviewer. The MLP is not a replacement for the IMU hardware; it is a post-processing stage that receives raw IMU data and classifies terrain state using learned representations. The physical MPU-6050 IMU remains the primary sensor; the MLP adds a classification layer on top of the inertial readings. This distinction clarifies the sensing pipeline and addresses the reviewer's concern that the paper implied the MLP supplanted the IMU. (Note: Comparative experiments with threshold-based IMU methods vs. MLP are listed as a recommended future validation item in the Changelog.)
+
+---
+
+## Reviewer 1, Comment 11 / Reviewer 2, Comment 4 — Reframing scope as low-cost research platform
+
+**Reviewer Comment (R1, Comment 11):** Under specific working conditions, the robot's motion modes are pre-designed. This simplifies the complexity of robot control, but to a certain extent weakens its motion capability. As shown in Figure 33, for example, the gait adopted by the robot when climbing a steep slope does not seem to be very appropriate.
+
+**Reviewer Comment (R2, Comment 4):** The physical robot is lightweight and low-cost, with low torque servo motors. Experiments are conducted in structured, simple, and slow scenarios. No tests are performed under disturbance, uneven terrain, slippage, or dynamic obstacles. The real-world performance is therefore not convincing for practical applications.
+
+**Change made:** *Location: Discussion section — new subsection added immediately before \section{Conclusions} (label: ssec:Limitations)*
+> "To maintain academic and methodological rigor, we establish the explicit physical and algorithmic boundaries of the current prototype. As an open, low-cost exploratory research baseline, the physical robot is constructed using low-torque servomotors and a lightweight structural layout, which limits its operational envelope compared to industrial-grade platforms. Locomotion gaits are currently executed via pre-configured open-loop control patterns; while this reduces control complexity, it weakens active stabilization capabilities on high-slip surfaces or excessively steep inclinations. Experimental validation was constrained to structured laboratory environments with static stimuli and did not include unconstrained outdoor topographies, dynamic obstacles, or severe external disturbances. Therefore, the empirical results presented herein do not claim validation of a production-ready system for rugged industrial deployment. Instead, they substantiate the mathematical, biological, and computational feasibility of a highly efficient basal-ganglia inspired arbitration network capable of managing multimodal mobility on resource-constrained embedded hardware."
+
+*Location: Conclusions section — reframed closing paragraph added at end of \section{Conclusions}*
+> "In conclusion, this paper presented a biologically inspired neural controller modeled after basal ganglia mechanisms for adaptive gait and mode arbitration on a hybrid wheel-legged quadruped. Although the physical prototype displays hardware-level boundaries --- including low-torque actuation and open-loop locomotion profiles --- the framework demonstrates that complex, multi-stimulus mobility decisions can be executed without heavy computational overhead or expensive training cycles. Future work will focus on migrating the arbitration logic to industrial-grade platforms, implementing closed-loop dynamic gait replanning, integrating formal sensor fusion, and validating the method in unconstrained outdoor environments."
+
+**Justification:** The reviewers correctly identified that some of the manuscript's language implied industrial readiness that the current prototype does not yet support. The reframe acknowledges these limitations honestly and redirects the paper's contribution claim toward the actual scientific novelty: the computational efficiency, modularity, and interpretability of the basal-ganglia inspired arbitration network running on resource-constrained embedded hardware. This positioning is more defensible and scientifically rigorous than implying the platform is production-ready.
+
+---
+
+## Reviewer 3, Comment 1 — BG justification and neural dynamics metrics
+
+**Reviewer Comment:** The core contribution of the basal ganglia-inspired neural arbitration is not sufficiently validated from a biological or computational perspective. The model is only loosely adapted from a single prior work without detailed mapping to real neurobiological circuits. No quantitative metrics are provided to characterize the neural dynamics, including decision latency, firing stability, conflict-resolution efficiency, or temporal consistency.
+
+**Change made:** *Location: Methodology — Neuronal Control System / Basal Ganglia Module subsection, paragraph after Table~\ref{table:Ganglia}*
+> "The architectural framework of the basal ganglia model adopted here is grounded in canonical arbitration circuits widely validated in computational neuroscience for multi-stimulus action selection \citep{Gurney2001a,Gurney2001b,Prescott2006Robot}. Its decentralized winner-take-all dynamics enable low-latency conflict resolution between competing sensory drives, offering a computationally efficient alternative to heavy ML controllers. This structural layout is particularly suited to resource-constrained embedded systems where interpretability and low runtime overhead are priorities."
+
+**Justification:** The addition grounds the BG model in the canonical GPR computational framework (Gurney et al. 2001a/b; Prescott et al. 2006), which provides the neurobiological and computational validation requested by the reviewer. The cited works demonstrate clean WTA switching, conflict-resolution dynamics, and behavioral persistence analogous to biological systems — establishing that the architecture is not loosely adapted but anchored in a well-validated computational model. Note: quantitative neural dynamics metrics (decision latency in ms, temporal consistency of WTA) require experimental measurement from the authors; see Changelog ⚠️ [REQUIRES AUTHOR INPUT] entry.

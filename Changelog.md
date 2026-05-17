@@ -300,3 +300,66 @@ All changes listed below were applied automatically to `elsarticle-template-num-
 - **`Ar = 28.0` calibration log** (location: `Table~\ref{table:Locom_NN}`, analytical justification paragraph after table): The analytical derivation using the pinhole camera model has been added. However, authors should provide experimental validation data (e.g., measured stopping distance, actual focal length calibration from camera_calibration tool) to confirm that $Z = 31$ cm and $W_{obj} = 10$ cm match the physical experimental setup.
 
 - **Terrain image update** (location: `\label{fig:Terreno_irre}`, file `TERRENO_IRREGULAR.jpeg`): The terrain description now references a Perlin-noise generated 1300×900 mm surface. Authors must update the figure to show the actual Perlin-noise terrain (or confirm the existing image matches the new description). The old caption "Irregular terrain." may need updating if the image changes.
+
+---
+
+## Changelog — 2026-05-17 (Tasks 12, 13, 14, 15, 16 — AUTO-EDITS)
+
+All changes listed below were applied automatically to `elsarticle-template-num-names.tex`, `RESPONSE_TO_REVIEWERS.md`, and `Changelog.md` during the Task 12–16 editing session (agent: ClaudeSonnet, date: 2026-05-17T03:39:56Z).
+
+### TAREA 12 — Reframing scope as low-cost research platform
+
+- fecha: 2026-05-17T03:39:56Z
+  file: elsarticle-template-num-names.tex
+  change: Added `\subsection{Limitations of the Present Work and Reframed Scope}` (label: ssec:Limitations) immediately before `\section{Conclusions}`. Contains explicit physical and algorithmic scope boundaries for the prototype. % [AUTO-EDIT]
+  reviewer: Reviewer 1, Comment 11 / Reviewer 2, Comment 4
+  notes: Acknowledges low-torque actuation, open-loop gaits, laboratory-only validation, and repositions contribution toward BG efficiency/interpretability.
+
+- fecha: 2026-05-17T03:39:56Z
+  file: elsarticle-template-num-names.tex
+  change: Added reframed closing paragraph at end of `\section{Conclusions}` explicitly stating hardware limitations and future work toward industrial-grade platforms. % [AUTO-EDIT]
+  reviewer: Reviewer 1, Comment 11 / Reviewer 2, Comment 4
+  notes: Paragraph appended after existing conclusions; does not remove any prior content.
+
+### TAREA 13 — Clarification of simulation platform adoption
+
+- fecha: 2026-05-10T21:01:26Z (previously applied)
+  file: elsarticle-template-num-names.tex
+  change: Replaced ambiguous sentence in Section 2 methodology paragraph with clarified version distinguishing simulation design as morphological reference vs. prior engineering work as fabrication know-how. % [AUTO-EDIT]
+  reviewer: Reviewer 1, Comment 3
+  notes: Already applied in prior session. Documented here for completeness. RESPONSE_TO_REVIEWERS.md entry was already present from prior session (lines 40–53).
+
+### TAREA 14 — STL/pitch discretization explanation
+
+- fecha: 2026-05-17T03:39:56Z
+  file: elsarticle-template-num-names.tex
+  change: Inserted explanation of step-like pitch response due to STL mesh discretization, immediately after the sentence referencing Figure~\ref{fig:GRAPH_IMU2} in the Simulation Results / Response to Variable Topographies subsection. % [AUTO-EDIT]
+  reviewer: Reviewer 1, Comment 4
+  notes: Explains why pitch plots show alternating phases of angular change and stationary plateaus despite visually continuous terrain slope.
+
+### TAREA 15 — MLP processes IMU (not replaces)
+
+- fecha: 2026-05-17T03:39:56Z
+  file: elsarticle-template-num-names.tex
+  change: Replaced MLP introductory paragraph in Gait Decision Module subsection. New wording explicitly states the MLP does not replace the physical IMU but processes raw inertial telemetry to produce high-level geometric classifications. % [AUTO-EDIT]
+  reviewer: Reviewer 1, Comment 6
+  notes: "an alternative based on a multilayer perceptron network" replaced by pipeline-role clarification. Physical MPU-6050 IMU remains primary sensor.
+
+### TAREA 16 — BG justification and neuronal dynamics metrics
+
+- fecha: 2026-05-17T03:39:56Z
+  file: elsarticle-template-num-names.tex
+  change: Added BG justification paragraph and requested neuronal dynamics metrics. % [AUTO-EDIT]
+  reviewer: Reviewer 3, Comment 1
+  notes: - [ ] Authors must compute and provide neuronal dynamics metrics: decision latency (ms) and temporal consistency of the winner-take-all mechanism.
+
+### ⚠️ [REQUIRES AUTHOR INPUT]
+
+- **Neuronal dynamics metrics** (location: `\subsubsection{Basal Ganglia Module}`, new BG justification paragraph; `\section{Conclusions}`, Limitations subsection): Reviewer 3, Comment 1 requests quantitative characterization of the BG neural dynamics. Authors must compute and report:
+  - [ ] Decision latency (ms): time from stimulus onset to winner-take-all output stabilization.
+  - [ ] Temporal consistency of the WTA mechanism: repeatability of selection across repeated presentations of the same stimuli configuration.
+  - [ ] Conflict-resolution efficiency: how quickly the BG module suppresses competing channels when two stimuli are presented simultaneously.
+
+- **Comparative IMU vs. MLP experiment** (location: `\subsubsection{Gait Decision Module}`, revised MLP paragraph; `\subsection{Physical Implementation Results}`): Reviewer 1, Comment 6 requests comparative experiments. Authors should consider adding a table or figure comparing fixed-threshold IMU-based terrain detection (roll/pitch/$\sigma_{az}$) versus MLP classification accuracy on the same test sequences. This would directly substantiate the claim that the MLP outperforms fixed-threshold heuristics.
+
+- **MLP training data and performance metrics** (location: `\subsubsection{Gait Decision Module}`): Reviewer 1, Comment 8 requests MLP training data source and final classification performance. Authors must add: training dataset description (number of samples per terrain class, data collection protocol), and classification metrics (accuracy, precision, recall, F1-score, or confusion matrix). See also Changelog entry from 2026-05-16.
