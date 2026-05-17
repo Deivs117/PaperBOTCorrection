@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <title>Dashboard — Respuesta a Reviewers (PaperBOT) — Tema Oscuro</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <style>
+    :root{
+      --bg:#050608;           /* fondo general (casi negro) */
+      --panel:#0b1220;        /* tarjetas/paneles */
+      --muted:#9aa4b2;        /* texto secundario */
+      --text:#e6eef8;         /* texto principal claro */
+      --border:#111827;       /* bordes sutiles */
+      --accent:#0ea5a4;       /* acento/correcciones */
+      --done-bg:#063e2a;
+      --done-border:#085f46;
+      --partial-bg:#2a1f00;
+      --partial-border:#7c4a00;
+      --pending-bg:#3a0620;
+      --pending-border:#8b122d;
+      --manual-bg:#11123a;
+      --manual-border:#2b2f9b;
+      --table-head:#071227;
+      --card-shadow: 0 6px 18px rgba(2,6,23,0.7);
+    }
+
+    html,body{height:100%}
+    body{
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      margin:20px;
+      color:var(--text);
+      background:linear-gradient(180deg,var(--bg),#061018 90%);
+      -webkit-font-smoothing:antialiased;
+    }
+
+    h1{margin-bottom:6px; font-weight:600}
+    .small{font-size:13px; color:var(--muted)}
+    .summary{display:flex; gap:1rem; margin-bottom:1rem; flex-wrap:wrap}
+    .card{
+      background:linear-gradient(180deg,var(--panel),#071426 120%);
+      border:1px solid var(--border);
+      padding:12px;
+      border-radius:10px;
+      min-width:180px;
+      box-shadow: var(--card-shadow);
+    }
+    .filters{margin:12px 0 18px; display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+    select,button{
+      padding:8px 10px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,0.06);
+      background:rgba(255,255,255,0.03);
+      color:var(--text);
+      min-height:38px;
+    }
+    button{cursor:pointer}
+    table{width:100%; border-collapse:collapse; margin-top:8px; background:transparent}
+    thead th{position:sticky; top:0; background:var(--table-head); color:var(--muted); padding:10px; text-align:left; border-bottom:1px solid rgba(255,255,255,0.03)}
+    th,td{padding:12px; border-bottom:1px solid rgba(255,255,255,0.03); text-align:left; vertical-align:top; font-size:14px}
+    td {color:var(--text)}
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:600}
+    .done{background:linear-gradient(180deg,var(--done-bg),#064e33);color:#a7f3d0;border:1px solid var(--done-border)}
+    .partial{background:linear-gradient(180deg,var(--partial-bg),#1f1500);color:#ffd8a8;border:1px solid var(--partial-border)}
+    .pending{background:linear-gradient(180deg,var(--pending-bg),#5a0929);color:#ffd6e0;border:1px solid var(--pending-border)}
+    .manual{background:linear-gradient(180deg,var(--manual-bg),#11113f);color:#dbe4ff;border:1px solid var(--manual-border)}
+    details{margin-top:6px}
+    .evidence{font-size:13px; color:var(--accent); margin-bottom:6px}
+    .foot{margin-top:14px; color:var(--muted); font-size:13px}
+    .nowrap{white-space:nowrap}
+    .count{font-weight:700; font-size:18px; color:var(--text)}
+    a { color: var(--accent); text-decoration:underline; }
+    /* responsive */
+    @media (max-width:820px){
+      .summary{flex-direction:column}
+      th,td{padding:10px}
+    }
+  </style>
+</head>
+<body>
+  <h1>Dashboard — Estado de las peticiones de los revisores</h1>
+  <p class="small">Resumen extraído de: Changelog.md, RESPONSE_TO_REVIEWERS.md y REVIEWERS_PETITIONS.md (repositorio: Deivs117/PaperBOTCorrection).</p>
+
+  <div class="summary">
+    <div class="card">
+      <div class="count" id="total">—</div>
+      <div class="small">Total de ítems listados</div>
+    </div>
+    <div class="card">
+      <div class="count" id="doneCount">—</div>
+      <div class="small">Hecho (ediciones automáticas o textuales)</div>
+    </div>
+    <div class="card">
+      <div class="count" id="partialCount">—</div>
+      <div class="small">Parcial (texto agregado, falta validación/autores)</div>
+    </div>
+    <div class="card">
+      <div class="count" id="pendingCount">—</div>
+      <div class="small">Pendiente / Requiere input de autores</div>
+    </div>
+    <div class="card">
+      <div class="count" id="manualCount">—</div>
+      <div class="small">Acción manual (figuras, imágenes) — prioridad alta/med</div>
+    </div>
+  </div>
+
+  <div class="filters">
+    <label class="nowrap">Filtrar por revisor:
+      <select id="filterReviewer">
+        <option value="all">Todos</option>
+        <option value="R1">Reviewer 1</option>
+        <option value="R2">Reviewer 2</option>
+        <option value="R3">Reviewer 3</option>
+        <option value="cross">General / multi</option>
+      </select>
+    </label>
+
+    <label class="nowrap">Filtrar por estado:
+      <select id="filterStatus">
+        <option value="all">Todos</option>
+        <option value="done">Hecho</option>
+        <option value="partial">Parcial</option>
+        <option value="pending">Pendiente</option>
+        <option value="manual">Manual</option>
+      </select>
+    </label>
+
+    <button id="resetBtn">Restablecer filtros</button>
+  </div>
+
+  <table id="tasksTable" aria-label="Listado de peticiones y estado">
+    <thead>
+      <tr>
+        <th style="width:6%">#</th>
+        <th style="width:10%">Revisor</th>
+        <th>Petición</th>
+        <th style="width:12%">Estado</th>
+        <th style="width:32%">Evidencia / Qué se hizo</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <p class="foot">Leyenda: <span class="badge done">Hecho</span> &nbsp; <span class="badge partial">Parcial</span> &nbsp; <span class="badge pending">Pendiente (autor)</span> &nbsp; <span class="badge manual">Manual (figs)</span></p>
+
+  <script>
+    // Datos sintetizados a partir de los archivos proporcionados
+    const tasks = [
+      {id:1, reviewer:"R1", title:"Mejorar Introducción y estado del arte", status:"done",
+       evidence:"TAREA 6: Replaced entire Introduction (Changelog.md). RESPONSE_TO_REVIEWERS documents the changes."},
+      {id:2, reviewer:"R1", title:'Aclarar "mobile" y "articulated" (wheeled vs legged)', status:"done",
+       evidence:"RESPONSE_TO_REVIEWERS: Added parenthetical qualifiers '(wheeled)' y '(legged)' (textual edit)."},
+      {id:3, reviewer:"R1", title:"Clarificar construcción del robot físico (contradicción)", status:"done",
+       evidence:"RESPONSE_TO_REVIEWERS: Sentence reworded to state physical robot follows simulation morphology."},
+      {id:4, reviewer:"R1", title:"Inconsistencias en figuras de pendientes / slopes", status:"manual",
+       evidence:"Changelog: Section 'Action Plan: Figure Improvements' lists many figure fixes; imágenes requieren regeneración y reemplazo (Manual, alta prioridad)."},
+      {id:5, reviewer:"R1", title:"Incluir escenario industrial/infraestructura en la simulación", status:"done",
+       evidence:"Introduction replacement and RESPONSE mention motivation grounded in inspection use case (Changelog TAREA6 + RESPONSE)."},
+      {id:6, reviewer:"R1", title:"Motivación y razón para usar MLP (IMU → MLP)", status:"partial",
+       evidence:"Tables updated with thresholds (U_N0/U_N1) and notes, but ML training data / performance metrics not present — Authors must add (Changelog 'REQUIRES AUTHOR INPUT')."},
+      {id:7, reviewer:"R1", title:"Clarificar entrada de 135 dimensiones (9×15)", status:"done",
+       evidence:"RESPONSE_TO_REVIEWERS: Added explicit '9 × 15 = 135' text (proofreading/edit)."},
+      {id:8, reviewer:"R1", title:"Presentar datos de entrenamiento y desempeño del MLP", status:"pending",
+       evidence:"Changelog marca U_N0/U_N1 y recomienda F1/ROC validation; authors must provide dataset & metrics (REQUIRES AUTHOR INPUT)."},
+      {id:9, reviewer:"R1", title:"Separar resultados: simulación vs físico", status:"done",
+       evidence:"Changelog TAREA 3: Reorganized Results into Simulation Results and Physical Implementation Results (auto-edit)."},
+      {id:10, reviewer:"R1", title:"Descripción del terreno irregular (90×130 cm, 3.6 cm)", status:"done",
+       evidence:"TAREA 9 (2026-05-16): Replaced primitive description with Perlin-noise procedural characterization (Changelog). Note: imagen debe actualizarse manualmente."},
+      {id:11, reviewer:"R1", title:"Pre-diseño de modos de movimiento (limitación)", status:"partial",
+       evidence:"Some clarifications in Introduction/Conclusions may exist, but engineering / quantitative limitation discussion not fully expanded — requiere respuesta de autores."},
+
+      // Reviewer 2
+      {id:12, reviewer:"R2", title:"Demostrar novedad vs estado del arte", status:"partial",
+       evidence:"Introduction expanded to position contribution (TAREA6), pero reviewers piden benchmarking cuantitativo — pendiente ampliar comparativa / métricas."},
+      {id:13, reviewer:"R2", title:"Falta formulación rigurosa / análisis de estabilidad", status:"pending",
+       evidence:"No evidencia de análisis de estabilidad en Changelog/Response; requiere trabajo teórico o experimental por autores."},
+      {id:14, reviewer:"R2", title:"Validación cuantitativa insuficiente (métricas)", status:"pending",
+       evidence:"Results remain cualitativos; los changelogs no añaden success rates/time-to-switch — authors must añadir métricas."},
+      {id:15, reviewer:"R2", title:"Experimentos reales limitados", status:"pending",
+       evidence:"Changelog describe pruebas reales pero no nuevas validaciones robustas; requiere ampliar experimentos o explicar limitaciones."},
+      {id:16, reviewer:"R2", title:"Claridad y legibilidad: variables indefinidas", status:"done",
+       evidence:"Multiple auto-edits added 'where...' sentences defining τ, σ, ω, etc. (Changelog AUTO-EDITS: added definitions throughout). Proofreading applied (TAREA10)."},
+
+
+      // Reviewer 3
+      {id:17, reviewer:"R3", title:"Validación biológica/computacional del modelo BG", status:"partial",
+       evidence:"Introduction cites canonical BG refs and added text (TAREA6 & new refs), but deep biological validation not added — authors may expand or refer to supplementary analyses."},
+      {id:18, reviewer:"R3", title:"Métricas de cambio de modo (success rate, delay)", status:"pending",
+       evidence:"No new quantitative switching metrics present in changelog; requiere métricas/experimentos adicionales."},
+      {id:19, reviewer:"R3", title:"Fusión multimodal formal (sensor fusion)", status:"pending",
+       evidence:"Current fusion described heurísticamente; changelog added clarifications on weights but no formal fusion framework — authors action required."},
+      {id:20, reviewer:"R3", title:"Evaluación ML (precision, recall, F1, confusion matrix)", status:"pending",
+       evidence:"Changelog recommends F1/ROC validation for U_N thresholds; actual ML metrics not present (REQUIRES AUTHOR INPUT)."},
+      {id:21, reviewer:"R3", title:"Mejorar calidad de figuras (legibilidad, DPI)", status:"manual",
+       evidence:"Action Plan: Figure Improvements (Changelog). Muchas figuras requieren regeneración con >300 DPI, etiquetas y leyendas (Manual)."},
+      {id:22, reviewer:"R3", title:"Justificación de parámetros en tablas (Ar, w, ω, σ, etc.)", status:"partial",
+       evidence:"TAREA5/TAREA8: Many parameters were added/explained (e.g., w, ω_{GpeR}, removal of μ_{STN}, analytical Ar derivation). Several entries still REQUIEREN pruebas/inputs (Changelog 'REQUIRES AUTHOR INPUT')."},
+      {id:23, reviewer:"cross", title:"Proofreading / inglés académico", status:"done",
+       evidence:"TAREA 10: Comprehensive proofreading applied across manuscript (Changelog)."}
+    ];
+
+    // render table
+    const tbody = document.querySelector("#tasksTable tbody");
+    function render(filtered) {
+      tbody.innerHTML = "";
+      filtered.forEach(t=>{
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${t.id}</td>
+          <td>${t.reviewer}</td>
+          <td><strong>${escapeHtml(t.title)}</strong></td>
+          <td>
+            ${statusBadge(t.status)}
+          </td>
+          <td>
+            <div class="evidence">${escapeHtml(t.evidence)}</div>
+            <details>
+              <summary class="small">Más info</summary>
+              <div class="small" style="margin-top:6px; color:var(--muted);">
+                Archivos de referencia: <em>Changelog.md</em>, <em>RESPONSE_TO_REVIEWERS.md</em>, <em>elsarticle-template-num-names.tex</em> (ediciones automatizadas).
+              </div>
+            </details>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById("total").textContent = tasks.length;
+      document.getElementById("doneCount").textContent = tasks.filter(x=>x.status==="done").length;
+      document.getElementById("partialCount").textContent = tasks.filter(x=>x.status==="partial").length;
+      document.getElementById("pendingCount").textContent = tasks.filter(x=>x.status==="pending").length;
+      document.getElementById("manualCount").textContent = tasks.filter(x=>x.status==="manual").length;
+    }
+
+    function statusBadge(s){
+      if(s==="done") return '<span class="badge done">Hecho</span>';
+      if(s==="partial") return '<span class="badge partial">Parcial</span>';
+      if(s==="pending") return '<span class="badge pending">Pendiente</span>';
+      if(s==="manual") return '<span class="badge manual">Manual</span>';
+      return s;
+    }
+
+    function escapeHtml(t){ return (t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+    // filtering
+    const reviewerSel = document.getElementById("filterReviewer");
+    const statusSel = document.getElementById("filterStatus");
+    reviewerSel.addEventListener("change",applyFilters);
+    statusSel.addEventListener("change",applyFilters);
+    document.getElementById("resetBtn").addEventListener("click", ()=>{
+      reviewerSel.value="all"; statusSel.value="all"; applyFilters();
+    });
+
+    function applyFilters(){
+      const r = reviewerSel.value;
+      const s = statusSel.value;
+      let filtered = tasks.slice();
+      if(r!=="all"){
+        filtered = filtered.filter(t=> t.reviewer === r || (r==="cross" && t.reviewer==="cross"));
+      }
+      if(s!=="all"){
+        filtered = filtered.filter(t=> t.status === s);
+      }
+      render(filtered);
+    }
+
+    // initial render
+    render(tasks);
+
+  </script>
+</body>
+</html>
