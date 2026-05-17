@@ -30,7 +30,7 @@
 <!-- ===== SYNC ALERT ===== -->
 <div id="syncAlert" class="bg-amber-950 border border-amber-700 text-amber-300 text-xs px-4 py-2 flex items-center justify-between gap-4">
   <span>⚠️ <strong>Regla de Sincronización del Equipo:</strong> Para actualizar el estado maestro para todo el equipo, descarga el archivo <code>data.json</code> mediante el botón de exportación y súbelo a la carpeta <code>frontend/</code> de este repositorio en GitHub.</span>
-  <button onclick="document.getElementById('syncAlert').remove()" class="text-amber-500 hover:text-white ml-4 shrink-0">✕</button>
+  <button onclick="document.getElementById('syncAlert').remove()" aria-label="Cerrar alerta" class="text-amber-500 hover:text-white ml-4 shrink-0">✕</button>
 </div>
 
 <!-- ===== NAVBAR ===== -->
@@ -211,7 +211,7 @@ let state = { reviewers: [], tasks: [] };
 let editingTaskId = null;
 let chartInstance = null;
 
-const STORAGE_KEY = 'flux_dashboard_state';
+const STORAGE_KEY = 'paperbot_dashboard_state';
 
 const DEFAULT_REVIEWERS = [
   {id:'R1C1', reviewer:'Reviewer 1', comment:1, body:'The Introduction section needs to be significantly improved. The authors have not adequately elaborated on the current state of the art in related research. As a result, reviewers lack sufficient horizontal comparisons and are unable to judge the advancement of the proposed method.', status:'Mitigado', assignee:'Homo', note:''},
@@ -386,7 +386,7 @@ async function loadChangelog() {
   }
   if (!raw) {
     el.innerHTML = `<div class="bg-amber-950 border border-amber-700 rounded-xl p-4 text-amber-300 text-sm">
-      ⚠️ No se pudo cargar <code>Changelog.md</code>. Asegúrate de que el archivo existe y sigue el formato definido en <code>AGENTS.MD</code>, o que el servidor sirve los archivos correctamente desde el directorio raíz del repositorio.</div>`;
+      ⚠️ No se pudo cargar <code>Changelog.md</code>. Asegúrate de que el archivo existe y sigue el formato definido en <code>AGENTS.md</code>, o que el servidor sirve los archivos correctamente desde el directorio raíz del repositorio.</div>`;
     return;
   }
   const entries = parseChangelog(raw);

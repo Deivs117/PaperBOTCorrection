@@ -87,7 +87,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload frontend folder as artifact
+      - name: Upload Frontend Folder as Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./frontend
