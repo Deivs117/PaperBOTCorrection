@@ -351,7 +351,7 @@ All changes listed below were applied automatically to `elsarticle-template-num-
   file: elsarticle-template-num-names.tex
   change: Added BG justification paragraph and requested neuronal dynamics metrics. % [AUTO-EDIT]
   reviewer: Reviewer 3, Comment 1
-  notes: - [ ] Authors must compute and provide neuronal dynamics metrics: decision latency (ms) and temporal consistency of the winner-take-all mechanism.
+  notes: Paragraph added after Table~\ref{table:Ganglia} in the Basal Ganglia Module subsection. Neuronal dynamics metrics are listed in the REQUIRES AUTHOR INPUT section below.
 
 ### ⚠️ [REQUIRES AUTHOR INPUT]
 
