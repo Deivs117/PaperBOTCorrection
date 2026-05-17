@@ -1,0 +1,471 @@
+{
+  "reviewers": [
+    {
+      "id": "R1C1",
+      "reviewer": "Reviewer 1",
+      "comment": 1,
+      "body": "The Introduction section needs to be significantly improved. The authors have not adequately elaborated on the current state of the art in related research. As a result, reviewers lack sufficient horizontal comparisons and are unable to judge the advancement of the proposed method.",
+      "status": "Mitigado",
+      "assignee": "Homo",
+      "note": ""
+    },
+    {
+      "id": "R1C2",
+      "reviewer": "Reviewer 1",
+      "comment": 2,
+      "body": "In the first paragraph of Section 1, it is unclear what kind of robot is referred to by mobile and articulated modes, which is difficult to understand.",
+      "status": "Mitigado",
+      "assignee": "Homo",
+      "note": ""
+    },
+    {
+      "id": "R1C3",
+      "reviewer": "Reviewer 1",
+      "comment": 3,
+      "body": "The sentence \"Finally, the physical robot was constructed and implemented, taking advantage of the previous engineering development…\" is difficult to understand. If improvements have been made, why can the simulation platform still be directly adopted?",
+      "status": "Mitigado",
+      "assignee": "Homo",
+      "note": ""
+    },
+    {
+      "id": "R1C4",
+      "reviewer": "Reviewer 1",
+      "comment": 4,
+      "body": "Figures 3, 6 and 33 respectively illustrate the slopes used in the experiments, but they are inconsistent with each other. In particular, the description of Figure 3 does not match the content shown in the figure.",
+      "status": "En Análisis",
+      "assignee": "SapoMarapo",
+      "note": "Pendiente regenerar figuras de pendientes"
+    },
+    {
+      "id": "R1C5",
+      "reviewer": "Reviewer 1",
+      "comment": 5,
+      "body": "In Section 2.2, the sentence \"Additionally, to orient the simulation toward infrastructure-inspection applications, a representative industrial-building scenario was included...\" is not demonstrated or supported in the paper.",
+      "status": "Mitigado",
+      "assignee": "Homo",
+      "note": "Replaced in Tarea 17"
+    },
+    {
+      "id": "R1C6",
+      "reviewer": "Reviewer 1",
+      "comment": 6,
+      "body": "The paper designs an MLP to replace IMU-based perception. The statement would be better supported by comparative experiments. Since IMUs have been widely used in robotics, there should be established methods to handle such fluctuations.",
+      "status": "En Análisis",
+      "assignee": "Flagugu",
+      "note": "Requiere experimentos comparativos o justificación ampliada"
+    },
+    {
+      "id": "R1C7",
+      "reviewer": "Reviewer 1",
+      "comment": 7,
+      "body": "The input to Figure 10 requires 135-dimensional information. What exactly do these dimensions represent? The reviewer could not find this information in the paper.",
+      "status": "Mitigado",
+      "assignee": "Homo",
+      "note": ""
+    },
+    {
+      "id": "R1C8",
+      "reviewer": "Reviewer 1",
+      "comment": 8,
+      "body": "The data source for training the MLP, as well as its final performance, are not presented in the paper.",
+      "status": "Pendiente",
+      "assignee": "Flagugu",
+      "note": "[REQUIRES AUTHOR INPUT] Datos de entrenamiento y métricas ML"
+    },
+    {
+      "id": "R1C9",
+      "reviewer": "Reviewer 1",
+      "comment": 9,
+      "body": "In the results section, simulation results and physical experiments should be presented separately.",
+      "status": "Mitigado",
+      "assignee": "Homo",
+      "note": ""
+    },
+    {
+      "id": "R1C10",
+      "reviewer": "Reviewer 1",
+      "comment": 10,
+      "body": "The single maximum height value cannot sufficiently represent the fluctuation of the terrain. More detailed parameters, including the mean and variance, should be provided. The terrain has no negative height values.",
+      "status": "Mitigado",
+      "assignee": "Homo",
+      "note": ""
+    },
+    {
+      "id": "R1C11",
+      "reviewer": "Reviewer 1",
+      "comment": 11,
+      "body": "Under specific working conditions, the robot's motion modes are pre-designed. This simplifies the complexity of robot control, but to a certain extent weakens its motion capability.",
+      "status": "En Análisis",
+      "assignee": "Negriche",
+      "note": "Requiere discusión de limitaciones ampliada"
+    },
+    {
+      "id": "R2C1",
+      "reviewer": "Reviewer 2",
+      "comment": 1,
+      "body": "Novelty is not sufficiently demonstrated. The overall pipeline has been widely studied. The authors must clearly explain what new scientific or technical contributions are made beyond prior work.",
+      "status": "Mitigado",
+      "assignee": "Homo",
+      "note": ""
+    },
+    {
+      "id": "R2C2",
+      "reviewer": "Reviewer 2",
+      "comment": 2,
+      "body": "Control design lacks rigorous formulation and stability analysis. No theoretical analysis is provided to guarantee reliable action selection under sensor noise or uncertain terrain.",
+      "status": "Pendiente",
+      "assignee": "Flagugu",
+      "note": "[REQUIRES AUTHOR INPUT] Análisis de estabilidad formal"
+    },
+    {
+      "id": "R2C3",
+      "reviewer": "Reviewer 2",
+      "comment": 3,
+      "body": "Quantitative validation is insufficient. Key metrics such as success rate, response time, gait-switching delay, terrain adaptability rate, and tracking accuracy are missing.",
+      "status": "Pendiente",
+      "assignee": "SapoMarapo",
+      "note": "[REQUIRES AUTHOR INPUT] Métricas cuantitativas"
+    },
+    {
+      "id": "R2C4",
+      "reviewer": "Reviewer 2",
+      "comment": 4,
+      "body": "Real-world experiment is limited and weak. No tests are performed under disturbance, uneven terrain, slippage, or dynamic obstacles.",
+      "status": "Pendiente",
+      "assignee": "SapoMarapo",
+      "note": "[REQUIRES AUTHOR INPUT] Ampliar experimentos reales"
+    },
+    {
+      "id": "R2C5",
+      "reviewer": "Reviewer 2",
+      "comment": 5,
+      "body": "Clarity and readability need major improvement. Many equations and neural modules are poorly explained. Variables are often undefined.",
+      "status": "Mitigado",
+      "assignee": "Homo",
+      "note": ""
+    },
+    {
+      "id": "R3C1",
+      "reviewer": "Reviewer 3",
+      "comment": 1,
+      "body": "The core contribution of the basal ganglia‑inspired neural arbitration is not sufficiently validated from a biological or computational perspective. No quantitative metrics are provided.",
+      "status": "En Análisis",
+      "assignee": "Homo",
+      "note": ""
+    },
+    {
+      "id": "R3C2",
+      "reviewer": "Reviewer 3",
+      "comment": 2,
+      "body": "The locomotion mode switching lacks critical quantitative engineering metrics. No data on transition success rate, switching delay, stability margin, energy consumption, or repeatability.",
+      "status": "Pendiente",
+      "assignee": "SapoMarapo",
+      "note": "[REQUIRES AUTHOR INPUT] Métricas de switching"
+    },
+    {
+      "id": "R3C3",
+      "reviewer": "Reviewer 3",
+      "comment": 3,
+      "body": "The multimodal sensing is not integrated within a formal sensor fusion framework. The fusion logic is heuristic and ad‑hoc without design, verification, or comparison to standard fusion methods.",
+      "status": "Pendiente",
+      "assignee": "Flagugu",
+      "note": "[REQUIRES AUTHOR INPUT] Framework de fusión formal"
+    },
+    {
+      "id": "R3C4",
+      "reviewer": "Reviewer 3",
+      "comment": 4,
+      "body": "The MLP‑based terrain classification lacks standard machine learning evaluation. No accuracy, precision, recall, F1‑score, confusion matrix, or cross‑validation provided.",
+      "status": "Pendiente",
+      "assignee": "Flagugu",
+      "note": "[REQUIRES AUTHOR INPUT] Métricas ML completas"
+    },
+    {
+      "id": "R3C5",
+      "reviewer": "Reviewer 3",
+      "comment": 5,
+      "body": "All real‑world experiments are conducted in highly controlled indoor environments. No tests in unstructured outdoor environments, with dynamic obstacles, moving targets, or complex sensory conflicts.",
+      "status": "Pendiente",
+      "assignee": "SapoMarapo",
+      "note": ""
+    },
+    {
+      "id": "R3C6",
+      "reviewer": "Reviewer 3",
+      "comment": 6,
+      "body": "The novelty and advancement are not clearly demonstrated due to insufficient comparison with the state of the art. Quantitative benchmarking against representative platforms is missing.",
+      "status": "Mitigado",
+      "assignee": "Homo",
+      "note": ""
+    },
+    {
+      "id": "R3C7",
+      "reviewer": "Reviewer 3",
+      "comment": 7,
+      "body": "Figure quality and readability should be improved for better presentation of neural activities and robot trajectories.",
+      "status": "En Análisis",
+      "assignee": "Negriche",
+      "note": "Alta prioridad: regenerar con DPI ≥300"
+    },
+    {
+      "id": "R3C8",
+      "reviewer": "Reviewer 3",
+      "comment": 8,
+      "body": "Parameter settings in Tables 1-5 need clearer physical interpretation and justification.",
+      "status": "Mitigado",
+      "assignee": "Homo",
+      "note": ""
+    },
+    {
+      "id": "R3C9",
+      "reviewer": "Reviewer 3",
+      "comment": 9,
+      "body": "The writing, grammar, and academic expression should be polished to meet the standards of an international journal.",
+      "status": "Mitigado",
+      "assignee": "Homo",
+      "note": ""
+    }
+  ],
+  "tasks": [
+    {
+      "id": "T001",
+      "title": "Tarea 1 — Definición parámetros tablas (τ, ω)",
+      "desc": "Añadir definiciones físicas de τ_L, τ_IRA y matrices W tras Table LiDAR.",
+      "status": "Done",
+      "assignees": [
+        "Homo"
+      ],
+      "ref": "R2C5"
+    },
+    {
+      "id": "T002",
+      "title": "Tarea 2 — Definición de variables ecuaciones",
+      "desc": "Añadir cláusulas \"where…\" tras ecuaciones de ring, STN/STR, GPe/GPi, Naka, Z0-Z16.",
+      "status": "Done",
+      "assignees": [
+        "Homo"
+      ],
+      "ref": "R2C5"
+    },
+    {
+      "id": "T003",
+      "title": "Tarea 3 — Separar Results: Sim vs Físico",
+      "desc": "Reorganizar sección Results en subsecciones Simulation Results y Physical Implementation Results.",
+      "status": "Done",
+      "assignees": [
+        "Homo"
+      ],
+      "ref": "R1C9"
+    },
+    {
+      "id": "T004",
+      "title": "Tarea 4 — Inconsistencias slope Figs 3/6/33",
+      "desc": "Revisar y alinear descripción de pendientes en Figura 3 con contenido real.",
+      "status": "In Progress",
+      "assignees": [
+        "SapoMarapo"
+      ],
+      "ref": "R1C4"
+    },
+    {
+      "id": "T005",
+      "title": "Tarea 5 — Justificación diseño parámetros (Ar, ω)",
+      "desc": "Derivar analíticamente Ar=28.0, justificar asimetrías de peso y ganancias ω.",
+      "status": "Done",
+      "assignees": [
+        "Homo"
+      ],
+      "ref": "R3C8"
+    },
+    {
+      "id": "T006",
+      "title": "Tarea 6 — Rewrite Introducción completa",
+      "desc": "Ampliar estado del arte con ANYmal, CENTAURO, Ascento, Max, FLORES, R-Taichi. Posicionar novedad BG.",
+      "status": "Done",
+      "assignees": [
+        "Homo"
+      ],
+      "ref": "R1C1"
+    },
+    {
+      "id": "T007",
+      "title": "Tarea 7 — Clarificación modos (wheeled/legged)",
+      "desc": "Añadir \"(wheeled)\" y \"(legged)\" tras términos mobile y articulated.",
+      "status": "Done",
+      "assignees": [
+        "Homo"
+      ],
+      "ref": "R1C2"
+    },
+    {
+      "id": "T008",
+      "title": "Tarea 8 — Justificación parámetro Ar (pinhole)",
+      "desc": "Añadir derivación pinhole camera tras tabla Locom_NN.",
+      "status": "Done",
+      "assignees": [
+        "Homo"
+      ],
+      "ref": "R3C8"
+    },
+    {
+      "id": "T009",
+      "title": "Tarea 9 — Descripción terreno Perlin-noise",
+      "desc": "Reemplazar descripción primitiva con caracterización procedural Perlin-noise.",
+      "status": "Done",
+      "assignees": [
+        "Homo"
+      ],
+      "ref": "R1C10"
+    },
+    {
+      "id": "T010",
+      "title": "Tarea 10 — Proofreading académico",
+      "desc": "Revisión gramatical completa: voz pasiva en Metodología, presente en Resultados, léxico Q1.",
+      "status": "Done",
+      "assignees": [
+        "Homo"
+      ],
+      "ref": "R3C9"
+    },
+    {
+      "id": "T011",
+      "title": "Tarea 11 — Plataforma low-cost exploratoria",
+      "desc": "Reencuadrar prototipo como baseline exploratorio de bajo costo. Limitar promesas industriales.",
+      "status": "Done",
+      "assignees": [
+        "Homo"
+      ],
+      "ref": "R2C4"
+    },
+    {
+      "id": "T012",
+      "title": "Tarea 12 — Scope low-cost formalización",
+      "desc": "Añadir párrafo de delimitación física y algorítmica en Discussion.",
+      "status": "Done",
+      "assignees": [
+        "Homo"
+      ],
+      "ref": "R2C4"
+    },
+    {
+      "id": "T013",
+      "title": "Tarea 13 — 9×15=135 input MLP",
+      "desc": "Añadir \"$9 \\times 15 = 135$\" explícito en texto.",
+      "status": "Done",
+      "assignees": [
+        "Homo"
+      ],
+      "ref": "R1C7"
+    },
+    {
+      "id": "T014",
+      "title": "Tarea 14 — Descripción terreno irregular (media/varianza)",
+      "desc": "Ampliar caracterización del terreno MDF con parámetros estadísticos.",
+      "status": "Done",
+      "assignees": [
+        "Homo"
+      ],
+      "ref": "R1C10"
+    },
+    {
+      "id": "T015",
+      "title": "Tarea 15 — Justificación BG vs WTA (Girard)",
+      "desc": "Ampliar discusión de propiedades adaptativas BG sobre WTA clásico.",
+      "status": "Done",
+      "assignees": [
+        "Homo"
+      ],
+      "ref": "R3C1"
+    },
+    {
+      "id": "T016",
+      "title": "Tarea 16 — Citas neurociencia BG (Baston, Prescott 2024)",
+      "desc": "Añadir citas actualizadas del paradigma GPR.",
+      "status": "Done",
+      "assignees": [
+        "Homo"
+      ],
+      "ref": "R3C1"
+    },
+    {
+      "id": "T017",
+      "title": "Tarea 17 — Purgado afirmaciones industriales",
+      "desc": "Reencuadrar Abstract, Sec 2.2 y Discusión/Conclusiones hacia viabilidad computacional.",
+      "status": "Done",
+      "assignees": [
+        "Homo"
+      ],
+      "ref": "R1C5"
+    },
+    {
+      "id": "T018",
+      "title": "Tarea 18 — Refinamiento Introducción (coautores)",
+      "desc": "Conectar Girard→KamaliSarvestani2013, simplificar modos, añadir párrafo estructural cierre.",
+      "status": "Done",
+      "assignees": [
+        "Homo"
+      ],
+      "ref": "R1C1"
+    },
+    {
+      "id": "T020",
+      "title": "Datos entrenamiento MLP y métricas (F1, ROC)",
+      "desc": "[REQUIRES AUTHOR INPUT] Proveer dataset de entrenamiento y métricas de desempeño del clasificador.",
+      "status": "To Do",
+      "assignees": [
+        "Flagugu"
+      ],
+      "ref": "R1C8"
+    },
+    {
+      "id": "T021",
+      "title": "Análisis de estabilidad formal del controlador",
+      "desc": "[REQUIRES AUTHOR INPUT] Añadir prueba de estabilidad, convergencia o análisis de robustez.",
+      "status": "To Do",
+      "assignees": [
+        "Flagugu"
+      ],
+      "ref": "R2C2"
+    },
+    {
+      "id": "T022",
+      "title": "Métricas cuantitativas de switching (success rate, delay)",
+      "desc": "[REQUIRES AUTHOR INPUT] Reportar tasa de éxito, latencia de transición, oscilación durante cambios de modo.",
+      "status": "To Do",
+      "assignees": [
+        "SapoMarapo"
+      ],
+      "ref": "R3C2"
+    },
+    {
+      "id": "T023",
+      "title": "Framework de fusión sensorial formal",
+      "desc": "[REQUIRES AUTHOR INPUT] Reemplazar lógica heurística con esquema formal (Kalman, Bayesiano o deep fusion).",
+      "status": "To Do",
+      "assignees": [
+        "Flagugu"
+      ],
+      "ref": "R3C3"
+    },
+    {
+      "id": "T024",
+      "title": "Regeneración de figuras en alta calidad (DPI≥300)",
+      "desc": "Regenerar Figs 3, 6, 33 y figuras de actividad neuronal con resolución alta y leyendas legibles.",
+      "status": "In Progress",
+      "assignees": [
+        "Negriche"
+      ],
+      "ref": "R3C7"
+    },
+    {
+      "id": "T025",
+      "title": "Experimentos reales ampliados (terreno no estructurado)",
+      "desc": "[REQUIRES AUTHOR INPUT] Diseñar y ejecutar pruebas en exteriores o con obstáculos dinámicos.",
+      "status": "To Do",
+      "assignees": [
+        "SapoMarapo"
+      ],
+      "ref": "R2C4"
+    }
+  ]
+}
