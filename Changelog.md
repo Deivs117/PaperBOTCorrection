@@ -2,6 +2,16 @@
 
 All changes listed below were applied automatically to `elsarticle-template-num-names.tex`. Equation expressions and numerical values were not modified; only explanatory prose was added or reorganized.
 
+## [2026-05-17T23:15:14Z] - Tarea #18: Refinamiento de la Introducción por Feedback de Coautores
+* **Reviewer Comment:** Reviewer 1 (Comment 1) and Reviewer 2 (Comment 1) requested stronger horizontal comparisons, clarity in definitions, and a more structured flow.
+* **Change Made:** Modified `src/elsarticle-template-num-names.tex`. Connected the theoretical foundation of Girard et al. (2003) with the computational model of Kamali Sarvestani et al. (2013). Simplified the parenthetical description of locomotion modes into explicit "(articulated mode)" and "(mobile mode)" definitions. Added a standard structural closing paragraph outlining the organization of the paper.
+* **Justification:** Resolves remaining structural and clarity issues in the Introduction. Grounding the computational model within its exact theoretical lineage provides the analytical rigor expected by reviewers, while the simplified definitions and structural outline fulfill Elsevier's formatting and readability standards.
+
+## [2026-05-17T23:15:14Z] - Tarea #17: Purgado de Afirmaciones Industriales y Alineación de Tono
+* **Reviewer Comment:** Reviewer 1 (Comment 5) flagged that the industrial-building scenario in simulation was not demonstrated or supported. Collectively, the reviewers challenged the industrial readiness of the low-torque, open-loop hardware setup.
+* **Change Made:** Modified `src/elsarticle-template-num-names.tex`. Reframed the Abstract, replaced the unsupported industrial simulation sentence in Section 2.2 with an explicit focus on structured non-dynamic topographies, and rewrote the discussion/conclusions paragraphs to switch from "direct industrial deployment" to "computational feasibility and energy efficiency baselines."
+* **Justification:** Aligns the entire narrative of the paper with the low-cost exploratory scope defined in Tarea 12 without devaluing the contribution. By explicitly framing the prototype as a robust mathematical and algorithmic baseline, we turn a weakness (hardware constraints) into a validated scientific foundation, while directly resolving the simulation discrepancy exposed by Reviewer 1.
+
 - **File:** `elsarticle-template-num-names.tex`  
   **Change:** Added definitions for `τ_Z` and `σ_Z` immediately after Equation `\eqref{eq:ring}` (`% [AUTO-EDIT]`).  
   **Justification (TAREA 2):** These parameters appeared in eq. (ring) but were not defined in the immediately preceding text.
