@@ -389,7 +389,7 @@ function setReviewerFilter(val) {
   activeReviewerFilter = val;
   document.querySelectorAll('[data-filter]').forEach(btn => {
     const isActive = btn.dataset.filter === val;
-    btn.className = btn.className.replace(/reviewer-pill-active|reviewer-pill-inactive/g,'');
+    btn.classList.remove('reviewer-pill-active', 'reviewer-pill-inactive');
     btn.classList.add(isActive ? 'reviewer-pill-active' : 'reviewer-pill-inactive');
   });
   renderReviewers();
@@ -424,7 +424,7 @@ function renderReviewers() {
            </div>
          </div>`
       : `<div class="flex items-start gap-1">
-           <div class="note-read-block flex-1" ondblclick="editNote('${r.id}')">${escHtml(r.note||'') || '<span class="text-slate-600 not-italic">Sin nota…</span>'}</div>
+           <div class="note-read-block flex-1" ondblclick="editNote('${r.id}')" onkeydown="if(event.key==='Enter')editNote('${r.id}')" tabindex="0" role="button" aria-label="Nota rápida — pulsa Enter o doble clic para editar">${escHtml(r.note||'') || '<span class="text-slate-600 not-italic">Sin nota…</span>'}</div>
            <button onclick="editNote('${r.id}')" title="Editar nota" class="text-slate-500 hover:text-cyan-400 mt-1 shrink-0">
              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 012.828 2.828L11.828 15.828a2 2 0 01-1.414.586H9v-2a2 2 0 01.586-1.414z"/></svg>
            </button>
@@ -527,11 +527,13 @@ function parseChangelog(raw) {
 
   const blockRe = /^## \[([^\]]+)\]\s*-\s*(.+)$/m;
 
-  // Fault-tolerant field extractor: captures text until the next bold-key bullet or end
+  // Fault-tolerant field extractor: captures text until the next bold-key bullet or end of block.
+  // Pattern breakdown: \*\s*\*\*Label:\*\* matches "* **Label:**" (bullet + bold key),
+  // then captures everything ([\s\S]*?) lazily until the next bullet-key, a new ## header, or end of string.
   const field = (block, label) => {
-    // Match: * **Label:** followed by one or more lines of content
+    const escapedLabel = label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const re = new RegExp(
-      '\\*\\s*\\*\\*' + label.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ':\\*\\*\\s*([\\s\\S]*?)(?=\\n\\s*\\*\\s*\\*\\*|\\n##\\s|$)',
+      '\\*\\s*\\*\\*' + escapedLabel + ':\\*\\*\\s*([\\s\\S]*?)(?=\\n\\s*\\*\\s*\\*\\*|\\n##\\s|$)',
       'i'
     );
     const m = block.match(re);
