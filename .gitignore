@@ -1,0 +1,27 @@
+# ==========================================
+# Archivos Auxiliares de Compilación LaTeX
+# ==========================================
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.spl
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+*.nav
+*.snm
+*.vrb
+*.dvi
+*.ps
+
+# Ignorar respaldos temporales de editores
+*.bak
+*.sav
+*~
+.DS_Store
+Thumbs.db
