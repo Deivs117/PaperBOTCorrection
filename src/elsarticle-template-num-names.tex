@@ -1,4 +1,4 @@
-% [AUTO-EDIT SESSION START] fecha=2026-05-10T21:01:26Z agent=ClaudeSonnet
+%% [AUTO-EDIT SESSION START] fecha=2026-05-10T21:01:26Z agent=ClaudeSonnet
 %% 
 %% Copyright 2007-2025 Elsevier Ltd
 %% 
@@ -526,7 +526,8 @@ The differential equations~\eqref{eq:Z0}–\eqref{eq:Z16} describing the dynamic
 \end{align}
 % [AUTO-EDIT] TAREA 2: Added explicit definitions for σ_az, Roll, Pitch, thresholds, G_pe/G_pi signals, and w, which appear in these equations but were not defined in the immediately preceding text.
 \revblue{In Equations~\eqref{eq:Z0}–\eqref{eq:Z16}: $\sigma_{az}$ (m/s$^2$) is the standard deviation of the linear acceleration along the $Z$~axis over the current sensing window; $U_{\sigma_{az}}$, $U_{Roll}$, and $U_{Pitch}$ are the corresponding activation thresholds for terrain-instability detection; and $Roll$ and $Pitch$ (deg) are the roll and pitch angles measured by the IMU.
-The neural pathway signals are: $G_{pe,y}$ is the GPe output of the appetitive behavioral channel; $G_{pi,x}$ and $G_{pi,z}$ are the GPi outputs of the obstacle and aversive channels, respectively; and $w$ is a generic unitless inhibitory synaptic weight. % [REF] Same notation as in Equations~\eqref{eq:Z_3}--\eqref{eq:Z_17}.}
+The neural pathway signals are: $G_{pe,y}$ is the GPe output of the appetitive behavioral channel; $G_{pi,x}$ and $G_{pi,z}$ are the GPi outputs of the obstacle and aversive channels, respectively; and $w$ is a generic unitless inhibitory synaptic weight.}
+% [REF] Same notation as in Equations~\eqref{eq:Z_3}--\eqref{eq:Z_17}.
 
 % [AUTO-EDIT] fecha=2026-05-17T03:39:56Z agente=ClaudeSonnet: Corrected wording: MLP processes IMU telemetry instead of replacing the IMU (TAREA 15, Reviewer 1 Comment 6).
 \revblue{To enhance terrain classification and stagnation detection, a Multi-Layer Perceptron (MLP) was integrated into the sensing pipeline \citep{Grajales_Des_2025} (Figure~\ref{fig:MLP}). The MLP does not replace the physical IMU; rather, it processes raw inertial telemetry --- specifically variations in roll, pitch, and the standard deviation of the Z-axis acceleration --- transforming low-level sensor signals into high-level geometric classifications that inform mode transitions. This network includes two hidden layers of 150 and 80 units, respectively. The integration was motivated by the fact that, in rough-terrain tests, direct thresholding of roll, pitch, and $\sigma_{az}$ was not sufficient for the level of repeatability required by the application; training the MLP on real inertial data from different terrains is expected to enable more reliable terrain-state classification than fixed-threshold heuristics.}
@@ -590,7 +591,8 @@ The hyperparameters (Table~\ref{table:Locom_MLP}) and the Equations~\eqref{eq:Z0
 \label{eq:Z16V2}
 \end{align}
 % [AUTO-EDIT] TAREA 2: Added explicit definitions for N_0, N_1, N_2, U_{N0}, U_{N1}, which appear in these equations but were not defined in the immediately preceding text.
-\revblue{In Equations~\eqref{eq:Z0V2}–\eqref{eq:Z16V2}: $N_0$ is the MLP output probability of flat terrain; $N_1$ is the MLP output probability of inclined terrain; $N_2$ is the binary stagnation indicator ($1 ={}$stuck, $0 ={}$not stuck); and $U_{N_0}$, $U_{N_1}$ are the corresponding activation thresholds (see Table~\ref{table:Locom_MLP}). % [REF] $w$ retains the same meaning as in Equations~\eqref{eq:Z_3}--\eqref{eq:Z_17}.}
+\revblue{In Equations~\eqref{eq:Z0V2}–\eqref{eq:Z16V2}: $N_0$ is the MLP output probability of flat terrain; $N_1$ is the MLP output probability of inclined terrain; $N_2$ is the binary stagnation indicator ($1 ={}$stuck, $0 ={}$not stuck); and $U_{N_0}$, $U_{N_1}$ are the corresponding activation thresholds (see Table~\ref{table:Locom_MLP}).}
+% [REF] $w$ retains the same meaning as in Equations~\eqref{eq:Z_3}--\eqref{eq:Z_17}.
 
 \begin{table}%[t]
 \centering
