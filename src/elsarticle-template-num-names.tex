@@ -707,93 +707,6 @@ For the appetitive stimulus scenario, the target was initially positioned to the
     \label{fig:NEU_EST_UNIB}
 \end{figure}
 
-
-\subsubsection{\revblue{Response to Multiple Stimuli of Different Natures}}
-
-For this experiment, a barrier was placed as an obstacle on the right side, positioned closer to the platform. On the left side, an aversive stimulus was introduced, and finally, farther away from both, an appetitive stimulus was placed, toward which the platform was expected to approach. 
-
-Neuronal activities of the four control structures were recorded throughout the platform’s trajectory, as shown in Figure~\ref{fig:NEU_EST_MUL}. Likewise, Figure~\ref{fig:RES_EST_MUL} presents the robot’s trajectory, along with the behaviors and movement directions executed during the test. 
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=\textwidth]{NEU_EST_MUL.png}
-    \caption{Raster plot of the neuronal activations to multiple stimuli of diverse nature in a simulation trial.}
-    \label{fig:NEU_EST_MUL}
-\end{figure}
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.8\textwidth]{RES_EST_MUL.png}
-    \caption{Path followed before different stimuli in a simulation trial. The capture times are at the first moment, at 8 seconds, 15 seconds, 20 seconds, 25 seconds, and from 40 seconds onwards, positions were taken every 35 seconds until the simulation ended in 3 minutes.}
-    \label{fig:RES_EST_MUL}
-\end{figure}
-
-At the initial moment, the evasive sensory structure (Figure~\ref{fig:NEU_EST_MUL}b) exhibits higher neuronal activity, while the external globus pallidus associated with the obstacle becomes active, indicating the need to perform an evasive maneuver to avoid that region. Similar to the individual obstacle-stimulus trial, activations arise in the locomotion control structure (Figure~\ref{fig:NEU_EST_MUL}c); however, the only units involved in the linear and lateral velocity commands are $L_0$, $L_1$, $L_2$, and $L_3$. In this case, neurons $L_0$, $L_1$, and $L_3$ are activated, indicating that the obstacle is located on the right side of the platform. As the obstacle is cleared, the neuronal activity associated with this stimulus decreases in both the basal ganglia module and the corresponding sensory module. 
-
-At second 21, the neuronal responses of the basal ganglia module (Figure~\ref{fig:NEU_EST_MUL}a) show that the dominant stimulus is the aversive one, since it is closer to the robot. Consequently, the robot adopts a fleeing behavior, rotating to the right due to the greater activity in units $X_4$ and $X_5$. This information is integrated in the subsequent layer to define the direction of evasion, which is ultimately represented by a stronger activation of unit $X_{11}$ with respect to neuron $X_{12}$, whose difference determines the turning direction. 
-
-Analogous to the first instant, the external globus pallidus associated with this stimulus shows reduced activation, which corresponds to a behavioral transition. 
-
-In the final instants, when the appetitive stimulus enters the robot’s field of view (at second 27), this is reflected as increased neuronal activity in the appetitive external globus pallidus. At this point, the platform adopts an approach behavior toward the target region located on the right. Therefore, similar to the previously analyzed individual stimulus trial, neuronal activity emerges in units $X_6$ and $X_3$, which is integrated and expressed as a final activation of neuron $X_{13}$, responsible for turning right. Once the stimulus becomes centered, the robot adopts a direct forward approach, which is interrupted by the stop signal emitted by neuron $X_{17}$. 
-
-Ultimately, the platform reaches its goal in 92 seconds, avoiding hazardous areas, bypassing the obstacle, and approaching the region of interest for environmental inspection, adjusting its locomotion mode according to the presented stimuli. This behavior is evidenced by the progressive neuronal activities of units $X_{16}$, $X_{14}$, and $X_{15}$ in that order. In Figure~\ref{fig:NEU_EST_MUL}d, units $X_1$ and $X_2$ show no activation, indicating that no terrain instability is detected, and the gait modes remain unchanged for the three analyzed behaviors. Only unit $X_0$ shows a small-amplitude activation which, although insufficient to trigger a locomotion-mode change as would occur on unstable terrain, produces transient states before and after selecting the quadrupedal mode, attributable to the abrupt movements characteristic of this gait. 
-
-\subsubsection{\revblue{Response to Variable Topographies}}
-
-For the experiments involving variable and unstable topographies in simulation, a three‐section terrain map was designed, as shown in Figure~\ref{fig:TERR_IMU}. In the first simulated experiment, the robot begins moving forward driven by the hunting instinct encoded in the locomotor decision network. Subsequently, the transition from regular to rough terrain is introduced to analyze the standard deviation of the acceleration along the $Z$ axis throughout the simulation. In the physical robot, this information corresponds to the MLP outputs $N_{0}$, $N_{1}$, and $N_{2}$, which implement binary outputs to represent the different terrain states. 
-
-In a second test, the transition from flat terrain to an inclined slope is defined to evaluate the platform’s response to a sudden change in ground inclination. In this configuration, both in Gazebo and in the real robot, an aversive stimulus is positioned behind the platform; according to the previously defined behaviors, the robot must avoid it by switching to the quadrupedal mode. However, due to the slope, the platform adopts the differential rolling mode, achieving a more stable and efficient displacement. 
-
-In the first simulation experiment shown in Figure~\ref{fig:RES_IMU}, the platform transitions immediately after entering the unstable terrain, adopting an appropriate gait to maintain efficient displacement. This behavior is reflected in the neural responses (Figure~\ref{fig:NEU_IMU}), where at 16 seconds, the unit $X_{0}$ shows the highest activity due to the large variation in vertical acceleration, a direct indicator of terrain irregularities. This phenomenon is also visible in Figure~\ref{fig:GRAPH_IMU}, where the standard deviation of the robot's vertical acceleration is plotted over time. The graph highlights the instant when this value exceeds the 3.7 threshold defined in the neural dynamics.
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=1.0\textwidth]{RES_IMU.png}
-    \caption{Trajectory in an unstable terrain in a simulation trial. The poses were taken every 22 seconds.}
-    \label{fig:RES_IMU}
-\end{figure}
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.5\textwidth]{NEU_IMU.png}
-    \caption{Neuronal response for transport on an unstable terrain. Graph a) corresponds to the neural activities of the locomotion module and graph b) to the gait mode control module.}
-    \label{fig:NEU_IMU}
-\end{figure}
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.7\textwidth]{GRAPH_IMU.png}
-    \caption{Standard deviation of the acceleration in the Z axis during transport on an unstable terrain.}
-    \label{fig:GRAPH_IMU}
-\end{figure}
-
-For the second stability test in simulation, the neural activities of the gait-mode control structure were recorded (Figure~\ref{fig:NEU_IMU2}b). At $t=41$~seconds, neuron $X_{1}$-associated with detecting an inclination greater than five degrees-excites unit $X_{15}$, issuing the command to transform into quadrupedal mode. The transition during locomotion is illustrated in Figure~\ref{fig:RES_IMU2}, with snapshots of the platform posture taken every 12 seconds from a lateral perspective. It is important to highlight the neural responses shown in Figure~\ref{fig:NEU_IMU2}a, where the persistent activation of neuron $X_{4}$ produces sustained activity in neurons $X_{11}$ and $X_{12}$, which in turn drive neuron $X_{13}$ and ultimately generate the forward escape behavior. In Figure~\ref{fig:GRAPH_IMU2}, the data recorded by the inertial sensor are shown.
-
-% [AUTO-EDIT] fecha=2026-05-17T03:39:56Z agente=ClaudeSonnet: Added explanation for step-like pitch response due to STL discretization (TAREA 14, Reviewer 1 Comment 4).
-\revblue{Note that while the simulated sloped terrain visually approximates a continuous curved trajectory in the Gazebo environment, the digital model (STL mesh) discretizes continuous geometry into planar facets. Consequently, the IMU telemetry in simulation captures these piecewise linear segments during motion, manifesting as alternating phases of dynamic angular change and transient stationary plateaus in the pitch response plots.}
-% [AUTO-EDIT END]
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.4\textwidth]{NEU_IMU2.png}
-    \caption{Neuronal response for transport in a terrain with elevation. Graph a) corresponds to the neural activities of the locomotion module and graph b) to the gait mode control module.}
-    \label{fig:NEU_IMU2}
-\end{figure}
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=1.0\textwidth]{RES_IMU2.0.png}
-    \caption{Trajectory accomplished for transport in a terrain with elevation during a simulation trial. The poses were taken every 12 seconds.}
-    \label{fig:RES_IMU2}
-\end{figure}
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.5\textwidth]{GRAPH_IMU2.png}
-    \caption{Pitch angle during motion in a steeply sloping terrain.}
-    \label{fig:GRAPH_IMU2}
-\end{figure}
-
 \subsubsection{\revblue{Quantitative Validation: Single-Stimuli Simulation Performance}}
 \revblue{The performance of the platform was evaluated under isolated sensory stimuli to validate the locomotor decision network and the sensory modules individually.}
 
@@ -860,6 +773,36 @@ For the second stability test in simulation, the neural activities of the gait-m
 
 \revblue{\textbf{Obstacle Evasion(See Figure \ref{fig:obstacle_results}):} By employing a smooth capsule geometry, the platform significantly optimizes physical interaction profiles, preventing localized torque spikes. Convergence time exhibits minimal dispersion ($37.1 \pm 1.2$~s), and pitch RMS values are restricted to $1.06^\circ$. The sensory-locomotor coupling is precise: the neural firing variance remains at a low baseline until the robot enters the ranging threshold of the obstacle, at which point the avoidance sub-circuits modulate steering weights while preserving forward momentum.}
 
+\subsubsection{\revblue{Response to Multiple Stimuli of Different Natures}}
+
+For this experiment, a barrier was placed as an obstacle on the right side, positioned closer to the platform. On the left side, an aversive stimulus was introduced, and finally, farther away from both, an appetitive stimulus was placed, toward which the platform was expected to approach. 
+
+Neuronal activities of the four control structures were recorded throughout the platform’s trajectory, as shown in Figure~\ref{fig:NEU_EST_MUL}. Likewise, Figure~\ref{fig:RES_EST_MUL} presents the robot’s trajectory, along with the behaviors and movement directions executed during the test. 
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{NEU_EST_MUL.png}
+    \caption{Raster plot of the neuronal activations to multiple stimuli of diverse nature in a simulation trial.}
+    \label{fig:NEU_EST_MUL}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.8\textwidth]{RES_EST_MUL.png}
+    \caption{Path followed before different stimuli in a simulation trial. The capture times are at the first moment, at 8 seconds, 15 seconds, 20 seconds, 25 seconds, and from 40 seconds onwards, positions were taken every 35 seconds until the simulation ended in 3 minutes.}
+    \label{fig:RES_EST_MUL}
+\end{figure}
+
+At the initial moment, the evasive sensory structure (Figure~\ref{fig:NEU_EST_MUL}b) exhibits higher neuronal activity, while the external globus pallidus associated with the obstacle becomes active, indicating the need to perform an evasive maneuver to avoid that region. Similar to the individual obstacle-stimulus trial, activations arise in the locomotion control structure (Figure~\ref{fig:NEU_EST_MUL}c); however, the only units involved in the linear and lateral velocity commands are $L_0$, $L_1$, $L_2$, and $L_3$. In this case, neurons $L_0$, $L_1$, and $L_3$ are activated, indicating that the obstacle is located on the right side of the platform. As the obstacle is cleared, the neuronal activity associated with this stimulus decreases in both the basal ganglia module and the corresponding sensory module. 
+
+At second 21, the neuronal responses of the basal ganglia module (Figure~\ref{fig:NEU_EST_MUL}a) show that the dominant stimulus is the aversive one, since it is closer to the robot. Consequently, the robot adopts a fleeing behavior, rotating to the right due to the greater activity in units $X_4$ and $X_5$. This information is integrated in the subsequent layer to define the direction of evasion, which is ultimately represented by a stronger activation of unit $X_{11}$ with respect to neuron $X_{12}$, whose difference determines the turning direction. 
+
+Analogous to the first instant, the external globus pallidus associated with this stimulus shows reduced activation, which corresponds to a behavioral transition. 
+
+In the final instants, when the appetitive stimulus enters the robot’s field of view (at second 27), this is reflected as increased neuronal activity in the appetitive external globus pallidus. At this point, the platform adopts an approach behavior toward the target region located on the right. Therefore, similar to the previously analyzed individual stimulus trial, neuronal activity emerges in units $X_6$ and $X_3$, which is integrated and expressed as a final activation of neuron $X_{13}$, responsible for turning right. Once the stimulus becomes centered, the robot adopts a direct forward approach, which is interrupted by the stop signal emitted by neuron $X_{17}$. 
+
+Ultimately, the platform reaches its goal in 92 seconds, avoiding hazardous areas, bypassing the obstacle, and approaching the region of interest for environmental inspection, adjusting its locomotion mode according to the presented stimuli. This behavior is evidenced by the progressive neuronal activities of units $X_{16}$, $X_{14}$, and $X_{15}$ in that order. In Figure~\ref{fig:NEU_EST_MUL}d, units $X_1$ and $X_2$ show no activation, indicating that no terrain instability is detected, and the gait modes remain unchanged for the three analyzed behaviors. Only unit $X_0$ shows a small-amplitude activation which, although insufficient to trigger a locomotion-mode change as would occur on unstable terrain, produces transient states before and after selecting the quadrupedal mode, attributable to the abrupt movements characteristic of this gait. 
+
 % [AUTO-EDIT] TAREA 21: Inserted quantitative multi-modal simulation validation (Families A & B figures, interpretation paragraph, consolidated metrics table).
 \subsubsection{\revblue{Quantitative Validation: Multi-Modal Simulation Performance}}
 
@@ -905,6 +848,62 @@ Complex Navigation   & 100.0\% & 58.41 $\pm$ 3.12 & 0.58 $\pm$ 0.03 & 1.12 $\pm$
 \end{tabularx}
 \end{table}
 % [AUTO-EDIT END]
+
+\subsubsection{\revblue{Response to Variable Topographies}}
+
+For the experiments involving variable and unstable topographies in simulation, a three‐section terrain map was designed, as shown in Figure~\ref{fig:TERR_IMU}. In the first simulated experiment, the robot begins moving forward driven by the hunting instinct encoded in the locomotor decision network. Subsequently, the transition from regular to rough terrain is introduced to analyze the standard deviation of the acceleration along the $Z$ axis throughout the simulation. In the physical robot, this information corresponds to the MLP outputs $N_{0}$, $N_{1}$, and $N_{2}$, which implement binary outputs to represent the different terrain states. 
+
+In a second test, the transition from flat terrain to an inclined slope is defined to evaluate the platform’s response to a sudden change in ground inclination. In this configuration, both in Gazebo and in the real robot, an aversive stimulus is positioned behind the platform; according to the previously defined behaviors, the robot must avoid it by switching to the quadrupedal mode. However, due to the slope, the platform adopts the differential rolling mode, achieving a more stable and efficient displacement. 
+
+In the first simulation experiment shown in Figure~\ref{fig:RES_IMU}, the platform transitions immediately after entering the unstable terrain, adopting an appropriate gait to maintain efficient displacement. This behavior is reflected in the neural responses (Figure~\ref{fig:NEU_IMU}), where at 16 seconds, the unit $X_{0}$ shows the highest activity due to the large variation in vertical acceleration, a direct indicator of terrain irregularities. This phenomenon is also visible in Figure~\ref{fig:GRAPH_IMU}, where the standard deviation of the robot's vertical acceleration is plotted over time. The graph highlights the instant when this value exceeds the 3.7 threshold defined in the neural dynamics.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=1.0\textwidth]{RES_IMU.png}
+    \caption{Trajectory in an unstable terrain in a simulation trial. The poses were taken every 22 seconds.}
+    \label{fig:RES_IMU}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.5\textwidth]{NEU_IMU.png}
+    \caption{Neuronal response for transport on an unstable terrain. Graph a) corresponds to the neural activities of the locomotion module and graph b) to the gait mode control module.}
+    \label{fig:NEU_IMU}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.7\textwidth]{GRAPH_IMU.png}
+    \caption{Standard deviation of the acceleration in the Z axis during transport on an unstable terrain.}
+    \label{fig:GRAPH_IMU}
+\end{figure}
+
+For the second stability test in simulation, the neural activities of the gait-mode control structure were recorded (Figure~\ref{fig:NEU_IMU2}b). At $t=41$~seconds, neuron $X_{1}$-associated with detecting an inclination greater than five degrees-excites unit $X_{15}$, issuing the command to transform into quadrupedal mode. The transition during locomotion is illustrated in Figure~\ref{fig:RES_IMU2}, with snapshots of the platform posture taken every 12 seconds from a lateral perspective. It is important to highlight the neural responses shown in Figure~\ref{fig:NEU_IMU2}a, where the persistent activation of neuron $X_{4}$ produces sustained activity in neurons $X_{11}$ and $X_{12}$, which in turn drive neuron $X_{13}$ and ultimately generate the forward escape behavior. In Figure~\ref{fig:GRAPH_IMU2}, the data recorded by the inertial sensor are shown.
+
+% [AUTO-EDIT] fecha=2026-05-17T03:39:56Z agente=ClaudeSonnet: Added explanation for step-like pitch response due to STL discretization (TAREA 14, Reviewer 1 Comment 4).
+\revblue{Note that while the simulated sloped terrain visually approximates a continuous curved trajectory in the Gazebo environment, the digital model (STL mesh) discretizes continuous geometry into planar facets. Consequently, the IMU telemetry in simulation captures these piecewise linear segments during motion, manifesting as alternating phases of dynamic angular change and transient stationary plateaus in the pitch response plots.}
+% [AUTO-EDIT END]
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.4\textwidth]{NEU_IMU2.png}
+    \caption{Neuronal response for transport in a terrain with elevation. Graph a) corresponds to the neural activities of the locomotion module and graph b) to the gait mode control module.}
+    \label{fig:NEU_IMU2}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=1.0\textwidth]{RES_IMU2.0.png}
+    \caption{Trajectory accomplished for transport in a terrain with elevation during a simulation trial. The poses were taken every 12 seconds.}
+    \label{fig:RES_IMU2}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.5\textwidth]{GRAPH_IMU2.png}
+    \caption{Pitch angle during motion in a steeply sloping terrain.}
+    \label{fig:GRAPH_IMU2}
+\end{figure}
 
 \subsection{\revblue{Physical Implementation Results}}
 
