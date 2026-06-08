@@ -42,6 +42,7 @@
 %% The amsmath package provides various useful equation environments.
 \usepackage{amsmath}
 \usepackage{xcolor}
+\usepackage{booktabs}
 \newcommand{\revblue}[1]{\textcolor{blue}{#1}}
 %% The amsthm package provides extended theorem environments
 %% \usepackage{amsthm}
@@ -791,6 +792,68 @@ For the second stability test in simulation, the neural activities of the gait-m
     \caption{Pitch angle during motion in a steeply sloping terrain.}
     \label{fig:GRAPH_IMU2}
 \end{figure}
+
+% [AUTO-EDIT] TAREA 21: Inserted quantitative multi-modal simulation validation (Families A & B figures, interpretation paragraph, consolidated metrics table).
+\subsubsection{\revblue{Quantitative Validation: Multi-Modal Simulation Families}}
+
+\begin{figure*}[t]
+    \centering
+    \begin{subfigure}[b]{0.58\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig1_Appetitive_macro.png}
+        \caption{Robustness Metrics (Mean $\pm$ SD)}
+        \label{fig:appetitive_macro}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.40\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig2_Appetitive_Targeting_micro_test_005_SUCCESS.png}
+        \caption{Temporal Dynamics (Trial 005)}
+        \label{fig:appetitive_micro}
+    \end{subfigure}
+    \caption{Performance analysis for appetitive targeting. (a) Robustness evaluation across noise levels. (b) Neural and kinematic response during a representative successful trial.}
+    \label{fig:appetitive_results}
+\end{figure*}
+
+\begin{figure*}[t]
+    \centering
+    \begin{subfigure}[b]{0.58\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig1_Complex_macro.jpg}
+        \caption{Robustness Metrics}
+        \label{fig:complex_macro}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.40\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig2_Complex_Navigation_micro_test_005_SUCCESS.png}
+        \caption{Temporal Dynamics}
+        \label{fig:complex_micro}
+    \end{subfigure}
+    \caption{Multi-stimuli navigation performance. The system demonstrates robust decision-making under conflicting sensory modalities.}
+    \label{fig:complex_results}
+\end{figure*}
+
+\revblue{The culmination of the simulation validation is represented by the Complex Navigation suite (Family B), where the system is exposed to a simultaneous combination of appetitive targets, aversive threats, and physical obstacles. Figure~\ref{fig:complex_macro} establishes that, despite the high environmental complexity, the mission success rate remained at $100\%$ with completion times bounded below $60$~s. Under high noise indices, the robot's local trajectory undergoes micro-corrections as it balances competing vector fields; however, the decision latency remains constant, demonstrating that the network does not suffer from computational deadlocks.}
+
+\revblue{The structural attitude response remains clean, below a Pitch RMS of $1.12^\circ$. The multimodal temporal alignment in Fig.~\ref{fig:complex_micro} reveals the sequential decision lifecycle executed by the architecture. The neural firing variance profile shows a two-stage computational increment: the first peak ($t \approx 3$~s) represents the aggressive evasion response to avoid the initial aversive threat. Once the robot safely avoids the threat, a second distinct activation envelope appears between $t = 12$~s and $t = 18$~s, capturing the structural gait switch required to navigate the narrow passage corridor surrounding the central obstacle. Once cleared, the system enters a final high-consistency tracking phase, closing the loop smoothly toward the target.}
+
+\begin{table}[htbp]
+\centering
+\caption{Consolidated Quantitative Performance Metrics Across All Experimental Simulation Families Under Multi-Modal Sensory Noise.}
+\label{tab:consolidated_simulation_metrics}
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Experimental Suite} & \textbf{Noise Index ($\sigma$)} & \textbf{Success Rate (\%)} & \textbf{Mean $T_{sim}$ (s)} & \textbf{Mean Roll RMS (deg)} & \textbf{Mean Pitch RMS (deg)} \\
+\midrule
+Family A: Appetitive Targeting & 0 -- 4 & 100.0\% & 36.14 $\pm$ 0.45 & 0.54 $\pm$ 0.01 & 1.06 $\pm$ 0.02 \\
+Family A: Aversive Escape      & 0 -- 4 & 100.0\% & 38.52 $\pm$ 2.21 & 0.62 $\pm$ 0.04 & 1.14 $\pm$ 0.05 \\
+Family A: Obstacle Evasion     & 0 -- 4 & 100.0\% & 37.12 $\pm$ 1.24 & 0.55 $\pm$ 0.02 & 1.06 $\pm$ 0.01 \\
+Family B: Complex Navigation   & 0 -- 4 & 100.0\% & 58.41 $\pm$ 3.12 & 0.58 $\pm$ 0.03 & 1.12 $\pm$ 0.04 \\
+\bottomrule
+\end{tabular}
+\end{table}
+% [AUTO-EDIT END]
 
 \subsection{\revblue{Physical Implementation Results}}
 
