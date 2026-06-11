@@ -2,6 +2,17 @@
 
 ---
 
+## Reviewer 1, Comment 6
+
+**Reviewer Comment:** The physical robot evaluation is missing rigorous key performance indicators. The authors must report quantitative metrics regarding real-world transition delays, structural stability, and computational behaviour under variable physical topographies to prove the architecture's real-world feasibility.
+
+**Change made:** *Location: New Subsection — Quantitative Performance Analysis in Physical Multi-Stimuli and Variable Terrain Environments (Section 3, Physical Implementation Results).*
+> "The experimental validation under real-world physical constraints was benchmarked using the Appetitive Stimulus Scenario (Appetitive\_Real family) across three independent hardware replicates. As characterised by the ECDF in Fig. [appetitive\_ecdf\_real], the physical locomotion mode-switching latency T\_switch exhibits an extended settling profile distributed across a temporal window spanning 3.0 to 9.0 s [...] The four-panel latency partitioning demonstrates that the computational decision latency of the artificial basal ganglia loop exhibits a highly optimised, task-dependent temporal differentiation: Q→DM achieves μ = 0.184 s, while the deliberate DM→Q integration window settled at μ = 0.534 s prevents chattering on unstructured terrain."
+
+**Justification:** We have comprehensively resolved this comment by conducting an exhaustive quantitative evaluation of the physical platform under real-world multi-stimuli environments and variable topographies, as now detailed in our new subsection. By integrating 14 new publication-ready analytical plots — capturing Empirical Cumulative Distribution Functions (ECDF) for switching delays, active basal ganglia temporal dynamics, Roll/Pitch RMS attitude deviations, physical battery current draw across transitions, and un-cached micro-controller latencies — we provide absolute statistical transparency. This replaces our early qualitative descriptions with verifiable engineering data, proving the computational lightness and structural reliability of our bio-inspired approach under unconstrained real environments. The four-panel latency layout further demonstrates that the extended neural integration window on rough terrain ($\mu = 0.534$ s) is a deliberate anti-chattering design feature, not a control deficiency, and is confirmed mechanically by the $\mu = 1.56$ s emergency retraction reflex that immediately restores chassis stability.
+
+---
+
 ## Response to Referee — Corrections to the Introduction
 
 The following paragraph summarizes the revisions made to the Introduction section in response to the reviewers' feedback, primarily addressing Reviewer 1, Comment 1 (the most critical comment regarding the introduction, highlighted in the authors' working copy): "The Introduction section requires significant improvement. The authors have not adequately developed the state of the art in related research. As a result, reviewers lack sufficient horizontal comparisons and cannot evaluate the advancement of the proposed method." Additional relevant feedback from Reviewer 2 (Comment 1, novelty not sufficiently demonstrated) and Reviewer 3 (Comment 6, no comparison with the state of the art or benchmarks) was also incorporated.
