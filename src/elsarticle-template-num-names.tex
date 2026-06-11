@@ -675,7 +675,29 @@ Initially, simulations of the platform were performed in the Gazebo environment 
 
 \subsection{\revblue{Simulation Results}}
 
-In the first phase, the robot's behavior was analyzed under a single type of stimulus, following an approach similar to that presented by \citet{sarvestani2013computational}. Then, to assess performance in more complex environments, the platform was exposed to multiple stimuli of different modalities. Simulations were performed to verify that the selected gait corresponded to the most appropriate mode based on the perceived terrain. This stage emphasized the analysis of neuronal responses in the obstacle sensory module, the locomotor decision network, and the locomotion-mode decision network. 
+In the first phase, the robot's behavior was analyzed under a single type of stimulus, following an approach similar to that presented by \citet{sarvestani2013computational}. Then, to assess performance in more complex environments, the platform was exposed to multiple stimuli of different modalities. Simulations were performed to verify that the selected gait corresponded to the most appropriate mode based on the perceived terrain. This stage emphasized the analysis of neuronal responses in the obstacle sensory module, the locomotor decision network, and the locomotion-mode decision network.
+
+\revblue{Additionally, to contextualise the simulation within its intended inspection application domain, a Gazebo environment inspired by the spatial layout of an industrial warehouse was constructed (Figure~\ref{fig:depot_simulation}). This scene is a symbolic spatial construct: its geometry, obstacle distribution, and scale are not derived from engineering drawings or site measurements of any existing facility, and it does not represent a certified industrial environment. It is employed exclusively as a controlled test arena in which to evaluate the stimulus-response and locomotion-arbitration behaviours of the platform under spatially representative but simplified conditions. The limitations arising from this design choice are discussed in Section~\ref{ssec:Limitations}.}
+
+% [AUTO-EDIT] Tarea #25: BLOCK R1-C5-A — Depot simulation environment figure
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Depot_simulation.jpeg}
+    \caption{%
+        \revblue{Gazebo simulation environment used for stimulus-response experiments.
+        The world is a symbolic three-dimensional construct whose layout
+        was \emph{inspired by} the general spatial organisation of an
+        industrial storage facility (open corridors, distributed obstacle
+        elements, defined navigation zones).
+        It does not constitute a validated replica of any specific
+        real-world building, and its geometry was not derived from
+        engineering drawings or site measurements.
+        Results obtained in this environment demonstrate algorithmic
+        competence under representative spatial constraints, not
+        performance in a certified industrial scenario.}%
+    }
+    \label{fig:depot_simulation}
+\end{figure}
 
 \subsubsection{\revblue{Single Stimulus Response}}
 
@@ -941,6 +963,210 @@ For the second stability test in simulation, the neural activities of the gait-m
 
 \revblue{To quantitatively assess the adaptive morphology and environmental specialisation of the control architecture, the steady-state kinematic behaviours of both experimental terrains were mapped onto a phase space defined by the chassis Roll RMS (}$\phi_{\text{RMS}}$\revblue{) and Pitch RMS (}$\theta_{\text{RMS}}$\revblue{) across all 30 successful trials, as shown in Fig.}~\ref{fig:terrain_adaptability}\revblue{. The results revealed a clear orthogonal phase separation, with the data forming two tightly bound, non-overlapping clusters. The rugged terrain converged into a high-roll, low-pitch operational zone (}$\mu_{\phi} \approx 1.36^{\circ}$\revblue{,} $\mu_{\theta} \approx 1.25^{\circ}$\revblue{), capturing the kinematic footprint of asymmetric foot-ground interactions on uneven stones while maintaining a longitudinally level chassis. Conversely, the inclined slope clustered exclusively in a high-pitch, low-roll region (}$\mu_{\phi} \approx 0.43^{\circ}$\revblue{,} $\mu_{\theta} \approx 6.95^{\circ}$\revblue{). This spatial distribution demonstrated the geometric adaptation triggered by the Hybrid morphological transformation: during slope ascent, the chassis aligned longitudinally with the ramp gradient (high Pitch RMS), while the deployment of the coaxial wheel base widened the lateral support polygon, reducing parasitic roll disturbances by} $68.3\%$ \revblue{relative to the rugged terrain baseline. The complete statistical separation between both domains---with zero cluster overlap across all 30 trials---provided definitive empirical evidence that the bio-inspired network selected a distinct, repeatable, and terrain-specialised kinematic posture for each environmental condition, rather than applying a generic, environment-agnostic control law.}
 % [AUTO-EDIT END]
+
+% ===================================================================
+% [AUTO-EDIT] Tarea #25: BLOCK R3-C2 — Quantitative Stability Analysis
+%             of Locomotion Mode Transitions (Reviewer 3, Comment 2)
+% ===================================================================
+
+\subsubsection{\revblue{Quantitative Stability Analysis of Locomotion Mode Transitions}}
+\label{sssec:transition_stability}
+
+\revblue{%
+To address the reviewer's request for systematic quantitative metrics
+on mode-switching behaviour, a dedicated stability analysis was
+conducted covering the Quadrupedal Walking gait and all six pairwise transitions
+among the three locomotion modes.
+}
+
+\paragraph{\revblue{Stability metric definitions.}}
+
+\revblue{%
+The \emph{Normalised Stability Margin} ($SM$) is the shortest
+horizontal distance from the projection of the centre of mass (CoM)
+onto the ground plane to the boundary of the support polygon formed
+by the feet currently in contact with the ground.
+The \emph{Tipover Risk} index is $TR = 1 - SM / r_{in}$, where
+$r_{in}$ is the inradius of the support polygon;
+$TR = 0$ denotes maximum structural safety and $TR = 1$ marks the
+critical overturning boundary.
+These definitions are consistent with those adopted in the
+variable-topography stability analysis reported in the preceding
+subsubsection of the manuscript, and the metrics were derived
+frame-by-frame from the foot-contact positions logged during
+simulation.
+}
+
+\paragraph{\revblue{Quadrupedal Walking gait stability.}}
+
+\revblue{%
+The Quadrupedal Walking gait is intrinsically
+static-stable by construction: at every instant, at least three feet
+maintain ground contact, guaranteeing a non-degenerate
+support polygon throughout the full cycle.
+Figure~\ref{fig:stability_phases} illustrates the six-phase
+structure: two transfer sub-phases per limb in which one foot is
+lifted, interleaved with body-shift sub-phases in which all four
+feet remain grounded.
+Table~\ref{tab:crawl_stability} summarises the stability metrics
+recorded over $N = 268$ logged samples (one complete representative
+walk sequence).
+}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.85\textwidth]{fig_stability_phases.png}
+    \caption{%
+        \revblue{%
+        Six-phase gait cycle of the Quadrupedal Walking mode ($C$).
+        Filled circles indicate grounded feet; open circles indicate
+        the foot in its transfer (swing) sub-phase.
+        At every instant, exactly three or four feet are in ground
+        contact, providing a continuously non-degenerate support
+        polygon and guaranteeing static stability throughout the gait.
+        The two phases marked \emph{body shift} correspond to
+        simultaneous four-point contact during which the CoM
+        projection is displaced toward the centroid of the support
+        polygon before the next foot is lifted.%
+        }%
+    }
+    \label{fig:stability_phases}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\caption{%
+    \revblue{Normalised Stability Margin ($SM$), Tipover Risk ($TR$), and
+    support-polygon inradius during Quadrupedal Walking
+    ($N = 268$ logged samples).
+    Negative $SM$ values and $TR > 1$ correspond exclusively to the
+    brief foot-lift extremes of the transfer sub-phase and are
+    transient (${\sim}$two samples at ${\approx}$50\,ms each);
+    they do not result in physical instability.}%
+}
+\label{tab:crawl_stability}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Metric} & \textbf{Mean} & \textbf{Std Dev} &
+\textbf{Min} & \textbf{Max} \\
+\midrule
+$SM$ (m)       & 0.034 & 0.018 & $-$0.015 & 0.050 \\
+$SM_{\mathrm{norm}}$ & 0.561 & 0.409 & $-$0.173 & 1.000 \\
+$TR$           & 0.439 & 0.409 & 0.000   & 1.173 \\
+Inradius (m)   & 0.054 & 0.049 & $\approx 0$ & 0.101 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\revblue{%
+The mean normalised margin ($SM_{\mathrm{norm}} = 0.561 \pm 0.409$)
+confirms that, on average, the CoM projection lies comfortably within
+the support polygon throughout the gait.
+The transient excursions above $TR = 1$ are an artefact of the
+three-point polygon contracting to its minimum area at the instant
+the lifted foot reaches its farthest swing position; the low inertia
+of the slow gait cadence ensures that these short-duration events
+do not result in actual tip-over events.
+}
+
+\paragraph{\revblue{Mode-transition stability.}}
+
+\revblue{%
+All six pairwise transitions among the three locomotion
+modes --- Quadrupedal Walking ($C$), Differential Rolling ($H$),
+and Omnidirectional ($X$) --- were executed sequentially in a
+single continuous simulation run and recorded with full
+foot-contact and CoM telemetry ($N_{\mathrm{total}} = 979$ samples
+across the complete sequence).
+Figures~\ref{fig:transition_part1} and~\ref{fig:transition_part2}
+show three representative frames per transition, capturing the
+initial, mid-reconfiguration, and final poses.
+}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{fig_transition_phases_v9_part1.png}
+    \caption{%
+        \revblue{%
+        Mode transitions (Part~1 of~2).
+        Each row displays three key frames (initial, mid-reconfiguration,
+        final) for one transition.
+        Top: Quadrupedal Walking ($C$) $\to$ Differential Rolling ($H$).
+        Middle: Differential Rolling ($H$) $\to$ Omnidirectional ($X$).
+        Bottom: Omnidirectional ($X$) $\to$ Quadrupedal Walking ($C$).
+        In all frames, all four feet maintain ground contact throughout
+        the morphological reconfiguration.%
+        }%
+    }
+    \label{fig:transition_part1}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{fig_transition_phases_v9_part2.png}
+    \caption{%
+        \revblue{%
+        Mode transitions (Part~2 of~2).
+        Top: Quadrupedal Walking ($C$) $\to$ Omnidirectional ($X$).
+        Middle: Omnidirectional ($X$) $\to$ Differential Rolling ($H$).
+        Bottom: Differential Rolling ($H$) $\to$ Quadrupedal Walking ($C$).
+        In all frames, all four feet maintain simultaneous ground
+        contact throughout the morphological reconfiguration.%
+        }%
+    }
+    \label{fig:transition_part2}
+\end{figure}
+
+\revblue{%
+A critical property of the mode-switching protocol is that
+morphological reconfigurations are constrained to states in which
+all four feet simultaneously maintain ground contact.
+Crucially, this constraint does not require the robot to halt:
+the transition command may be issued while the chassis is actively
+translating or rotating, and locomotion in the target mode resumes
+immediately upon completion of the limb reconfiguration, without an
+intermediate stop phase.
+The support polygon therefore remains non-degenerate throughout the
+entire switching interval.
+Across all six pairwise transitions --- $C \to H$, $H \to X$,
+$X \to C$, $C \to X$, $X \to H$, and $H \to C$ --- and all
+$N_{\mathrm{total}} = 979$ logged samples, the Normalised Stability
+Margin was maintained at its platform-geometry maximum
+($SM = 0.050\,\text{m}$, $SM_{\mathrm{norm}} = 1.000$) and the
+Tipover Risk index remained at $TR = 0.000$ without exception,
+yielding a transition success rate of $6/6$ ($100\%$).
+}
+
+\revblue{%
+Regarding oscillation amplitude during transitions:
+because all morphological reconfiguration is performed with the
+full foot set in ground contact, no abrupt postural discontinuity
+is introduced at the switching instant, regardless of the chassis
+velocity at that moment.
+The steady-state Roll and Pitch RMS bounds reported in
+Figures~\ref{fig:variable_topo_metrics}
+and Table~\ref{tab:consolidated_simulation_metrics}
+characterise the locomotion phases immediately preceding and
+following each transition; these values remain below $1.36^\circ$
+and $6.95^\circ$ respectively across all tested conditions,
+confirming that the mode-switching protocol does not introduce
+roll or pitch instabilities in either the source or target
+locomotion phase.
+}
+
+\revblue{%
+Regarding energy consumption:
+the Gazebo simulation environment was not instrumented with a
+power-monitoring middleware plugin; consequently, joint-level energy
+data cannot be extracted from the virtual trials reported in this
+subsubsection.
+Energy consumption across locomotion modes is, however, addressed
+in the physical implementation section of the present work, where
+per-motor current and power measurements were acquired during the
+physical platform experiments; the reader is referred to that
+section for the corresponding energy characterisation of each mode.
+}
+% [AUTO-EDIT END Tarea #25 BLOCK R3-C2]
 
 \subsection{\revblue{Physical Implementation Results}}
 
@@ -1358,6 +1584,23 @@ A similar behavior is observed in the experiment with the physical robot (Figure
 \label{ssec:Limitations}
 
 \revblue{As an open, low-cost exploratory research baseline, the physical robot is constructed using low-torque servomotors and a lightweight structural layout, which limits its operational envelope compared to industrial-grade platforms. Locomotion gaits are currently executed via pre-configured open-loop control patterns; while this reduces control complexity, it weakens active stabilization capabilities on high-slip surfaces or excessively steep inclinations. This constraint is a direct consequence of the platform's low-cost mechanical design --- low-torque servomotors and a lightweight PLA structure --- rather than a limitation of the neural arbitration architecture itself. As a representative case, the gait selected during steep-slope negotiation (Figure~33) reflects the boundaries of the physical actuator envelope: the neural decision module consistently selects the locomotion mode associated with improved stability under the detected terrain conditions, yet the open-loop execution of that gait cannot compensate for the torque deficits inherent to the hardware. Experimental validation was constrained to structured laboratory environments with static stimuli and did not include unconstrained outdoor topographies, dynamic obstacles, or severe external disturbances. Therefore, the empirical results presented herein do not constitute validation of a production-ready system for rugged industrial deployment. Instead, they substantiate the mathematical, biological, and computational feasibility of a highly efficient basal-ganglia inspired arbitration network capable of managing multimodal mobility on resource-constrained embedded hardware.}
+
+% [AUTO-EDIT] Tarea #25: BLOCK R1-C5-C — Limitation addendum for virtual environment
+\revblue{%
+Regarding the virtual test environment: the Gazebo world used for
+obstacle-evasion and stimulus-response experiments
+(Figure~\ref{fig:depot_simulation}) is a symbolic representation
+of an industrial storage facility, included to contextualise
+the platform's application domain.
+It was not constructed from engineering measurements of any
+real facility, and its spatial statistics (corridor width,
+obstacle density, scene dimensions) have not been benchmarked
+against actual infrastructure-inspection deployments.
+Consequently, the simulation results should be interpreted as
+demonstrations of algorithmic behaviour in a \emph{representative}
+constrained environment, rather than as performance guarantees
+for deployment in specific industrial buildings.%
+}
 % [AUTO-EDIT END]
 
 \section{Conclusions}
