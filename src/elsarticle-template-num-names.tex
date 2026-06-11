@@ -1410,6 +1410,70 @@ A similar behavior is observed in the experiment with the physical robot (Figure
     \label{fig:GRAPH_IMU2_real}
 \end{figure}
 
+% [AUTO-EDIT] Tarea #26: Integración del Análisis de Topografías Variables en Hardware Real (6-Frame Sequence)
+\revblue{To further consolidate the physical validation under complex, multi-section topographies, a dedicated testing suite of 15 continuous repetitive trials was conducted over an experimental track whose structural layout systematically combines four topographic segments: a double-ascent ramp, a horizontal elevated plane, a controlled descent ramp, and a rough terrain section characterised by stochastic, non-uniform height variations generated via Perlin noise. The sequential adaptation of the locomotion arbitration network throughout this compound course is documented in Figure~}\ref{fig:real_variable_topography_sequence}\revblue{, which maps the chronological gait-switching decisions enforced by the bio-inspired basal-ganglia controller across six representative frames.}
+
+\revblue{In Frame~1 (Figure~}\ref{fig:real_terrain_frame1}\revblue{), the platform initialises its operational trajectory in quadrupedal walking mode. This articulated gait is deliberately selected by the neural arbitration network to guarantee static stability and adequate traction during the ascending phase of the double ramp. The elevated support polygon and the positive grip force exerted by the four articulated limbs ensure that the centre-of-mass projection remains well within the stability boundary throughout the climb.}
+
+\revblue{In Frame~2 (Figure~}\ref{fig:real_terrain_frame2}\revblue{), as the platform completes the ramp ascent and transitions onto the horizontal elevated segment, the MLP-based terrain classifier registers a rapid decrease in the standard deviation of the vertical IMU acceleration. This drop below the defined threshold suppresses the quadrupedal-mode salience channel within the basal ganglia circuit, disinhibiting the differential rolling channel. The arbitration network consequently issues a reconfiguration command, and the limbs actively retract to their compact rolling configuration, transitioning the platform to differential mobile mode.}
+
+\revblue{Frame~3 (Figure~}\ref{fig:real_terrain_frame3}\revblue{) captures the platform sustaining high-efficiency, energy-conservative navigation across the elevated planar section. In this mode, the omnidirectional wheels serve as the primary locomotor effectors, minimising joint torque expenditure and maximising forward displacement speed relative to the quadrupedal gait. The neural arbitration network maintains the differential rolling channel in a stable, uninhibited state throughout this segment, confirming the platform's capacity for sustained wheeled traversal on structured horizontal surfaces.}
+
+\revblue{Frame~4 (Figure~}\ref{fig:real_terrain_frame4}\revblue{) demonstrates that the differential mobile mode is preserved consistently during the controlled descent of the complementary ramp. The onboard inertial readings confirm that the pitch disturbance induced by the slope remains below the neural excitation threshold for quadrupedal re-engagement (${\approx}5^{\circ}$), allowing the wheels to maintain traction and the rolling mode to persist uninterrupted throughout the descent manoeuvre.}
+
+\revblue{Frame~5 (Figure~}\ref{fig:real_terrain_frame5}\revblue{) represents the most demanding phase of the experimental course. Upon transitioning from the ramp terminus to the Perlin-noise rough terrain, the wheels encounter a surface characterised by high-variance height fluctuations and non-uniform contact geometry. Under these conditions, the rolling effectors experience critical slippage and a severe loss of traction, resulting in a measurable stagnation state: the platform's forward progress index drops sharply, and the MLP outputs trigger a sustained high-activity signal in the stagnation detection channel. This adverse traction event is precisely the destabilising input that the basal-ganglia network is designed to detect and resolve.}
+
+\revblue{In Frame~6 (Figure~}\ref{fig:real_terrain_frame6}\revblue{), upon detecting the prolonged stagnation condition and the associated collapse of the locomotion progress metrics, the basal-ganglia-inspired arbitration architecture executes a reactive state transition, disinhibiting the quadrupedal walking channel and suppressing the differential rolling channel. The limbs deploy from their retracted configuration, re-establishing the full four-point articulated contact posture. This reconfiguration restores the support polygon, eliminates the wheel-slip condition, and enables the platform to traverse the rough Perlin-noise terrain successfully. This closed-loop reactive switching sequence---observed across all 15 experimental trials---empirically confirms that the bio-inspired controller reliably detects locomotion failure and autonomously recovers the optimal gait mode without external intervention, demonstrating the real-world robustness of the proposed neural arbitration architecture under stochastic, non-structured terrain conditions.}
+
+\begin{figure*}[t]
+  \centering
+  % ---- Row 1 ----
+  \begin{subfigure}[t]{0.31\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{Prueba_Terreno_Parte_1.png}
+    \caption{\revblue{Frame 1: Quadrupedal walking mode engaged during double-ramp ascent to ensure static stability and traction.}}
+    \label{fig:real_terrain_frame1}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.31\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{Prueba_Terreno_Parte_2.png}
+    \caption{\revblue{Frame 2: Neural arbitration network detects the flat elevated segment and switches to differential rolling (mobile) mode.}}
+    \label{fig:real_terrain_frame2}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.31\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{Prueba_Terreno_Parte_3.png}
+    \caption{\revblue{Frame 3: Energy-efficient wheeled navigation sustained across the horizontal elevated plane with wheels as primary locomotor effectors.}}
+    \label{fig:real_terrain_frame3}
+  \end{subfigure}
+
+  \vspace{0.6em}
+
+  % ---- Row 2 ----
+  \begin{subfigure}[t]{0.31\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{Prueba_Terreno_Parte_4.png}
+    \caption{\revblue{Frame 4: Differential mobile mode maintained throughout the controlled ramp descent; pitch disturbance remains below the quadrupedal re-engagement threshold.}}
+    \label{fig:real_terrain_frame4}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.31\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{Prueba_Terreno_Parte_5.png}
+    \caption{\revblue{Frame 5: Wheels encounter Perlin-noise rough terrain, inducing critical slippage and a stagnation condition detected by the MLP output channels.}}
+    \label{fig:real_terrain_frame5}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.31\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{Prueba_Terreno_Parte_6.png}
+    \caption{\revblue{Frame 6: Basal-ganglia network triggers reactive quadrupedal recovery, restoring the support polygon and enabling successful traversal of the rough terrain.}}
+    \label{fig:real_terrain_frame6}
+  \end{subfigure}
+
+  \caption{\revblue{Sequential 6-frame documentation of the physical platform navigating a compound variable-topography course (double-ascent ramp} $\rightarrow$ \revblue{horizontal elevated plane} $\rightarrow$ \revblue{descent ramp} $\rightarrow$ \revblue{Perlin-noise rough terrain), replicated across 15 continuous experimental trials. Frames (a)--(f) trace the chronological sequence of gait-mode transitions autonomously commanded by the bio-inspired basal-ganglia arbitration network, from initial quadrupedal ascent through differential rolling on structured surfaces to reactive quadrupedal recovery upon encountering high-variance stochastic terrain.}}
+  \label{fig:real_variable_topography_sequence}
+\end{figure*}
+% [AUTO-EDIT END]
+
 % [AUTO-EDIT] Tarea #23: Integración Cuantitativa de Resultados Experimentales en Hardware Real
 \subsection{Quantitative Performance Analysis in Physical Multi-Stimuli and Variable Terrain Environments}
 \label{ssec:QuantReal}
