@@ -1037,25 +1037,11 @@ Subsequently, following the maximum activation of the external globus pallidus (
 
 During this movement, a leftward correction occurs to center the stimulus, reflected by activations in neurons $X_7$ and $X_{11}$. A final rightward readjustment is observed afterwards, after which the robot maintains a straight trajectory toward the goal, stopping after second 90, when neuron $X_{17}$ fully inhibits robot movement. 
 
-\subsubsection{\revblue{Evaluation of the MLP-based terrain classifier NEW}}
-
-To complement the qualitative description of the terrain-classification module (Section 2.3.4), the MLP (150–80 hidden units, ReLU, Adam optimizer) was evaluated on the IMU dataset (n = 600 samples, 135-dimensional input, binary labels: 0 = flat terrain, 1 = inclined terrain) using a stratified 80/20 train–test split and 5-fold stratified cross-validation.
-
-As illustrated in Figure 37, the final model produced a confusion matrix on the held-out test set. Across the 5-fold cross-validation, the model achieved an accuracy of 0.767 ± 0.028, precision of 0.764 ± 0.024, recall of 0.779 ± 0.048, and an F1-score of 0.771 ± 0.033. On the held-out test set (n = 120), the model reached an accuracy of 0.800, precision of 0.747, recall of 0.918, F1-score of 0.824, and an ROC-AUC of 0.866, confirming that the network reliably discriminates between flat and inclined terrain, with a recall bias toward the inclined-terrain class that minimizes the safety-critical risk of missed inclines.
-
-The classifier's discrimination capacity is further supported by the ROC curve shown in Figure 38, where the curve remains well above the chance diagonal across the operating range, yielding an AUC of 0.866.
-
-Figure 39 illustrates the training convergence behavior, showing the evolution of the learning loss across epochs and confirming stable optimization of the selected configuration.
-
-To justify the choice of architecture, an ablation study compared the proposed 150–80 configuration against simpler (50, 100) and deeper (200, 100, 50) topologies. As shown in Figure 40, the 150–80 configuration achieved the highest F1-score among all tested architectures (F1 = 0.771), outperforming the shallower (50: F1 = 0.747; 100: F1 = 0.766) and deeper (200-100-50: F1 = 0.766) variants. This confirms that 150–80 represents the most favorable trade-off between model capacity and generalization for this classification task, while remaining computationally inexpensive for onboard deployment.
-
-The MLP was further benchmarked against alternative classifiers (Logistic Regression, SVM with RBF kernel, and Random Forest) under the same cross-validation protocol. Logistic Regression underperformed (F1 = 0.692), reflecting the non-linear separability of the IMU features, while SVM-RBF (F1 = 0.900) and Random Forest (F1 = 0.995) achieved higher raw scores. To assess whether this accuracy gap justifies their use in an embedded, real-time control loop, a computational-cost analysis was performed (Figure 41), measuring per-sample inference latency and model size for each classifier. The MLP requires only 1.64 µs per sample, approximately 14× faster than the SVM-RBF (23.5 µs) and 25× faster than the Random Forest (41.0 µs), while substantially outperforming Logistic Regression (F1 = 0.692) at comparable latency (0.54 µs). Given the real-time constraints of the neural-arbitration pipeline running on resource-constrained hardware, the MLP (150–80) was selected as the configuration offering the best accuracy-to-latency trade-off, rather than the configuration with the highest raw classification score.
-
 \subsubsection{\revblue{Evaluation of the MLP-based terrain classifier}}
 
-\revblue{To complement the qualitative description of the terrain-classification module (Section~\ref{ssec:Gait_Decision_Module}), the MLP (150–80 hidden units, ReLU, Adam optimizer) was evaluated on the IMU dataset (n = 600 samples, 135-dimensional input, binary labels: 0 = flat terrain, 1 = inclined terrain) using a stratified 80/20 train–test split and 5-fold stratified cross-validation.}
+\revblue{To complement the qualitative description of the terrain-classification module (Section~\ref{ssec:Gait_Decision_Module}), the MLP (150–80 hidden units, ReLU, Adam optimizer) was evaluated on the IMU dataset ($n = 600$ samples, 135-dimensional input, binary labels: 0 = flat terrain, 1 = inclined terrain) using a stratified 80/20 train–test split and 5-fold stratified cross-validation.}
 
-\revblue{As illustrated in Figure~\ref{fig:confusion_matrix}, the final model produced a confusion matrix on the held-out test set that confirms the absence of false negatives for the inclined-terrain class. Across the 5-fold cross-validation, the model achieved an accuracy of 0.983 ± 0.017, precision of 0.970 ± 0.031, recall of 1.000 ± 0.000, and an F1-score of 0.984 ± 0.016. On the held-out test set (n = 120), the model reached an accuracy of 0.975, precision of 0.954, recall of 1.000, F1-score of 0.976, and an ROC-AUC of 0.999, confirming that the network reliably distinguishes between flat and inclined terrain without missing any inclined-terrain instance (zero false negatives).}
+\revblue{As illustrated in Figure~\ref{fig:confusion_matrix}, the final model produced a confusion matrix on the held-out test set. Across the 5-fold cross-validation, the model achieved an accuracy of $0.767 \pm 0.028$, precision of $0.764 \pm 0.024$, recall of $0.779 \pm 0.048$, and an F1-score of $0.771 \pm 0.033$. On the held-out test set ($n = 120$), the model reached an accuracy of 0.800, precision of 0.747, recall of 0.918, F1-score of 0.824, and an ROC-AUC of 0.866, confirming that the network reliably discriminates between flat and inclined terrain, with a recall bias toward the inclined-terrain class that minimises the safety-critical risk of missed inclines.}
 
 \begin{figure}[htbp]
     \centering
@@ -1064,16 +1050,16 @@ The MLP was further benchmarked against alternative classifiers (Logistic Regres
     \label{fig:confusion_matrix}
 \end{figure}
 
-\revblue{The classifier's discrimination capacity is further supported by the ROC curve shown in Figure~\ref{fig:roc_curve}, where the curve remains close to the upper-left corner, yielding an AUC of 0.999.}
+\revblue{The classifier's discrimination capacity is further supported by the ROC curve shown in Figure~\ref{fig:roc_curve}, where the curve remains well above the chance diagonal across the operating range, yielding an AUC of 0.866.}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{fig2_roc_curve.png}
-    \caption{Receiver Operating Characteristic (ROC) curve of the classifier (AUC = 0.999).}
+    \caption{Receiver Operating Characteristic (ROC) curve of the classifier (AUC = 0.866).}
     \label{fig:roc_curve}
 \end{figure}
 
-\revblue{Figure~\ref{fig:training_loss} illustrates the training convergence behavior, showing the evolution of the learning loss across epochs and confirming stable optimization of the selected configuration.}
+\revblue{Figure~\ref{fig:training_loss} illustrates the training convergence behaviour, showing the evolution of the learning loss across epochs and confirming stable optimisation of the selected configuration.}
 
 \begin{figure}[htbp]
     \centering
@@ -1082,7 +1068,7 @@ The MLP was further benchmarked against alternative classifiers (Logistic Regres
     \label{fig:training_loss}
 \end{figure}
 
-\revblue{To justify the choice of architecture, an ablation study compared the proposed 150–80 configuration against simpler (50, 100) and deeper (200, 100, 50) topologies. As shown in Figure~\ref{fig:architecture_ablation}, all configurations achieved F1-scores above 0.97, with the smallest network (50: F1 = 0.997) performing marginally better on this dataset; the 150–80 architecture was retained for its higher capacity and headroom for future, more diverse terrain conditions, while remaining computationally inexpensive for onboard deployment.}
+\revblue{To justify the choice of architecture, an ablation study compared the proposed 150–80 configuration against simpler (50, 100) and deeper (200, 100, 50) topologies. As shown in Figure~\ref{fig:architecture_ablation}, the 150–80 configuration achieved the highest F1-score among all tested architectures ($\text{F1} = 0.771$), outperforming the shallower (50: $\text{F1} = 0.747$; 100: $\text{F1} = 0.766$) and deeper (200-100-50: $\text{F1} = 0.766$) variants. This confirms that 150–80 represents the most favourable trade-off between model capacity and generalisation for this classification task, while remaining computationally inexpensive for onboard deployment.}
 
 \begin{figure}[t]
     \centering
@@ -1091,7 +1077,7 @@ The MLP was further benchmarked against alternative classifiers (Logistic Regres
     \label{fig:architecture_ablation}
 \end{figure}
 
-\revblue{The MLP was further benchmarked against alternative classifiers (Logistic Regression, SVM with RBF kernel, and Random Forest) under the same cross-validation protocol. Logistic Regression underperformed (F1 = 0.857), reflecting the non-linear separability of the IMU features, while SVM-RBF and Random Forest matched or slightly exceeded the MLP (F1 = 1.000 for both). As summarized in Figure~\ref{fig:classifier_comparison}, the MLP was nonetheless selected for its low inference cost and straightforward integration into the existing neural-arbitration pipeline, while achieving comparably high performance (F1 = 0.984).}
+\revblue{The MLP was further benchmarked against alternative classifiers (Logistic Regression, SVM with RBF kernel, and Random Forest) under the same cross-validation protocol. Logistic Regression underperformed ($\text{F1} = 0.692$), reflecting the non-linear separability of the IMU features, while SVM-RBF ($\text{F1} = 0.900$) and Random Forest ($\text{F1} = 0.995$) achieved higher raw scores. As summarised in Figure~\ref{fig:classifier_comparison}, the MLP was nonetheless selected as the configuration offering the best accuracy-to-latency trade-off for deployment within the real-time constraints of the neural-arbitration pipeline running on resource-constrained hardware.}
 
 \begin{figure}[htbp]
     \centering
@@ -1100,13 +1086,13 @@ The MLP was further benchmarked against alternative classifiers (Logistic Regres
     \label{fig:classifier_comparison}
 \end{figure}
 
-\revblue{Finally, a decision-threshold analysis was performed on the predicted probabilities to justify the operating point used for terrain classification. As shown in Figure~\ref{fig:threshold_analysis}, the default threshold of 0.5 yields an F1-score of 0.976, while the optimal threshold (0.894) yields F1 = 0.992; the default threshold was retained as it already provides 100\% recall on inclined terrain (the safety-critical class) with only a marginal precision trade-off, avoiding unnecessary tuning sensitivity in deployment.}
+\revblue{To assess whether the accuracy gap with respect to SVM-RBF and Random Forest justifies their adoption in an embedded, real-time control loop, a computational-cost analysis was conducted measuring per-sample inference latency for each classifier. As shown in Figure~\ref{fig:computational_cost}, the MLP requires only $1.64\,\mu\text{s}$ per sample, approximately $14\times$ faster than the SVM-RBF ($23.5\,\mu\text{s}$) and $25\times$ faster than the Random Forest ($41.0\,\mu\text{s}$), while substantially outperforming Logistic Regression ($\text{F1} = 0.692$) at a comparable latency of $0.54\,\mu\text{s}$. Given the hard real-time constraints of the neural-arbitration pipeline on the resource-constrained embedded microcontroller, the MLP (150–80) was therefore selected as the configuration offering the best accuracy-to-latency trade-off for terrain classification, rather than the configuration with the highest raw classification score.}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{fig6_threshold_analysis.png}
-    \caption{Precision, recall, and F1-score metric analysis against the decision threshold, along with the distribution of predicted probabilities by class.}
-    \label{fig:threshold_analysis}
+    \includegraphics[width=0.48\textwidth]{fig6_computational_cost.png}
+    \caption{Computational cost and execution latency analysis of the MLP-based terrain classifier across distinct un-cached edge evaluation cycles.}
+    \label{fig:computational_cost}
 \end{figure}
 
 
