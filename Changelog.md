@@ -2,6 +2,54 @@
 
 All changes listed below were applied automatically to `elsarticle-template-num-names.tex`. Equation expressions and numerical values were not modified; only explanatory prose was added or reorganized.
 
+## [2026-06-11T11:49:18Z] - Tarea #27: Revisión Editorial Crítica — 35 Correcciones Categorizadas (A→H)
+* **Reviewer Comment:** Comprehensive internal editorial review detecting 35 structural, terminological, grammatical, caption, equation, and formatting issues across Categories A–H in the manuscript.
+* **Change Made:** Applied 35 corrections to `src/elsarticle-template-num-names.tex` across 9 categories:
+  - **A3:** Replaced hardcoded `Figure~33` with `Figure~\ref{fig:RES_IMU2_real}` in the Limitations subsection (steep-slope negotiation reference).
+  - **A4:** Fixed X14/X15/X16 locomotion-mode assignments. Line ~724: appetitive stimulus correctly maps to `$X_{16}$` (differential rolling), not `$X_{15}$` (quadrupedal). Line ~827: corrected sequence to `$X_{14}$, $X_{15}$, and $X_{16}$` (obstacle→aversive→appetitive order, reflecting omnidirectional→quadrupedal→differential rolling).
+  - **A5:** Removed duplicate `\label{tab:dir-bits}` (line ~550); retained `\label{table:DIR_BINARY}` which is referenced in the body text.
+  - **B1:** Changed `\caption{Adversarial stimulus}` → `\caption{Aversive stimulus}` (line ~644) and `Frame 4 - Adversive stimuli evasion.` → `Frame 4 - Aversive stimulus evasion.` (line ~1243).
+  - **B3:** Replaced `agent's right side` and `the agent moves away` → `robot's right side` / `the robot moves away` (line ~713); `The agent approaches` → `The robotic platform approaches` (line ~724).
+  - **B4:** Unified to American English: `contextualise` → `contextualize` (lines ~680, ~1657); `locomotion-arbitration behaviours` → `behaviors`; `steady-state kinematic behaviours` → `behaviors`.
+  - **C1:** `In the incoming equations` → `In the following equations` (line ~274).
+  - **C2:** Removed spurious period: `Equations.~\eqref{eq:Z_5}` → `Equations~\eqref{eq:Z_5} and~\eqref{eq:Z_6}` (line ~352).
+  - **C3:** Restructured broken Naka–Rushton sentence: inserted parentheses around equation references and fixed missing space before `share` (line ~494).
+  - **C4:** Replaced single hyphens with em-dashes: `$X_{1}$-associated...-excites` → `$X_{1}$---associated...---excites` (line ~904).
+  - **C5:** Added non-breaking space and lowercased `see`: `Appetitive Targeting(See Figure \ref{...})` → `Appetitive Targeting (see Figure~\ref{...})` (lines ~755, ~776, ~797).
+  - **C6:** `the robot experiences a stagnation state` → `a stagnation condition is detected` and `this sensation reaches its maximum sustained activity` → `this stagnation signal reaches its maximum sustained amplitude` (line ~1327).
+  - **C7:** Standardized Methodology to past passive tense: `advances` → `advanced`, `selects` → `selected`, `employs` → `employed`; `which provides` → `which provided` (lines ~199, ~207).
+  - **C8:** Removed duplicate sentence `The sensory ring comprised 16 units...` from line ~211; retained the first occurrence at line ~209.
+  - **C9:** `The obtained results are consistent with those reported by Sarvestani et al.` → `These results are consistent with those reported by \citet{sarvestani2013computational}` (line ~1680).
+  - **C10:** `evidencing a solid computational foundation` → `demonstrating a solid computational foundation` (line ~1680).
+  - **C11:** `in an average time under 80 seconds` → `in an average time of less than 80~s` (line ~1672).
+  - **C12:** `direction-switching latencies under 600 ms` → `direction-switching latencies below 600~ms` (line ~1676).
+  - **C13:** `completion times bounded below $60$~s` → `completion times remaining below $60$~s` (line ~851).
+  - **C14:** `experimental simulation, in both single and multi stimulus scenarios` → `experimental simulations, in both single- and multi-stimulus scenarios` (line ~855).
+  - **D1:** Replaced verbose caption for `fig:RES_EST_MUL` with formal academic version: `Trajectory followed in response to multiple stimuli of different natures in a simulation trial. Snapshots captured at selected time instants (0, 8, 15, 20, 25, and every 35~s thereafter until 3~min).` (line ~815).
+  - **D2:** `Physical robot built.` → `Assembled physical robotic platform.` (line ~629).
+  - **D3:** Replaced four non-idiomatic neuronal response captions with formal alternatives: `Neural activations during locomotion over [irregular/inclined] terrain ([simulation/physical robot]). (a)~Locomotion decision module; (b)~Gait mode control module.` (lines ~893, ~913, ~1379, ~1402).
+  - **D4:** `Trajectory accomplished for transport in a terrain with elevation...` → `Trajectory during traversal of elevated terrain in simulation. Snapshots taken every 12~s.` (line ~920).
+  - **D5:** Added missing period to Basal Ganglia caption: `...after \citet{sarvestani2013computational}.` (line ~302).
+  - **D6:** Replaced accented LaTeX labels `fig:estímulos` → `fig:estimulos` and `fig:estímulos_reales` → `fig:estimulos_reales`; updated all corresponding `\ref{}` commands (lines ~194, ~647, ~178, ~633).
+  - **D7:** Changed `\captionof{figure}{...}` → `\caption{...}` inside `figure` environments (lines ~709, ~1181).
+  - **E2:** `which implement binary outputs to represent the different terrain states` → `$N_{0}$ (flat-terrain probability), $N_{1}$ (inclined-terrain probability), and $N_{2}$ (binary stagnation indicator)` (line ~877).
+  - **F1:** Shortened Highlight #4 and added missing period: `The controller switches adaptively among rolling, quadrupedal, and omnidirectional modes in response to sensory context.` (line ~97).
+  - **G1:** Moved parameter justification block (ω_{L→X}, ω_{GpeR}, Ar, HI, σ_M, σ_I) from the end of Conclusions to the end of the Gait Decision Module subsection, immediately after `table:Locom_NN`.
+  - **H1:** `At second 21` → `At $t = 21$~s`; `at second 27` → `at $t = 27$~s` (lines ~821, ~825).
+  - **H2:** `By employing a smooth capsule geometry, the platform significantly optimizes physical interaction profiles, preventing localized torque spikes.` → `By adopting obstacles with smooth capsule geometries in simulation, localized torque spikes during contact were prevented.` (line ~797).
+  - **H4:** `Robot Construction Materials and Testing Space` → `Physical Platform Construction and Experimental Setup` (line ~615).
+  - **H5:** Replaced all four `Rastergram` occurrences with `Raster plot of neural activations` (lines ~718, ~729, ~1191, ~1209).
+* **Justification:** These 35 corrections address structural errors (hardcoded references, duplicate labels, misassigned neural units), terminological inconsistencies (locomotion-mode–neuron mapping, British/American spelling, informal vs. academic vocabulary), grammatical issues (verb tense, sentence structure, punctuation, prepositions), caption quality (non-idiomatic phrasing, redundancy, missing periods), equation formatting, and two structural relocation issues. All corrections maintain the scientific integrity of the manuscript; no experimental data, equations, or statistical values were modified.
+
+## ⚠️ [REQUIRES AUTHOR INPUT]
+
+- [ ] **E3 / A4 partial (appetitive stimulus gait unit):** The manuscript at line ~724 originally assigned `$X_{15}$` (quadrupedal) to the appetitive stimulus scenario. Based on the ABSOLUTE TRUTH declared by the authors (X14=omnidirectional, X15=quadrupedal, X16=differential rolling), this has been corrected to `$X_{16}$`. **Authors must verify** that the published raster plot `NEU_EST_UNIB.png` (Figure for single appetitive stimulus) actually shows activation of `$X_{16}$` (and NOT `$X_{15}$`). If the figure shows `$X_{15}$`, the figure itself must be regenerated or a caption note added.
+- [ ] **B2 (Terminology unification — locomotion mode canonical names):** The manuscript uses multiple synonyms for the three locomotion modes ("Differential rolling mode" / "differential-drive rolling mode" / "H-mode" / "Differential Mobile Mode"; "Omnidirectional mode" / "omnidirectional gait"; "Quadrupedal mode" / "articulated mode" / "C-mode"). A global terminology pass is needed to introduce three canonical names at first use in Section 2 and use them consistently. This requires author judgment on which canonical names to adopt.
+- [ ] **G2 (Limitations subsection placement):** `\subsection{Limitations of the Present Work}` currently appears as a subsection of Section 3 (Results). Standard Q1 practice places Limitations in Discussion or Conclusions. Moving this subsection requires manual structural revision and cross-reference updates by the authors, as it may affect section numbering and references throughout the document.
+- [ ] **H3 (Paragraph fragmentation by \revblue{}):** Lines ~960–964 contain paragraphs fragmented by individual-word `\revblue{}` markup producing difficult-to-read text. Once the revision is approved and the `\revblue{}` tracking is removed, the authors should consolidate these paragraphs to wrap complete sentences rather than individual words.
+
+---
+
 ## [2026-06-11T11:15:44Z] - Tarea #26: Integración del Análisis de Topografías Variables en Hardware Real (6-Frame Sequence)
 * **Reviewer Comment:** Reviewers requested explicit physical confirmation and sequential qualitative proof of how the arbitration network handles real-world transitions when shifting from structured inclines to stochastic, non-uniform rough terrains.
 * **Change Made:** Modified `src/elsarticle-template-num-names.tex`. Injected an exhaustive sequential analysis under subsubsection 3.2.4 based on a 15-trial physical testing suite. Integrated a composite 6-panel figure environment utilizing `Prueba_Terreno_Parte_1.png` to `_6.png` with independent sub-captions and strict cross-referencing. Applied `\revblue{}` highlighting to the new text blocks following Rule #5. Insertion point: immediately after the `\end{figure}` closing `fig:GRAPH_IMU2_real` and before the `% [AUTO-EDIT] Tarea #23` marker in the real-world 3.2.4 section (line ~1411). The 6-frame `figure*` environment uses labels `fig:real_terrain_frame1` through `fig:real_terrain_frame6` and a master label `fig:real_variable_topography_sequence`. All `\ref{}`, `$...$`, and `\cite{}` commands maintained strictly outside the `\revblue{}` wrapper to prevent pdflatex compilation errors.
