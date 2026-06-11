@@ -2,6 +2,36 @@
 
 ---
 
+## General Editorial Corrections (Internal Review — Tarea #27)
+
+**Reviewer Comment:** Internal editorial audit identifying 35 structural, terminological, grammatical, caption, and formatting issues across the manuscript.
+
+**Change made:** *Location: Multiple sections throughout `src/elsarticle-template-num-names.tex`.*
+
+> The following corrections were applied to improve manuscript quality and consistency in preparation for resubmission:
+>
+> **Structural (Category A):** The hardcoded figure reference `Figure~33` in the Limitations subsection was replaced with the proper cross-reference `Figure~\ref{fig:RES_IMU2_real}`. The locomotion-mode–neuron assignment inconsistency was resolved: unit $X_{14}$ activates the omnidirectional gait (obstacle evasion), $X_{15}$ activates the quadrupedal gait (aversive escape), and $X_{16}$ activates the differential rolling mode (appetitive approach). The sequential activation description in the multi-stimulus experiment was corrected to read "$X_{14}$, $X_{15}$, and $X_{16}$ in that order," reflecting the obstacle→aversive→appetitive behavioral sequence. The duplicate `\label{tab:dir-bits}` was removed, retaining the authoritative `\label{table:DIR_BINARY}`.
+>
+> **Terminological (Category B):** The erroneous caption "Adversarial stimulus" (line ~644) and the non-word "Adversive" (line ~1243) were both corrected to "Aversive stimulus / Aversive stimulus evasion," consistent with the established terminology throughout the manuscript. Isolated uses of "agent" in the Results section were replaced with "robot" or "robotic platform" for consistency. British spellings ("contextualise," "behaviours") were unified to American English ("contextualize," "behaviors").
+>
+> **Grammatical (Category C):** "In the incoming equations" was replaced with "In the following equations" (§Obstacle Sensory Module). The spurious period in "Equations.~\eqref{eq:Z_5}" was removed. The broken Naka–Rushton sentence was restructured to "(Equations~\eqref{eq:NakaImu} and~\eqref{eq:NakaMode}) share the same second-order structure." Single hyphens used as em-dashes were corrected to `---`. Missing spaces before parenthesized figure references were added and "See" was lowercased to "see." The anthropomorphic phrase "the robot experiences a stagnation state" was replaced with "a stagnation condition is detected." Methodology verb tenses were standardized to past passive ("advanced," "selected," "employed," "provided"). A duplicate sentence about the 16-unit sensory ring was removed. The informal opener "The obtained results are consistent with those reported by Sarvestani et al." was changed to "These results are consistent with those reported by \citet{sarvestani2013computational}." The non-standard gerund "evidencing" was replaced with "demonstrating." Informal prepositions ("under 80 seconds," "under 600 ms") were replaced with formal equivalents ("of less than 80~s," "below 600~ms"). The ambiguous expression "bounded below $60$~s" was corrected to "remaining below $60$~s." A grammatical agreement error ("experimental simulation") and a hyphenation error ("multi stimulus") were corrected.
+>
+> **Captions (Category D):** The verbose and informal caption for the multi-stimulus trajectory figure was replaced with a concise academic version. The caption "Physical robot built." was replaced with "Assembled physical robotic platform." Four neuronal response figure captions using the non-idiomatic phrase "for transport" were rewritten following the standard: "Neural activations during locomotion over [terrain type] ([context])." The trajectory caption "Trajectory accomplished for transport in a terrain with elevation" was rewritten as "Trajectory during traversal of elevated terrain in simulation. Snapshots taken every 12~s." A missing period was added to the Basal Ganglia Module caption. Accented LaTeX labels (`fig:estímulos`, `fig:estímulos_reales`) were replaced with ASCII equivalents and all `\ref{}` commands updated accordingly. Two instances of `\captionof{figure}{...}` inside `figure` environments were corrected to `\caption{...}`.
+>
+> **Equations (Category E):** The factually incorrect description of MLP outputs as "implementing binary outputs" was corrected to explicitly distinguish $N_0$ (flat-terrain probability), $N_1$ (inclined-terrain probability), and $N_2$ (binary stagnation indicator), consistent with the definition at line ~571.
+>
+> **Highlights (Category F):** Highlight #4 was shortened and a missing period added: "The controller switches adaptively among rolling, quadrupedal, and omnidirectional modes in response to sensory context."
+>
+> **Structural repositioning (Category G):** The block justifying key design parameter values ($\omega_{L\rightarrow X}$, $\omega_{GpeR}$, $Ar$, $HI$, $\sigma_M$, $\sigma_I$) was moved from the end of the Conclusions section to the end of the Gait Decision Module subsection (Section 2.3.4), immediately after Table~\ref{table:Locom_NN}, where parameter justifications are contextually appropriate.
+>
+> **Minor formatting (Category H):** "At second 21" and "at second 27" were replaced with "At $t = 21$~s" and "at $t = 27$~s." The ambiguous capsule geometry sentence was rewritten to clarify that the smooth geometry belongs to the simulation obstacle, not the platform. The subsection title "Robot Construction Materials and Testing Space" was updated to "Physical Platform Construction and Experimental Setup." All four instances of "Rastergram" in figure captions were replaced with "Raster plot of neural activations."
+
+**Justification:** These corrections collectively improve the manuscript's adherence to Q1/Elsevier editorial standards by eliminating factual inconsistencies (neural unit assignments, MLP output types), resolving ambiguous or incorrect references, unifying terminology and spelling, and elevating caption and prose quality to the level expected by *Robotics and Autonomous Systems*. No experimental data, equations, or statistical values were modified.
+
+---
+
+---
+
 ## Reviewer 1, Comment 5 (Simulation Environment Characterisation)
 
 **Reviewer Comment:** In Section 2.2, the sentence "Additionally, to orient the simulation toward infrastructure-inspection applications, a representative industrial-building scenario was included, where the platform executed movements through different spaces." is not demonstrated or supported in the paper.
