@@ -12,25 +12,6 @@ Este documento contiene todas las observaciones, errores, inconsistencias y prob
 
 ## CATEGORÍA A — ERRORES ESTRUCTURALES GRAVES (PRIORIDAD CRÍTICA)
 
-### A1. Contradicción entre la hoja de ruta de la Introducción y la estructura real del artículo
-**Línea:** 133
-**Problema:** La introducción afirma: *"Section 4 discusses the algorithmic efficiency, novelty, and physical boundaries of the platform. Finally, Section 5 outlines the conclusions and directions for future work."* Sin embargo, en el documento real **no existe una Sección 4 de Discussion** independiente. El documento pasa directamente de la Sección 3 (Results) a una Sección 4 titulada `\section{Conclusions}`. La hoja de ruta anuncia 5 secciones pero el artículo tiene 4. Esta contradicción engaña al lector y a los revisores.
-**Corrección requerida:** Actualizar el párrafo final de la Introducción (línea 133) para reflejar la estructura real del artículo: *"...Section~3 presents the experimental results...Section~4 presents the discussion and conclusions..."*, o bien añadir la `\section{Discussion}` faltante antes de `\section{Conclusions}`.
-
----
-
-### A2. Duplicación masiva de filas en la Tabla de parámetros de la red de locomoción
-**Líneas:** 409–460 (`table:Locom_NN`)
-**Problema:** La tabla tiene múltiples filas duplicadas. Los siguientes parámetros aparecen **dos veces cada uno**:
-- `$\omega_{Gpe_G \rightarrow X_4}$` = 1.0 (líneas 417 y 429)
-- `$\omega_{Gpe_R \rightarrow X_4}$` = 2.0 (líneas 418 y 430)
-- `$\omega_{L \rightarrow X}$` = 160.0 (líneas 420 y 432)
-- `$\omega_{X_3 \rightarrow X_7}$` = 1.0 (líneas 422 y 436)
-- `$\omega_{X_4 \rightarrow X_7}$` = 10.0 (líneas 423 y 437)
-- `$\omega_{X_5 \rightarrow X_7}$` = 1.0 (líneas 424 y 438)
-- `$\omega_{X_3 \rightarrow X_8}$` = 10.0 (líneas 425 y 440)
-**Corrección requerida:** Eliminar el bloque duplicado (aproximadamente líneas 428–441). La tabla debe listar cada parámetro exactamente una vez.
-
 ---
 
 ### A3. Número de figura codificado manualmente (hardcoded)
@@ -51,12 +32,11 @@ Este documento contiene todas las observaciones, errores, inconsistencias y prob
 
 - Los **Resultados, experimento de estímulo único** (líneas 722–725) dicen:
   - Obstáculo → `$X_{14}$` = "omnidirectional gait" ✓
-  - Estímulo apetitivo → `$X_{15}$` = "**quadrupedal gait**" ✗ ← **debería ser rolling diferencial**
+  - Estímulo apetitivo → `$X_{16}$` = "**modo diferecial**" --> ARREGLAR
 
-- Los **Resultados, estímulos múltiples** (línea 826–827) dicen: "progressive neuronal activities of units $X_{16}$, $X_{14}$, and $X_{15}$ in that order" para la secuencia obstáculo→aversivo→apetitivo. Si X_{14}=omnidireccional (como establece la línea 722), entonces X_{16} y X_{14} serían omnidireccionales en distintos momentos — otra contradicción.
+- Los **Resultados, estímulos múltiples** (línea 826–827) dicen: "progressive neuronal activities of units $X_{16}$, $X_{14}$, and $X_{15}$ in that order" para la secuencia obstáculo→aversivo→apetitivo. Si X_{14}=omnidireccional (como establece la línea 722), entonces X_{16} y X_{14} serían omnidireccionales en distintos momentos — otra contradicción. 
 
-**Corrección requerida:** Verificar con el equipo de autores cuál es el mapeo correcto de $X_{14}$/$X_{15}$/$X_{16}$ a modos de locomoción. La palabra "quadrupedal gait" en la línea 725 parece ser un error tipográfico; debería decir "differential rolling mode". Además, revisar la consistencia de la secuencia en la línea 826.
-
+**Corrección requerida:** VERDAD ABOSOLUTA X_14 -> Omnidireccional X_15 Quadruped y X_16 Movil diferencial arreglar la seccion de "progressive neuronal activities of units $X_{16}$, $X_{14}$, and $X_{15}$ in that order"
 ---
 
 ### A5. Etiqueta duplicada en tabla
@@ -95,7 +75,7 @@ Dos `\label` en el mismo entorno generan una advertencia de etiqueta duplicada y
 ### B3. Uso inconsistente de "agent" vs "robot" vs "platform"
 **Líneas:** 722, 724, 725
 **Problema:** En la Sección de Resultados se usa el término "agent" de forma aislada ("the agent's right side", "The agent approaches"), mientras que el resto del documento usa "robot" o "platform". "Agent" no está definido previamente y su aparición aislada en el contexto de resultados físicos es confusa.
-**Corrección requerida:** Reemplazar "agent" por "robot" o "platform" en estas líneas para mantener consistencia terminológica.
+**Corrección requerida:** Reemplazar "agent" por "robot" o "platform" en estas líneas para mantener consistencia terminológica. Elegir robot y robotic platform.
 
 ---
 
@@ -277,17 +257,6 @@ Ambas oraciones dicen lo mismo. Esta redundancia debe eliminarse.
 
 ## CATEGORÍA E — INCONSISTENCIAS EN ECUACIONES Y DEFINICIONES
 
-### E1. Índice no ligado en la ecuación de la capa de entrada
-**Línea:** 281 (`eq:InputL`)
-**Problema:** La ecuación dice:
-```latex
-\frac{d\, I_n}{dt} = \frac{1}{\tau_{IRA}} \left( -I_n + Z_i \right)
-```
-El índice `i` en `Z_i` no está ligado por ninguna suma ni especificación. Si el sistema tiene N=16 neuronas de anillo, no está claro cuál `Z_i` alimenta a `I_n`. En los sistemas de este tipo, cada neurona de entrada recibe su correspondiente señal del anillo, por lo que debería ser `Z_n` (el n-ésimo elemento) o podría requerir una aclaración explícita.
-**Corrección requerida:** Preguntar a los autores si la ecuación correcta es `Z_n` (correspondencia uno-a-uno) o `\sum_i W_{n,i} Z_i` (conexión ponderada). Registrar como pendiente en la sección `[REQUIRES AUTHOR INPUT]` de `Changelog.md` si no se puede determinar de los apuntes disponibles.
-
----
-
 ### E2. Inconsistencia: N_0 y N_1 descritos como binarios cuando son probabilidades
 **Línea:** 877
 **Problema:** La línea 877 dice: `"this information corresponds to the MLP outputs $N_{0}$, $N_{1}$, and $N_{2}$, which implement binary outputs to represent the different terrain states."` Pero la línea 571 establece claramente que `"Output neurons $N_0$ and $N_1$ represent the **probability** of the terrain being flat or inclined"`, y solo `N_2` es binario. Decir que N_0 y N_1 "implement binary outputs" es factualmente incorrecto.
@@ -309,13 +278,6 @@ El índice `i` en `Z_i` no está ligado por ninguna suma ni especificación. Si 
 **Línea:** 97
 **Problema:** El cuarto highlight dice: `"The robot system switches among rolling, quadrupedal, and omnidirectional modes, depending on the incoming stimuli and the specific characteristics of the environment"` — (1) Falta punto al final. (2) Es notablemente más largo que los otros highlights, rompiendo el paralelismo de la sección.
 **Corrección requerida:** Acortar y añadir punto: `"The controller switches adaptively among rolling, quadrupedal, and omnidirectional modes in response to sensory context."`.
-
----
-
-### F2. Marcado `\revblue{}` visible en el Abstract
-**Línea:** 84
-**Problema:** El Abstract contiene el comando `\revblue{...}` que genera texto en azul para rastreo de revisiones. El Abstract es uno de los primeros elementos que ven los editores y el texto en azul en él podría considerarse inapropiado para la versión final.
-**Nota:** Este es un problema de presentación. Si el artículo está en fase de revisión/rebuttal, el markup es aceptable. Sin embargo, verificar con los autores si el Abstract debe presentarse limpio o con markup de revisión.
 
 ---
 
@@ -349,7 +311,7 @@ El índice `i` en `Z_i` no está ligado por ninguna suma ni especificación. Si 
 ### H2. "By employing a smooth capsule geometry" — referente ambiguo
 **Línea:** 797
 **Problema:** `"By employing a smooth capsule geometry, the platform significantly optimizes physical interaction profiles, preventing localized torque spikes."` — "capsule geometry" parece referirse a la geometría del **obstáculo**, no de la plataforma. Este referente es confuso: ¿es el obstáculo el que tiene geometría de cápsula, o la plataforma? Además, "optimizes" debería estar en tiempo pasado ("optimized") si la Metodología se describe en pasado.
-**Corrección requerida:** Aclarar el referente: `"By adopting obstacles with smooth capsule geometries in simulation, localized torque spikes during contact were prevented..."`. Registrar como pendiente en `[REQUIRES AUTHOR INPUT]` si los autores deben confirmar el referente.
+**Corrección requerida:** Aclarar el referente: `"By adopting obstacles with smooth capsule geometries in simulation, localized torque spikes during contact were prevented..."`.
 
 ---
 
@@ -371,22 +333,6 @@ El índice `i` en `Z_i` no está ligado por ninguna suma ni especificación. Si 
 **Líneas:** 719, 729, 808, 1191, 1209
 **Problema:** Las figuras de actividad neuronal usan dos términos intercambiables como prefijo en sus captions: "Rastergram" (líneas 719, 729, 1191, 1209) y "Raster plot" (línea 808). Deben ser consistentes.
 **Corrección requerida:** Elegir un término único. "Raster plot" o "Neural activation raster" son los términos más comunes en neurociencia computacional. Reemplazar todas las ocurrencias de "Rastergram" por "Raster plot of neural activations" o simplemente "Neural activation raster".
-
----
-
-## CATEGORÍA I — NOTAS PARA LOS AUTORES (REQUIRES AUTHOR INPUT)
-
-Los siguientes ítems no pueden ser resueltos por el agente corrector sin confirmación de los autores y deben ser registrados en `Changelog.md` bajo la sección `## ⚠️ [REQUIRES AUTHOR INPUT]`:
-
-1. **[A1] Estructura de secciones:** ¿Se debe agregar una Sección 4 de Discussion separada, o actualizar la hoja de ruta de la Introducción para reflejar la estructura actual de 4 secciones?
-
-2. **[A4 / E3] Mapeo X_{14}/X_{15}/X_{16} → modos de locomoción:** Confirmar el mapeo correcto. La línea 725 parece contener un error tipográfico ("quadrupedal" para estímulo apetitivo). ¿Cuál es la asignación correcta?
-
-3. **[E1] Ecuación InputL (línea 281):** ¿El índice en `Z_i` debe ser `Z_n` (correspondencia uno-a-uno) o una suma ponderada?
-
-4. **[H2] "Smooth capsule geometry":** ¿Se refiere a la geometría del obstáculo o de la plataforma? Aclarar el referente.
-
-5. **[A3] Figure~33 (línea 1586):** Identificar la etiqueta LaTeX correcta para reemplazar el número hardcoded.
 
 ---
 
